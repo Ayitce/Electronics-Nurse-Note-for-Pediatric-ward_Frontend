@@ -1,4 +1,4 @@
-/* import axios from 'axios';
+import axios from 'axios';
 import NextAuth, { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
@@ -20,14 +20,13 @@ export const authOptions: NextAuthOptions = {
             async authorize(credentials, req) {
                 const accessToken = credentials?.accessToken || ""
                 try {
-                    //what's this
-                    const res = await axios.get(`${process.env.NEXT_PUBLIC_CORE_URL_API}/v1/user`, {
+                    const res = await axios.get(`${process.env.NEXT_PUBLIC_CORE_URL_API}/currentUser`, {
                         headers: {
                             Authorization: `Bearer ${accessToken}`
                         }
                     })
 
-                    if (res.data.data.roles === "patient") {
+                    if (res.data.authorities.includes("ROLE_NURSE")) {
                         return { id: accessToken, accessToken }
                     } else {
                         throw new Error("Unauthorized role.")
@@ -56,9 +55,9 @@ export const authOptions: NextAuthOptions = {
         },
         session: async ({ session, token }) => {
             session.accessToken = token.accessToken
-
             return session
-        },
+
+        }
     },
 
     // Enable debug messages in the console if you are having problems
@@ -66,4 +65,3 @@ export const authOptions: NextAuthOptions = {
 }
 
 export default NextAuth(authOptions)
- */

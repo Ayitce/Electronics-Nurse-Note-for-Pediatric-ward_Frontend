@@ -17,6 +17,8 @@ import UserType from '../components/UserType'
 import { useControlContext } from '@/components/ControlContext';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
+import {registerPatient} from '@/services/userService'
+import dayjs from 'dayjs';
 
 
 const steps = ['เลือกประเภทผู้ใช้', 'ใส่ข้อมูลทั่วไป'];
@@ -45,12 +47,9 @@ export interface IRegisterForm {
 }
 
 
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
-
 export default function RegisterComp() {
 
-   
+
     const {
         register,
         handleSubmit,
@@ -61,7 +60,7 @@ export default function RegisterComp() {
     } = useForm<IRegisterForm>({
         mode: "onSubmit"
     })
-    const stepContent: any[] = [ <UserType />, <SignUpForm register={register} errors={errors} control={control} setValue={setValue}/>]
+    const stepContent: any[] = [<UserType />, <SignUpForm register={register} errors={errors} control={control} setValue={setValue} />]
 
     const handleRegister = (data: IRegisterForm) => new Promise((resolve) => {
 
@@ -73,14 +72,20 @@ export default function RegisterComp() {
             return;
         }
 
-    
+
         // call api
 
         // .......
 
         alert("Success, Ready to request to API")
         alert(JSON.stringify(data))
-      //  axios.post(`${process.env.NEXT_PUBLIC_CORE_URL_API}/register`, data)
+        //  axios.post(`${process.env.NEXT_PUBLIC_CORE_URL_API}/register`, data)
+
+        registerPatient({
+            ...data,
+            dateOfBirth: data.dateOfBirth || dayjs().format("YYYY-MM-DD"),
+        })
+
         resolve(null)
 
         handleNext()
@@ -100,7 +105,7 @@ export default function RegisterComp() {
     };
 
     return (
-        <ThemeProvider theme={defaultTheme}>
+        <>
             <CssBaseline />
             <AppBar
                 position="absolute"
@@ -119,7 +124,7 @@ export default function RegisterComp() {
             </AppBar>
             <form onSubmit={handleSubmit(handleRegister)}>
                 <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
-                    <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+                    <Paper sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
                         <Typography component="h1" variant="h4" align="center">
                             ลงทะเบียนผู้ใช้ใหม่
                         </Typography>
@@ -170,6 +175,6 @@ export default function RegisterComp() {
                     </Paper>
                 </Container>
             </form>
-        </ThemeProvider>
+        </>
     );
 }

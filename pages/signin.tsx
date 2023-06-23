@@ -15,57 +15,45 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useAuth } from '@/_auth';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from "react-hook-form";
+import { NextApiRequest, NextApiResponse } from 'next';
+import { getServerSession } from 'next-auth';
+import { authOptions } from './api/auth/[...nextauth]';
+import { setup } from '@/lib/csrf';
 
-
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-// TODO remove, this demo shouldn't need to reset the theme.
-const defaultTheme = createTheme();
 
 export interface LoginForm {
-    username: string;
-    password: string;
+  username: string;
+  password: string;
 }
 
 export default function SignIn() {
 
-    const { signIn } = useAuth();
-    const router = useRouter();
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-        setError
-    } = useForm<LoginForm>({
-        mode: "onSubmit"
-    });
+  const { signIn } = useAuth();
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setError
+  } = useForm<LoginForm>({
+    mode: "onSubmit"
+  });
 
-    const handleLogin: SubmitHandler<LoginForm> = (data) => new Promise((resolve, reject) => {
-        const username = data.username
-        const password = data.password
+  const handleLogin: SubmitHandler<LoginForm> = (data) => new Promise((resolve, reject) => {
+    const username = data.username
+    const password = data.password
 
-        signIn(username, password).then(() => {
-            router.push("/")
-        }).catch(() => {
-            setError("username", { message: "อีเมลล์ไม่ถูกต้อง" })
-            setError("password", { message: "รหัสผ่านไม่ถูกต้อง" })
-        })
+    signIn(username, password).then(() => {
+      router.push("/")
+    }).catch(() => {
+      setError("username", { message: "อีเมลล์ไม่ถูกต้อง" })
+      setError("password", { message: "รหัสผ่านไม่ถูกต้อง" })
     })
+  })
 
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -89,23 +77,23 @@ export default function SignIn() {
               fullWidth
               id="username"
               label="Username"
-              name="username"
               autoComplete="username"
+              {...register("username", { required: "โปรดระบุอีเมลล์" })}
+              helperText={errors.username?.message}
+              error={!!errors.username}
               autoFocus
             />
             <TextField
               margin="normal"
               required
               fullWidth
-              name="password"
               label="Password"
               type="password"
               id="password"
               autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
+              {...register("password", { required: "โปรดระบุรหัสผ่าน" })}
+              helperText={errors.password?.message}
+              error={!!errors.password}
             />
             <Button
               type="submit"
@@ -118,47 +106,44 @@ export default function SignIn() {
             <Grid container>
               <Grid item xs>
                 <Link href="#" variant="body2">
-                  Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
-    </ThemeProvider>
-  );
+    </>);
 }
-/* 
+
 
 export const getServerSideProps = setup(async (req: NextApiRequest, res: NextApiResponse) => {
-    try {
+  try {
 
-        const session = await getServerSession(req, res)
+    const session = await getServerSession(req, res, authOptions)
 
-        if (session) {
-            return {
-                redirect: {
-                    destination: '/home',
-                    permanent: false
-                }
-            }
+    if (session) {
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false
         }
-
-        return {
-            props: {}
-        }
-    } catch (err) {
-        return {
-            redirect: {
-                destination: '/error',
-                permanent: false
-            }
-        }
+      }
     }
-}) */
+
+    return {
+      props: {}
+    }
+  } catch (err) {
+    return {
+      redirect: {
+        destination: '/error',
+        permanent: false
+      }
+    }
+  }
+})

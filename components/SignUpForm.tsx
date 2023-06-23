@@ -33,8 +33,8 @@ export default function SignUpForm(props: RegisterFormProps) {
     } = props;
 
     const genders = [
-        { value: "male", text: "ชาย" },
-        { value: "female", text: "หญิง" }
+        { value: "ชาย", label: "ชาย" },
+        { value: "หญิง", label: "หญิง" }
     ]
 
     return (
@@ -101,8 +101,24 @@ export default function SignUpForm(props: RegisterFormProps) {
                         helperText={errors.confirmPassword?.message}
                     />
                 </Grid>
-                <Grid item xs={6}>
-                    <FormControl variant="standard" fullWidth >
+                <Grid item xs={6} sm={6} >
+                    <TextField
+                        id="outlined-select-currency"
+                        fullWidth
+                        select
+                        label="เพศ"
+                        variant="standard"
+                        {...register("gender", { required: "Please select gender" })}
+                        error={!!errors.gender}
+                        helperText={errors.gender?.message}
+                    >
+                        {genders.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    {/* <FormControl variant="standard" fullWidth >
                         <InputLabel id="demo-simple-select-standard-label">เพศ</InputLabel>
                         <Controller
                             control={control}
@@ -122,7 +138,7 @@ export default function SignUpForm(props: RegisterFormProps) {
                                                 register("gender", { required: "Please select gender" })
                                             },
                                         }}
-                                        error={!!errors.confirmPassword}
+                                        error={!!errors.gender}
                                     >
                                         <MenuItem value="male">ชาย</MenuItem>
                                         <MenuItem value="female">หญิง</MenuItem>
@@ -130,22 +146,20 @@ export default function SignUpForm(props: RegisterFormProps) {
                                 </>
                             )}
                         />
-                       
-                    </FormControl>
+
+                    </FormControl> */}
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker
-                            label="วัน/เดือน/ปี เกิด"
-                            defaultValue={dayjs()}
-                            sx={{ width: '100%' }}
-                            onChange={d => {
-                                setValue("dateOfBirth", d?.format("YYYY-MM-DD"))
-                                //alert(d?.format("YYYY-MM-DD"))
-                            }
-                            } />
-                    </LocalizationProvider>
-                    
+                    <DatePicker
+                        label="วัน/เดือน/ปี เกิด"
+                        defaultValue={dayjs()}
+                        sx={{ width: '100%' }}
+                        onChange={d => {
+                            setValue("dateOfBirth", d?.format("YYYY-MM-DD"))
+                            //alert(d?.format("YYYY-MM-DD"))
+                        }
+                        } />
+
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField

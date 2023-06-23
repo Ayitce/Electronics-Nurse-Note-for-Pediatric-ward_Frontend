@@ -8,7 +8,7 @@ import router from "next/router";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 
-export interface IPatientForm {
+export interface IPatientCard {
     name: string;
     surname: string;
     gender: any;
@@ -17,7 +17,7 @@ export interface IPatientForm {
     weight: string;
     bloodType: any;
     dateOfBirth: any;
-    AN: string;
+    an: string;
     age: string;
     admitDateTime: any;
     symptom: string;
@@ -39,7 +39,7 @@ export default function AdmitPatient() {
         setError,
         control,
         setValue
-    } = useForm<IPatientForm>({
+    } = useForm<IPatientCard>({
         mode: "onSubmit"
     })
     const genders = [
@@ -52,7 +52,7 @@ export default function AdmitPatient() {
         { value: "O", label: "O" },
         { value: "AB", label: "AB" }
     ]
-    const handleRegister = (data: IPatientForm) => new Promise((resolve) => {
+    const handleRegister = (data: IPatientCard) => new Promise((resolve) => {
         // call api
 
         // .......
@@ -249,9 +249,9 @@ export default function AdmitPatient() {
                                         fullWidth
                                         autoComplete="given-name"
                                         variant="standard"
-                                        {...register("AN", { required: "Please input AN" })}
-                                        error={!!errors.AN}
-                                        helperText={errors.AN?.message}
+                                        {...register("an", { required: "Please input AN" })}
+                                        error={!!errors.an}
+                                        helperText={errors.an?.message}
                                     />
                                 </Grid>
 

@@ -12,18 +12,14 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import router from 'next/router';
-import { getPatientList } from '@/services/patientService';
+import { getPatientList, getSearchedPatient } from '@/services/patientService';
+import SearchIcon from '@mui/icons-material/Search';
+import AddIcon from '@mui/icons-material/Add';
+import { Button, Grid, InputAdornment, TextField } from '@mui/material';
 
 export interface IPatientCard {
     name: string;
@@ -269,6 +265,38 @@ export default function EnhancedTable() {
     return (
         <Box sx={{ width: '100%' }}>
             <Paper sx={{ width: '100%', mb: 2 }}>
+                <Grid container sx={{ my: { xs: 3, md: 0 }, p: { xs: 2, md: 3 } }}>
+                    <Grid item xs={12} sm={4}>
+                        <TextField
+                            id="input-with-icon-textfield"
+                            label="ค้นหา"
+                            placeholder="ชื่อ, รหัสผู้ป่วย"
+                            onChange={async (search) => {
+                                if (search.target.value == "") return
+                                setRows((await getSearchedPatient(search.target.value)).data)
+                                console.log((await getSearchedPatient(search.target.value)).data)
+                            }}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <SearchIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6.5}></Grid>
+                    <Grid item xs={12} sm={1.5} >
+                        <Button
+                            variant='contained'
+                            fullWidth
+                            onClick={() => router.push("/patient/admit")}
+                        >
+                            <AddIcon />
+                            เพิ่มคนไข้
+                        </Button>
+                    </Grid>
+                </Grid>
                 <TableContainer>
                     <Table
                         sx={{ minWidth: 750 }}

@@ -31,3 +31,7 @@ export const getPatientCard = (an: string) => {
 export const getPatientList = () => {
     return api.http.get<ResponseEntity<IPatientCard>>(`${window.origin}/api/patient`)
 }
+
+export const getSearchedPatient = (search: string) => {
+    return api.http.get<ResponseEntity<IPatientCard>>(`${window.origin}/api/patient/search/${search}`)
+}

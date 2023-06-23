@@ -10,6 +10,8 @@ import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { setup } from '@/lib/csrf';
+import { useParams } from "react-router-dom";
+
 
 export interface IPatientCard {
     name: string;
@@ -20,7 +22,7 @@ export interface IPatientCard {
     weight: string;
     bloodType: any;
     dateOfBirth: any;
-    AN: string;
+    an: string;
     age: string;
     admitDateTime: any;
     symptom: string;
@@ -31,7 +33,8 @@ export interface IPatientCard {
     phoneNumber: string;
     image: any;
 }
-export default function PatientInfo({ response }) {
+export default function PatientInfo() {
+
     const { isLoggedIn } = useAuth()
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const openMenu = Boolean(anchorEl);
@@ -56,14 +59,18 @@ export default function PatientInfo({ response }) {
 
     const router = useRouter();
 
+    const { an } = useParams();
+
     useEffect(() => {
+        console.log("an:" + an)
         loadPatientFromApiWithAN()
-    }, [router])
+    }, [an])
 
     const loadPatientFromApiWithAN = async () => {
-        //console.log(patient)
-        // const response = await axios.get<IPatientCard>(`${window.origin}/api/patient/${router.query.AN}`)
+
+        const response = await axios.get<IPatientCard>(`${window.origin}/api/patient/${an}`)
         setPatientInfo(response)
+        console.log(response)
     }
 
     return (
@@ -132,7 +139,7 @@ export default function PatientInfo({ response }) {
                                 <Grid container alignItems="center" justifyContent="center">
                                     <Grid item sm={12} alignItems="center">
                                         <Typography variant="h6" align='center' >
-                                            ชื่อ นามสกุล {patientInfo.name}
+                                            ชื่อ นามสกุล
                                         </Typography>
                                     </Grid>
                                     <Grid item sm={12} alignItems="center">
@@ -192,9 +199,7 @@ export default function PatientInfo({ response }) {
         </>
     );
 }
-
-
-
+/* 
 export const getServerSideProps = setup(async (req, res) => {
     const an = //เอามายังไง TT_TT
 
@@ -204,3 +209,4 @@ export const getServerSideProps = setup(async (req, res) => {
         props: { response }
     }
 })
+ */

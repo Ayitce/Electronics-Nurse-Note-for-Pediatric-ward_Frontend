@@ -22,6 +22,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import router from 'next/router';
 
 export interface IPatientForm {
     name: string;
@@ -32,7 +33,7 @@ export interface IPatientForm {
     weight: string;
     bloodType: any;
     dateOfBirth: any;
-    AN: string;
+    an: string;
     age: string;
     admitDateTime: any;
     symptom: string;
@@ -131,7 +132,7 @@ const headCells: readonly HeadCell[] = [
         label: 'gender',
     },
     {
-        id: 'AN',
+        id: 'an',
         numeric: true,
         disablePadding: false,
         label: 'รหัสผู้ป่วย',
@@ -238,8 +239,8 @@ export default function EnhancedTable() {
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
     };
-    const handleClick = (event: React.MouseEvent<unknown>) => {
-
+    const handleClick = (an: String | number) => {
+        router.push("/patient/" + an)
     };
 
     const handleChangePage = (event: unknown, newPage: number) => {
@@ -286,11 +287,11 @@ export default function EnhancedTable() {
                                 return (
                                     <TableRow
                                         hover
-                                        onClick={(event) => handleClick(event)}
+                                        onClick={() => {handleClick(row.an)}}
                                         role="checkbox"
                                         tabIndex={-1}
                                         key={row.name}
-                                        sx={{ cursor: 'pointer' }}
+                                        sx={{ cursor: 'pointer' }} 
                                     >
                                         <TableCell padding="checkbox">
 
@@ -306,7 +307,7 @@ export default function EnhancedTable() {
                                         <TableCell align="right">{row.surname}</TableCell>
                                         <TableCell align="right">{row.age}</TableCell>
                                         <TableCell align="right">{row.gender}</TableCell>
-                                        <TableCell align="right">{row.AN}</TableCell>
+                                        <TableCell align="right">{row.an}</TableCell>
                                         <TableCell align="right">{row.phoneNumber}</TableCell>
                                         <TableCell align="right">{row.admitDateTime}</TableCell>
 

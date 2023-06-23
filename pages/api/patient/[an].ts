@@ -30,3 +30,9 @@ export const getPatientFromAN = async (
 }
 
 export default csrf(allowMethods(["GET"], handler))
+
+export const config = {
+    api: {
+        externalResolver: true,
+    },
+}

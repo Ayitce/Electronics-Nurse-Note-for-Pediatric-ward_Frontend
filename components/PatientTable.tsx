@@ -23,8 +23,9 @@ import { visuallyHidden } from '@mui/utils';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import router from 'next/router';
+import { getPatientList } from '@/services/patientService';
 
-export interface IPatientForm {
+export interface IPatientCard {
     name: string;
     surname: string;
     gender: any;
@@ -100,7 +101,7 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
 
 interface HeadCell {
     disablePadding: boolean;
-    id: keyof IPatientForm;
+    id: keyof IPatientCard;
     label: string;
     numeric: boolean;
 }
@@ -152,7 +153,7 @@ const headCells: readonly HeadCell[] = [
 ];
 
 interface EnhancedTableProps {
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof IPatientForm) => void;
+    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof IPatientCard) => void;
     order: Order;
     orderBy: string;
     rowCount: number;
@@ -162,7 +163,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     const { order, orderBy, rowCount, onRequestSort } =
         props;
     const createSortHandler =
-        (property: keyof IPatientForm) => (event: React.MouseEvent<unknown>) => {
+        (property: keyof IPatientCard) => (event: React.MouseEvent<unknown>) => {
             onRequestSort(event, property);
         };
 
@@ -220,20 +221,20 @@ export default function EnhancedTable() {
     }, [])
 
     const loadPatientFromApi = async () => {
-        const response = await axios.get<IPatientForm>(`${window.origin}/api/patient`)
+        const response = await getPatientList()
         // setPatients(response.data)
         return response.data
         //console.log(patients)
     }
 
     const [order, setOrder] = React.useState<Order>('asc');
-    const [orderBy, setOrderBy] = React.useState<keyof IPatientForm>('name');
+    const [orderBy, setOrderBy] = React.useState<keyof IPatientCard>('name');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
-        property: keyof IPatientForm,
+        property: keyof IPatientCard,
     ) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -287,11 +288,11 @@ export default function EnhancedTable() {
                                 return (
                                     <TableRow
                                         hover
-                                        onClick={() => {handleClick(row.an)}}
+                                        onClick={() => { handleClick(row.an) }}
                                         role="checkbox"
                                         tabIndex={-1}
                                         key={row.name}
-                                        sx={{ cursor: 'pointer' }} 
+                                        sx={{ cursor: 'pointer' }}
                                     >
                                         <TableCell padding="checkbox">
 

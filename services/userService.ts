@@ -12,6 +12,26 @@ export interface IRegisterForm {
     medicalID: string;
     phoneNumber: string;
 }
+export interface IPatientCard {
+    name: string;
+    surname: string;
+    gender: any;
+    IDcard: string;
+    height: string;
+    weight: string;
+    bloodType: any;
+    dateOfBirth: any;
+    an: string;
+    age: string;
+    admitDateTime: any;
+    symptom: string;
+    allergies: string;
+    doctor: any;
+    address: string;
+    parentName: string;
+    phoneNumber: string;
+    image: any;
+}
 
 export const registerPatient = (user: IRegisterForm) => {
     return api.http.post<ResponseEntity<IRegisterForm>>(

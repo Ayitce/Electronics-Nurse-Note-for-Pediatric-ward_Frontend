@@ -11,7 +11,8 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { setup } from '@/lib/csrf';
 import { useParams } from "react-router-dom";
-
+import MenuIcon from '@mui/icons-material/Menu';
+import { getPatientCard } from '@/services/patientService';
 
 export interface IPatientCard {
     name: string;
@@ -58,19 +59,35 @@ export default function PatientInfo() {
     const [patientInfo, setPatientInfo] = useState<any>()
 
     const router = useRouter();
+    const an = router.query.an
 
-    const { an } = useParams();
+    // const x = useParams();
 
     useEffect(() => {
-        console.log("an:" + an)
-        loadPatientFromApiWithAN()
+        //loadPatientFromApi()
+        const fetchData = async () => {
+            if (!an) return
+            // get the data from the api
+            const patient = await loadPatientFromApiWithAN()
+            console.log(patient)
+            setPatientInfo(patient)
+        }
+
+        fetchData()
+            // make sure to catch any error
+            .catch(console.error);
+
+        /* 
+                console.log("an:", an)
+                setPatientInfo(loadPatientFromApiWithAN())
+                console.log("pt:", patientInfo) */
     }, [an])
 
     const loadPatientFromApiWithAN = async () => {
 
-        const response = await axios.get<IPatientCard>(`${window.origin}/api/patient/${an}`)
-        setPatientInfo(response)
-        console.log(response)
+        const response = await getPatientCard(`${an}`)
+        // setPatientInfo(response.data)
+        return response.data
     }
 
     return (
@@ -98,7 +115,7 @@ export default function PatientInfo() {
                         aria-expanded={openMenu ? 'true' : undefined}
                         onClick={handleClickMenu}
                     >
-                        <DensityMediumIcon />
+                        <MenuIcon />
                     </Button>
                     <Menu
                         id="basic-menu"
@@ -139,39 +156,15 @@ export default function PatientInfo() {
                                 <Grid container alignItems="center" justifyContent="center">
                                     <Grid item sm={12} alignItems="center">
                                         <Typography variant="h6" align='center' >
-                                            ชื่อ นามสกุล
+                                            {patientInfo?.name} {patientInfo?.surname}
                                         </Typography>
                                     </Grid>
                                     <Grid item sm={12} alignItems="center">
                                         <Typography variant="h6" align='center' >
-                                            รหัสประจำตัวผู้ป่วย AN xxxx
+                                            รหัสประจำตัวผู้ป่วย {patientInfo?.an}
                                         </Typography>
                                     </Grid>
                                 </Grid>
-                                {/* <Grid container alignItems="center" justifyContent="center">
-                                    <Grid item sm={12} alignSelf="center">
-                                        <DialogContentText id="alert-dialog-description" >
-                                            ชื่อ นามสกุล
-                                        </DialogContentText>
-                                    </Grid>
-                                    <Grid item>
-                                    </Grid>
-                                    <Grid item>
-                                        <DialogContentText id="alert-dialog-description" >
-                                            รหัสประจำตัวผู้ป่วย AN xxxx
-                                        </DialogContentText>
-                                    </Grid>
-                                    <Grid item>
-                                        <DialogContentText id="alert-dialog-description" >
-                                            คุณยืนยันที่จะให้ผู้ป่วยออกจากโรงพยาบาลใช่หรือไม่
-                                        </DialogContentText>
-                                    </Grid>
-                                    <Grid item>
-                                        <DialogContentText id="alert-dialog-description" >
-                                            *เมื่อยืนยันจะไม่สามารถย้ายคนไข้ที่ออกจากโรงพยาบาลกลับสู่คนไข้ปัจจุบันได้!
-                                        </DialogContentText>
-                                    </Grid>
-                                </Grid> */}
                             </Paper>
                             <Grid container alignItems="center" justifyContent="center" sx={{ mt: { xs: 3, md: 3 } }}>
                                 <Grid item sm={12} alignItems="center">
@@ -194,7 +187,25 @@ export default function PatientInfo() {
                         </DialogActions>
                     </Dialog>
                 </Grid>
-                <PatientCard />
+                <PatientCard
+                    name={patientInfo?.name}
+                    surname={patientInfo?.surname}
+                    gender={patientInfo?.gender}
+                    IDcard={patientInfo?.IDcard}
+                    height={patientInfo?.height}
+                    weight={patientInfo?.weight}
+                    bloodType={patientInfo?.bloodType}
+                    dateOfBirth={patientInfo?.dateOfBirth}
+                    an={patientInfo?.an}
+                    age={patientInfo?.age}
+                    admitDateTime={patientInfo?.admitDateTime}
+                    symptom={patientInfo?.symptom}
+                    allergies={patientInfo?.allergies}
+                    doctor={patientInfo?.doctor}
+                    address={patientInfo?.address}
+                    parentName={patientInfo?.parentName}
+                    phoneNumber={patientInfo?.phoneNumber}
+                    image={patientInfo?.image} />
             </Grid>
         </>
     );

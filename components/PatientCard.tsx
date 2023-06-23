@@ -16,7 +16,7 @@ export interface IPatientCard {
     weight: string;
     bloodType: any;
     dateOfBirth: any;
-    AN: string;
+    an: string;
     age: string;
     admitDateTime: any;
     symptom: string;
@@ -27,7 +27,7 @@ export interface IPatientCard {
     phoneNumber: string;
     image: any;
 }
-export default function PatientCard() {
+export default function PatientCard(props: IPatientCard) {
 
     return (
         <React.Fragment>
@@ -41,7 +41,7 @@ export default function PatientCard() {
                                     ประวัติส่วนตัวผู้ป่วย
                                 </Typography>
                                 <Typography align="right" variant="subtitle1" component="div" sx={{ flexGrow: 1 }}>
-                                    รหัสประจำตัวผู้ป่วย AN xxx
+                                    รหัสประจำตัวผู้ป่วย  {props.an}
                                 </Typography>
                             </Toolbar>
                         </AppBar>
@@ -63,52 +63,52 @@ export default function PatientCard() {
                             <Grid item container md={5}>
                                 <Grid item md={12}>
                                     <Typography variant="h5"  >
-                                        ชื่อ
+                                        {props.name} {props.surname}
                                     </Typography>
                                 </Grid>
                                 <Grid item md={6}>
                                     <Typography variant="subtitle1"  >
-                                        อายุ xx ปี xx เดือน
+                                        อายุ {props.age} ปี
                                     </Typography>
                                 </Grid>
                                 <Grid item md={6}>
                                     <Typography variant="subtitle1"  >
-                                        กรุ๊ปเลือด X
+                                        กรุ๊ปเลือด  {props.bloodType}
                                     </Typography>
                                 </Grid>
                                 <Grid item md={12}>
                                     <Typography variant="subtitle1"  >
-                                        วัน เดือน ปีเกิด xxxxxxx
+                                        วัน เดือน ปีเกิด {props.dateOfBirth}
                                     </Typography>
                                 </Grid>
                                 <Grid item md={12}>
                                     <Typography variant="subtitle1"  >
-                                        เลขประจำตัวประชาชน xxxxxxxxxx
+                                        เลขประจำตัวประชาชน {props.IDcard}
                                     </Typography>
                                 </Grid>
                                 <Grid item md={6}>
                                     <Typography variant="subtitle1"  >
-                                        ส่วนสูง xxx เซนติเมตร
+                                        ส่วนสูง {props.height}  เซนติเมตร
                                     </Typography>
                                 </Grid>
                                 <Grid item md={6}>
                                     <Typography variant="subtitle1"  >
-                                        น้ำหนัก xxx กิโลกรัม
+                                        น้ำหนัก {props.weight}  กิโลกรัม
                                     </Typography>
                                 </Grid>
                                 <Grid item md={6}>
                                     <Typography variant="subtitle1"  >
-                                        ผู้ปกครอง xxxxxxxxxx
+                                        ผู้ปกครอง {props.parentName}
                                     </Typography>
                                 </Grid>
                                 <Grid item md={6}>
                                     <Typography variant="subtitle1"  >
-                                        เบอร์ xxxxxxxxxx
+                                        เบอร์ {props.phoneNumber}
                                     </Typography>
                                 </Grid>
                                 <Grid item md={12}>
                                     <Typography variant="subtitle1"  >
-                                        ที่อยู่ปัจจุบัน xxxxxxxxxxxxxx
+                                        ที่อยู่ปัจจุบัน {props.address}
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -117,13 +117,13 @@ export default function PatientCard() {
 
                                 <Grid item md={12}>
                                     <Typography variant="subtitle1"  >
-                                        ประวัติการแพ้ยา xxxxxxxxxxxxxx
+                                        ประวัติการแพ้ยา {props.allergies}
                                     </Typography>
                                     <Typography variant="subtitle1"  >
-                                        แพทย์ที่ดูแล xxxxxxxxxxxxxx
+                                        แพทย์ที่ดูแล {props.doctor}
                                     </Typography>
                                     <Typography variant="subtitle1"  >
-                                        อาการที่มาพบแพทย์ xxxxxxxxxxxxxx
+                                        อาการที่มาพบแพทย์ {props.symptom}
                                     </Typography>
                                 </Grid>
                                 <Grid item md={12}></Grid>
@@ -135,7 +135,7 @@ export default function PatientCard() {
 
                                 <Grid item md={6}>
                                     <Typography variant="subtitle1"  >
-                                        วันที่เข้ารับการรักษา xxxxxxxxxxxxxxxx
+                                        วันที่เข้ารับการรักษา {props.admitDateTime}
                                     </Typography>
 
                                 </Grid>

@@ -7,7 +7,7 @@ export interface IPatientCard {
     name: string;
     surname: string;
     gender: any;
-    IDcard: string;
+    idCard: string;
     height: string;
     weight: string;
     bloodType: any;
@@ -34,4 +34,11 @@ export const getPatientList = () => {
 
 export const getSearchedPatient = (search: string) => {
     return api.http.get<ResponseEntity<IPatientCard>>(`${window.origin}/api/patient/search/${search}`)
+}
+
+export const admitPatient = (patient: IPatientCard) => {
+    return api.http.post<ResponseEntity<IPatientCard>>(
+        `${window.origin}/api/patient/admit`,
+        patient
+    );
 }

@@ -22,6 +22,8 @@ export default function Navbar(props: {
 
   const [open, setOpen] = useState(false);
 
+  
+
   const handleClickOpen = () => {
     setOpen(true);
   };

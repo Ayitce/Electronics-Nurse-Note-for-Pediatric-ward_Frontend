@@ -18,7 +18,7 @@ export interface IPatientCard {
     name: string;
     surname: string;
     gender: any;
-    IDcard: string;
+    idCard: string;
     height: string;
     weight: string;
     bloodType: any;
@@ -191,7 +191,7 @@ export default function PatientInfo() {
                     name={patientInfo?.name}
                     surname={patientInfo?.surname}
                     gender={patientInfo?.gender}
-                    IDcard={patientInfo?.IDcard}
+                    idCard={patientInfo?.idCard}
                     height={patientInfo?.height}
                     weight={patientInfo?.weight}
                     bloodType={patientInfo?.bloodType}

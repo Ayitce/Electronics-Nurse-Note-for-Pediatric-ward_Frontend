@@ -11,7 +11,7 @@ export interface IPatientCard {
     name: string;
     surname: string;
     gender: any;
-    IDcard: string;
+    idCard: string;
     height: string;
     weight: string;
     bloodType: any;
@@ -27,6 +27,7 @@ export interface IPatientCard {
     phoneNumber: string;
     image: any;
 }
+
 export default function PatientCard(props: IPatientCard) {
 
     return (
@@ -83,7 +84,7 @@ export default function PatientCard(props: IPatientCard) {
                                 </Grid>
                                 <Grid item md={12}>
                                     <Typography variant="subtitle1"  >
-                                        เลขประจำตัวประชาชน {props.IDcard}
+                                        เลขประจำตัวประชาชน {props.idCard}
                                     </Typography>
                                 </Grid>
                                 <Grid item md={6}>

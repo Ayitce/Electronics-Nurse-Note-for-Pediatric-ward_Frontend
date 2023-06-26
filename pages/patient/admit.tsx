@@ -1,18 +1,19 @@
 import { useAuth } from "@/_auth";
 import Navbar from "@/components/Navbar";
 import { setup } from "@/lib/csrf";
+import { admitPatient } from "@/services/patientService";
 import { AppBar, Box, Button, Container, CssBaseline, FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextField, ThemeProvider, Toolbar, Typography, createTheme } from "@mui/material";
 import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import router from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 export interface IPatientCard {
     name: string;
     surname: string;
     gender: any;
-    IDcard: string;
+    idCard: string;
     height: string;
     weight: string;
     bloodType: any;
@@ -52,15 +53,23 @@ export default function AdmitPatient() {
         { value: "O", label: "O" },
         { value: "AB", label: "AB" }
     ]
-    const handleRegister = (data: IPatientCard) => new Promise((resolve) => {
+
+    const handleAdmit = (data: IPatientCard) => new Promise((resolve) => {
         // call api
 
         // .......
 
         alert("Success, Ready to request to API")
         alert(JSON.stringify(data))
+
+        admitPatient({
+            ...data,
+            dateOfBirth: data.dateOfBirth || dayjs().format("YYYY-MM-DD"),
+            admitDateTime: data.admitDateTime || dayjs().format("YYYY-MM-DD hh:mm A"),
+        })
         //  axios.post(`${process.env.NEXT_PUBLIC_CORE_URL_API}/register`, data)
         resolve(null)
+        router.push('/patient/list')
 
     })
     const handleCancel = () => {
@@ -74,7 +83,7 @@ export default function AdmitPatient() {
             <Navbar item={
                 <Button href="/" color="inherit"></Button>
             } isLoggedIn={isLoggedIn} />
-            <form onSubmit={handleSubmit(handleRegister)}>
+            <form onSubmit={handleSubmit(handleAdmit)}>
                 <Container component="main" maxWidth="md" sx={{ mb: 4 }}>
                     <Paper sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
                         <Typography component="h1" variant="h4" align="center">
@@ -114,9 +123,9 @@ export default function AdmitPatient() {
                                         fullWidth
                                         autoComplete="given-name"
                                         variant="standard"
-                                        {...register("IDcard", { required: "Please input IDcard" })}
-                                        error={!!errors.IDcard}
-                                        helperText={errors.IDcard?.message}
+                                        {...register("idCard", { required: "Please input IDcard" })}
+                                        error={!!errors.idCard}
+                                        helperText={errors.idCard?.message}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={3}>

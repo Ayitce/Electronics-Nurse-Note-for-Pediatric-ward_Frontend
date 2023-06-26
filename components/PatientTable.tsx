@@ -25,7 +25,7 @@ export interface IPatientCard {
     name: string;
     surname: string;
     gender: any;
-    IDcard: string;
+    idCard: string;
     height: string;
     weight: string;
     bloodType: any;

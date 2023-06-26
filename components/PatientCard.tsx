@@ -16,7 +16,7 @@ export interface IPatientCard {
     weight: string;
     bloodType: any;
     dateOfBirth: any;
-    an: string;
+    hn: string;
     age: string;
     admitDateTime: any;
     symptom: string;
@@ -42,7 +42,7 @@ export default function PatientCard(props: IPatientCard) {
                                     ประวัติส่วนตัวผู้ป่วย
                                 </Typography>
                                 <Typography align="right" variant="subtitle1" component="div" sx={{ flexGrow: 1 }}>
-                                    รหัสประจำตัวผู้ป่วย  {props.an}
+                                    รหัสประจำตัวผู้ป่วย  {props.hn}
                                 </Typography>
                             </Toolbar>
                         </AppBar>

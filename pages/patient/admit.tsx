@@ -18,7 +18,7 @@ export interface IPatientCard {
     weight: string;
     bloodType: any;
     dateOfBirth: any;
-    an: string;
+    hn: string;
     age: string;
     admitDateTime: any;
     symptom: string;
@@ -258,9 +258,9 @@ export default function AdmitPatient() {
                                         fullWidth
                                         autoComplete="given-name"
                                         variant="standard"
-                                        {...register("an", { required: "Please input AN" })}
-                                        error={!!errors.an}
-                                        helperText={errors.an?.message}
+                                        {...register("hn", { required: "Please input AN" })}
+                                        error={!!errors.hn}
+                                        helperText={errors.hn?.message}
                                     />
                                 </Grid>
 

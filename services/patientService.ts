@@ -12,7 +12,7 @@ export interface IPatientCard {
     weight: string;
     bloodType: any;
     dateOfBirth: any;
-    an: string;
+    hn: string;
     age: string;
     admitDateTime: any;
     symptom: string;
@@ -24,8 +24,8 @@ export interface IPatientCard {
     image: any;
 }
 
-export const getPatientCard = (an: string) => {
-    return api.http.get<ResponseEntity<IPatientCard>>(`${window.origin}/api/patient/${an}`)
+export const getPatientCard = (hn: string) => {
+    return api.http.get<ResponseEntity<IPatientCard>>(`${window.origin}/api/patient/${hn}`)
 }
 
 export const getPatientList = () => {

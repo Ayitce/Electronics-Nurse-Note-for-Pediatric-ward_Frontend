@@ -23,7 +23,7 @@ export interface IPatientCard {
     weight: string;
     bloodType: any;
     dateOfBirth: any;
-    an: string;
+    hn: string;
     age: string;
     admitDateTime: any;
     symptom: string;
@@ -59,16 +59,16 @@ export default function PatientInfo() {
     const [patientInfo, setPatientInfo] = useState<any>()
 
     const router = useRouter();
-    const an = router.query.an
+    const hn = router.query.hn
 
     // const x = useParams();
 
     useEffect(() => {
         //loadPatientFromApi()
         const fetchData = async () => {
-            if (!an) return
+            if (!hn) return
             // get the data from the api
-            const patient = await loadPatientFromApiWithAN()
+            const patient = await loadPatientFromApiWithHN()
             console.log(patient)
             setPatientInfo(patient)
         }
@@ -81,11 +81,11 @@ export default function PatientInfo() {
                 console.log("an:", an)
                 setPatientInfo(loadPatientFromApiWithAN())
                 console.log("pt:", patientInfo) */
-    }, [an])
+    }, [hn])
 
-    const loadPatientFromApiWithAN = async () => {
+    const loadPatientFromApiWithHN = async () => {
 
-        const response = await getPatientCard(`${an}`)
+        const response = await getPatientCard(`${hn}`)
         // setPatientInfo(response.data)
         return response.data
     }
@@ -161,7 +161,7 @@ export default function PatientInfo() {
                                     </Grid>
                                     <Grid item sm={12} alignItems="center">
                                         <Typography variant="h6" align='center' >
-                                            รหัสประจำตัวผู้ป่วย {patientInfo?.an}
+                                            รหัสประจำตัวผู้ป่วย {patientInfo?.hn}
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -196,7 +196,7 @@ export default function PatientInfo() {
                     weight={patientInfo?.weight}
                     bloodType={patientInfo?.bloodType}
                     dateOfBirth={patientInfo?.dateOfBirth}
-                    an={patientInfo?.an}
+                    hn={patientInfo?.hn}
                     age={patientInfo?.age}
                     admitDateTime={patientInfo?.admitDateTime}
                     symptom={patientInfo?.symptom}

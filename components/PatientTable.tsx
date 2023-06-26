@@ -30,7 +30,7 @@ export interface IPatientCard {
     weight: string;
     bloodType: any;
     dateOfBirth: any;
-    an: string;
+    hn: string;
     age: string;
     admitDateTime: any;
     symptom: string;
@@ -129,7 +129,7 @@ const headCells: readonly HeadCell[] = [
         label: 'gender',
     },
     {
-        id: 'an',
+        id: 'hn',
         numeric: true,
         disablePadding: false,
         label: 'รหัสผู้ป่วย',
@@ -316,7 +316,7 @@ export default function EnhancedTable() {
                                 return (
                                     <TableRow
                                         hover
-                                        onClick={() => { handleClick(row.an) }}
+                                        onClick={() => { handleClick(row.hn) }}
                                         role="checkbox"
                                         tabIndex={-1}
                                         key={row.name}
@@ -336,7 +336,7 @@ export default function EnhancedTable() {
                                         <TableCell align="right">{row.surname}</TableCell>
                                         <TableCell align="right">{row.age}</TableCell>
                                         <TableCell align="right">{row.gender}</TableCell>
-                                        <TableCell align="right">{row.an}</TableCell>
+                                        <TableCell align="right">{row.hn}</TableCell>
                                         <TableCell align="right">{row.phoneNumber}</TableCell>
                                         <TableCell align="right">{row.admitDateTime}</TableCell>
 

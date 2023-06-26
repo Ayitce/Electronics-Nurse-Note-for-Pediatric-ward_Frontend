@@ -23,10 +23,10 @@ export const getPatientFromAN = async (
     api.setHandler(req, res)
     api.setBearerToken(session?.accessToken)
 
-    console.log(req.query.an)
+    console.log(req.query.hn)
 
 
-    return api.http.get(`/nurse/patients/AN/${req.query.an}`)
+    return api.http.get(`/nurse/patients/HN/${req.query.hn}`)
 }
 
 export default csrf(allowMethods(["GET"], handler))

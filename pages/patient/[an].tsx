@@ -12,27 +12,34 @@ import { useRouter } from 'next/router';
 import { setup } from '@/lib/csrf';
 import { useParams } from "react-router-dom";
 import MenuIcon from '@mui/icons-material/Menu';
-import { getPatientCard } from '@/services/patientService';
+import { getAdmitCard } from '@/services/patientService';
 
 export interface IPatientCard {
-    name: string;
-    surname: string;
-    gender: any;
-    idCard: string;
-    height: string;
-    weight: string;
-    bloodType: any;
-    dateOfBirth: any;
-    hn: string;
-    age: string;
+    id: number;
+    bed: { id: number };
+    room: { id: number };
+    patient: {
+        name: string;
+        surname: string;
+        gender: any;
+        idCard: string;
+        height: string;
+        weight: string;
+        bloodType: any;
+        dateOfBirth: any;
+        hn: string;
+        age: string;
+        symptom: string;
+        allergies: string;
+        doctor: any;
+        address: string;
+        parentName: string;
+        phoneNumber: string;
+        image: any;
+    };
     admitDateTime: any;
-    symptom: string;
-    allergies: string;
-    doctor: any;
-    address: string;
-    parentName: string;
-    phoneNumber: string;
-    image: any;
+    dischargeDate: any;
+    an: string;
 }
 export default function PatientInfo() {
 
@@ -59,16 +66,16 @@ export default function PatientInfo() {
     const [patientInfo, setPatientInfo] = useState<any>()
 
     const router = useRouter();
-    const hn = router.query.hn
+    const an = router.query.an
 
     // const x = useParams();
 
     useEffect(() => {
         //loadPatientFromApi()
         const fetchData = async () => {
-            if (!hn) return
+            if (!an) return
             // get the data from the api
-            const patient = await loadPatientFromApiWithHN()
+            const patient = await loadAdmitFromApiWithAN()
             console.log(patient)
             setPatientInfo(patient)
         }
@@ -81,11 +88,11 @@ export default function PatientInfo() {
                 console.log("an:", an)
                 setPatientInfo(loadPatientFromApiWithAN())
                 console.log("pt:", patientInfo) */
-    }, [hn])
+    }, [an])
 
-    const loadPatientFromApiWithHN = async () => {
+    const loadAdmitFromApiWithAN = async () => {
 
-        const response = await getPatientCard(`${hn}`)
+        const response = await getAdmitCard(`${an}`)
         // setPatientInfo(response.data)
         return response.data
     }
@@ -156,12 +163,15 @@ export default function PatientInfo() {
                                 <Grid container alignItems="center" justifyContent="center">
                                     <Grid item sm={12} alignItems="center">
                                         <Typography variant="h6" align='center' >
-                                            {patientInfo?.name} {patientInfo?.surname}
+                                            {patientInfo?.patient.name} {patientInfo?.patient.surname}
                                         </Typography>
                                     </Grid>
                                     <Grid item sm={12} alignItems="center">
                                         <Typography variant="h6" align='center' >
-                                            รหัสประจำตัวผู้ป่วย {patientInfo?.hn}
+                                            รหัสประจำการแอดมิท {patientInfo?.an}
+                                        </Typography>
+                                        <Typography variant="h6" align='center' >
+                                            รหัสประจำตัวผู้ป่วย {patientInfo?.patient.hn}
                                         </Typography>
                                     </Grid>
                                 </Grid>
@@ -188,24 +198,35 @@ export default function PatientInfo() {
                     </Dialog>
                 </Grid>
                 <PatientCard
-                    name={patientInfo?.name}
-                    surname={patientInfo?.surname}
-                    gender={patientInfo?.gender}
-                    idCard={patientInfo?.idCard}
-                    height={patientInfo?.height}
-                    weight={patientInfo?.weight}
-                    bloodType={patientInfo?.bloodType}
-                    dateOfBirth={patientInfo?.dateOfBirth}
-                    hn={patientInfo?.hn}
-                    age={patientInfo?.age}
+                    id={patientInfo?.id}
+                    bed={{
+                        id: patientInfo?.bed.id
+                    }}
+                    room={{
+                        id: patientInfo?.room.id
+                    }}
+                    patient={{
+                        name: patientInfo?.patient.name,
+                        surname: patientInfo?.patient.surname,
+                        gender: patientInfo?.patient.gender,
+                        idCard: patientInfo?.patient.idCard,
+                        height: patientInfo?.patient.height,
+                        weight: patientInfo?.patient.weight,
+                        bloodType: patientInfo?.patient.bloodType,
+                        dateOfBirth: patientInfo?.patient.dateOfBirth,
+                        hn: patientInfo?.patient.hn,
+                        age: patientInfo?.patient.age,
+                        symptom: patientInfo?.patient.symptom,
+                        allergies: patientInfo?.patient.allergies,
+                        doctor: patientInfo?.patient.doctor,
+                        address: patientInfo?.patient.address,
+                        parentName: patientInfo?.patient.parentName,
+                        phoneNumber: patientInfo?.patient.phoneNumber,
+                        image: patientInfo?.patient.image
+                    }}
                     admitDateTime={patientInfo?.admitDateTime}
-                    symptom={patientInfo?.symptom}
-                    allergies={patientInfo?.allergies}
-                    doctor={patientInfo?.doctor}
-                    address={patientInfo?.address}
-                    parentName={patientInfo?.parentName}
-                    phoneNumber={patientInfo?.phoneNumber}
-                    image={patientInfo?.image} />
+                    dischargeDate={patientInfo?.dischargeDate}
+                    an={patientInfo?.an} />
             </Grid>
         </>
     );

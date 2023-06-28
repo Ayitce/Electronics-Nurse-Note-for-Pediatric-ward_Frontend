@@ -7,7 +7,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
 
 export async function handler(req: NextApiRequest, res: NextApiResponse) {
-    getPatientFromAN(req, res).then(response => {
+    getAdmitFromAN(req, res).then(response => {
         res.status(response.status).json(response.data || [])
     }).catch((err) => {
         res.status(err.response?.status || 500).json(err.response?.data)
@@ -15,7 +15,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 
-export const getPatientFromAN = async (
+export const getAdmitFromAN = async (
     req: NextApiRequest,
     res: NextApiResponse
 ) => {
@@ -23,10 +23,10 @@ export const getPatientFromAN = async (
     api.setHandler(req, res)
     api.setBearerToken(session?.accessToken)
 
-    console.log(req.query.hn)
+    console.log(req.query.an)
 
 
-    return api.http.get(`/nurse/patients/HN/${req.query.hn}`)
+    return api.http.get(`/nurse/admits/AN/${req.query.an}`)
 }
 
 export default csrf(allowMethods(["GET"], handler))

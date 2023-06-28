@@ -2,14 +2,43 @@ import { useAuth } from "@/_auth";
 import Navbar from "@/components/Navbar";
 import { setup } from "@/lib/csrf";
 import { admitPatient } from "@/services/patientService";
+import { getRoomList } from "@/services/roomService";
 import { AppBar, Box, Button, Container, CssBaseline, FormControl, Grid, InputLabel, MenuItem, Paper, Select, TextField, ThemeProvider, Toolbar, Typography, createTheme } from "@mui/material";
 import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import router from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 export interface IPatientCard {
+    id: number;
+    bed: { id: number };
+    room: { id: number };
+    patient: {
+        name: string;
+        surname: string;
+        gender: any;
+        idCard: string;
+        height: string;
+        weight: string;
+        bloodType: any;
+        dateOfBirth: any;
+        hn: string;
+        age: string;
+        symptom: string;
+        allergies: string;
+        doctor: any;
+        address: string;
+        parentName: string;
+        phoneNumber: string;
+        image: any;
+    };
+    admitDateTime: any;
+    dischargeDate: any;
+    an: string;
+}
+
+export interface Patient {
     name: string;
     surname: string;
     gender: any;
@@ -54,6 +83,26 @@ export default function AdmitPatient() {
         { value: "AB", label: "AB" }
     ]
 
+    useEffect(() => {
+        //loadPatientFromApi()
+        const fetchData = async () => {
+            // get the data from the api
+            const room = await loadRoomFromAPI()
+            console.log(room)
+            //setPatientInfo(patient)
+        }
+
+        fetchData()
+            // make sure to catch any error
+            .catch(console.error);
+    }, [])
+
+    const loadRoomFromAPI = async () => {
+        const response = await getRoomList()
+        // setPatientInfo(response.data)
+        return response.data
+    }
+
     const handleAdmit = (data: IPatientCard) => new Promise((resolve) => {
         // call api
 
@@ -64,12 +113,12 @@ export default function AdmitPatient() {
 
         admitPatient({
             ...data,
-            dateOfBirth: data.dateOfBirth || dayjs().format("YYYY-MM-DD"),
+            // patient.dateOfBirth : data.patient.dateOfBirth || dayjs().format("YYYY-MM-DD"),
             admitDateTime: data.admitDateTime || dayjs().format("YYYY-MM-DD hh:mm A"),
         })
         //  axios.post(`${process.env.NEXT_PUBLIC_CORE_URL_API}/register`, data)
         resolve(null)
-        router.push('/patient/list')
+        //router.push('/patient/list')
 
     })
     const handleCancel = () => {
@@ -101,9 +150,9 @@ export default function AdmitPatient() {
                                         fullWidth
                                         autoComplete="given-name"
                                         variant="standard"
-                                        {...register("name", { required: "Please input name" })}
-                                        error={!!errors.name}
-                                        helperText={errors.name?.message}
+                                        {...register("patient.name", { required: "Please input name" })}
+                                        error={!!errors.patient?.name}
+                                        helperText={errors.patient?.name?.message}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -112,9 +161,9 @@ export default function AdmitPatient() {
                                         fullWidth
                                         autoComplete="given-name"
                                         variant="standard"
-                                        {...register("surname", { required: "Please input surname" })}
-                                        error={!!errors.surname}
-                                        helperText={errors.surname?.message}
+                                        {...register("patient.surname", { required: "Please input surname" })}
+                                        error={!!errors.patient?.surname}
+                                        helperText={errors.patient?.surname?.message}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -123,9 +172,9 @@ export default function AdmitPatient() {
                                         fullWidth
                                         autoComplete="given-name"
                                         variant="standard"
-                                        {...register("idCard", { required: "Please input IDcard" })}
-                                        error={!!errors.idCard}
-                                        helperText={errors.idCard?.message}
+                                        {...register("patient.idCard", { required: "Please input IDcard" })}
+                                        error={!!errors.patient?.idCard}
+                                        helperText={errors.patient?.idCard?.message}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={3}>
@@ -134,9 +183,9 @@ export default function AdmitPatient() {
                                         fullWidth
                                         autoComplete="given-name"
                                         variant="standard"
-                                        {...register("height", { required: "Please input height" })}
-                                        error={!!errors.height}
-                                        helperText={errors.height?.message}
+                                        {...register("patient.height", { required: "Please input height" })}
+                                        error={!!errors.patient?.height}
+                                        helperText={errors.patient?.height?.message}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={3}>
@@ -145,9 +194,9 @@ export default function AdmitPatient() {
                                         fullWidth
                                         autoComplete="given-name"
                                         variant="standard"
-                                        {...register("weight", { required: "Please input weight" })}
-                                        error={!!errors.weight}
-                                        helperText={errors.weight?.message}
+                                        {...register("patient.weight", { required: "Please input weight" })}
+                                        error={!!errors.patient?.weight}
+                                        helperText={errors.patient?.weight?.message}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={3}>
@@ -157,9 +206,9 @@ export default function AdmitPatient() {
                                         select
                                         label="เพศ"
                                         variant="standard"
-                                        {...register("gender", { required: "Please select gender" })}
-                                        error={!!errors.gender}
-                                        helperText={errors.gender?.message}
+                                        {...register("patient.gender", { required: "Please select gender" })}
+                                        error={!!errors.patient?.gender}
+                                        helperText={errors.patient?.gender?.message}
                                     >
                                         {genders.map((option) => (
                                             <MenuItem key={option.value} value={option.value}>
@@ -176,9 +225,9 @@ export default function AdmitPatient() {
                                         select
                                         label="หมู่เลือด"
                                         variant="standard"
-                                        {...register("bloodType", { required: "Please select bloodType" })}
-                                        error={!!errors.bloodType}
-                                        helperText={errors.bloodType?.message}
+                                        {...register("patient.bloodType", { required: "Please select bloodType" })}
+                                        error={!!errors.patient?.bloodType}
+                                        helperText={errors.patient?.bloodType?.message}
                                     >
                                         {bloodTypes.map((option) => (
                                             <MenuItem key={option.value} value={option.value}>
@@ -194,10 +243,11 @@ export default function AdmitPatient() {
                                         defaultValue={dayjs()}
                                         sx={{ width: '100%' }}
                                         onChange={d => {
-                                            setValue("dateOfBirth", d?.format("YYYY-MM-DD"))
+                                            setValue("patient.dateOfBirth", d?.format("YYYY-MM-DD"))
                                             //alert(d?.format("YYYY-MM-DD"))
                                         }
-                                        } />
+                                        }
+                                    />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
@@ -205,9 +255,9 @@ export default function AdmitPatient() {
                                         fullWidth
                                         autoComplete="given-name"
                                         variant="standard"
-                                        {...register("address", { required: "Please input address" })}
-                                        error={!!errors.address}
-                                        helperText={errors.address?.message}
+                                        {...register("patient.address", { required: "Please input address" })}
+                                        error={!!errors.patient?.address}
+                                        helperText={errors.patient?.address?.message}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={3}>
@@ -216,9 +266,9 @@ export default function AdmitPatient() {
                                         fullWidth
                                         autoComplete="given-name"
                                         variant="standard"
-                                        {...register("parentName", { required: "Please input parent name" })}
-                                        error={!!errors.parentName}
-                                        helperText={errors.parentName?.message}
+                                        {...register("patient.parentName", { required: "Please input parent name" })}
+                                        error={!!errors.patient?.parentName}
+                                        helperText={errors.patient?.parentName?.message}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={3}>
@@ -227,9 +277,9 @@ export default function AdmitPatient() {
                                         fullWidth
                                         autoComplete="given-name"
                                         variant="standard"
-                                        {...register("phoneNumber", { required: "Please input telephone number" })}
-                                        error={!!errors.phoneNumber}
-                                        helperText={errors.phoneNumber?.message}
+                                        {...register("patient.phoneNumber", { required: "Please input telephone number" })}
+                                        error={!!errors.patient?.phoneNumber}
+                                        helperText={errors.patient?.phoneNumber?.message}
                                     />
                                 </Grid>
 
@@ -254,13 +304,13 @@ export default function AdmitPatient() {
                             <Grid container spacing={3}>
                                 <Grid item xs={12} sm={3}>
                                     <TextField
-                                        label="รหัสผู้ป่วย AN"
+                                        label="รหัสผู้ป่วย HN"
                                         fullWidth
                                         autoComplete="given-name"
                                         variant="standard"
-                                        {...register("hn", { required: "Please input AN" })}
-                                        error={!!errors.hn}
-                                        helperText={errors.hn?.message}
+                                        {...register("patient.hn", { required: "Please input AN" })}
+                                        error={!!errors.patient?.hn}
+                                        helperText={errors.patient?.hn?.message}
                                     />
                                 </Grid>
 
@@ -281,9 +331,9 @@ export default function AdmitPatient() {
                                         fullWidth
                                         autoComplete="given-name"
                                         variant="standard"
-                                        {...register("symptom", { required: "Please input symptom" })}
-                                        error={!!errors.symptom}
-                                        helperText={errors.symptom?.message}
+                                        {...register("patient.symptom", { required: "Please input symptom" })}
+                                        error={!!errors.patient?.symptom}
+                                        helperText={errors.patient?.symptom?.message}
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
@@ -292,9 +342,9 @@ export default function AdmitPatient() {
                                         fullWidth
                                         autoComplete="given-name"
                                         variant="standard"
-                                        {...register("allergies", { required: "Please input allergies" })}
-                                        error={!!errors.allergies}
-                                        helperText={errors.allergies?.message}
+                                        {...register("patient.allergies", { required: "Please input allergies" })}
+                                        error={!!errors.patient?.allergies}
+                                        helperText={errors.patient?.allergies?.message}
                                     />
                                 </Grid>
 
@@ -303,7 +353,7 @@ export default function AdmitPatient() {
                                         <InputLabel id="demo-simple-select-standard-label">แพทย์ที่ดูแล</InputLabel>
                                         <Controller
                                             control={control}
-                                            name="doctor"
+                                            name="patient.doctor"
                                             render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
                                                 <>
                                                     <Select
@@ -316,10 +366,10 @@ export default function AdmitPatient() {
                                                         inputProps={{
                                                             inputRef: (ref: { value: any; }) => {
                                                                 if (!ref) return;
-                                                                register("doctor", { required: "Please select doctor" })
+                                                                register("patient.doctor", { required: "Please select doctor" })
                                                             },
                                                         }}
-                                                        error={!!errors.bloodType}
+                                                        error={!!errors.patient?.doctor}
                                                     >
                                                         <MenuItem value="A">A</MenuItem>
                                                         <MenuItem value="B">B</MenuItem>

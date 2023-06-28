@@ -64,6 +64,7 @@ api.http.interceptors.request.use(async (config) => {
 
 
 export interface ResponseEntity<T = any> {
+    length: any;
     authorities: any;
 	success: boolean
 	data?: T

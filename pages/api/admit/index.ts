@@ -7,15 +7,14 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]";
 
 export async function handler(req: NextApiRequest, res: NextApiResponse) {
-    admitPatient(req, res).then(response => {
+    getAdmitList(req, res).then(response => {
         res.status(response.status).json(response.data || [])
     }).catch((err) => {
         res.status(err.response?.status || 500).json(err.response?.data)
     })
 }
 
-
-export const admitPatient = async (
+export const getAdmitList = async (
     req: NextApiRequest,
     res: NextApiResponse
 ) => {
@@ -23,7 +22,7 @@ export const admitPatient = async (
     api.setHandler(req, res)
     api.setBearerToken(session?.accessToken)
 
-    return api.http.post(`/nurse/patients`, req.body)
+    return api.http.get(`/nurse/admits`)
 }
 
-export default csrf(allowMethods(["POST"], handler))
+export default csrf(allowMethods(["GET"], handler))

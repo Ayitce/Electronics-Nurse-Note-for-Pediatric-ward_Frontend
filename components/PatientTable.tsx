@@ -16,30 +16,48 @@ import { visuallyHidden } from '@mui/utils';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import router from 'next/router';
-import { getPatientList, getSearchedPatient } from '@/services/patientService';
+import { getAdmitList, getSearchedAdmit } from '@/services/patientService';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import { Button, Grid, InputAdornment, TextField } from '@mui/material';
 
 export interface IPatientCard {
+    id: number;
+    bed: { id: number };
+    room: { id: number };
+    patient: {
+        name: string;
+        surname: string;
+        gender: any;
+        idCard: string;
+        height: string;
+        weight: string;
+        bloodType: any;
+        dateOfBirth: any;
+        hn: string;
+        age: string;
+        symptom: string;
+        allergies: string;
+        doctor: any;
+        address: string;
+        parentName: string;
+        phoneNumber: string;
+        image: any;
+    };
+    admitDateTime: any;
+    dischargeDate: any;
+    an: string;
+}
+
+export interface IAdmitTable {
+    bed: string;
+    room: string;
     name: string;
     surname: string;
-    gender: any;
-    idCard: string;
-    height: string;
-    weight: string;
-    bloodType: any;
-    dateOfBirth: any;
     hn: string;
-    age: string;
-    admitDateTime: any;
-    symptom: string;
-    allergies: string;
-    doctor: any;
-    address: string;
-    parentName: string;
-    phoneNumber: string;
-    image: any;
+    admitDateTime: string;
+    dischargeDate: string;
+    an: string;
 }
 /* 
 const [patients, setPatients] = useState<IPatientForm>()
@@ -97,16 +115,35 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
 
 interface HeadCell {
     disablePadding: boolean;
-    id: keyof IPatientCard;
+    id: keyof IAdmitTable;
     label: string;
     numeric: boolean;
 }
 
 const headCells: readonly HeadCell[] = [
     {
-        id: 'name',
+        id: 'an',
         numeric: false,
         disablePadding: true,
+        label: 'AN',
+    },
+    {
+        id: 'room',
+        numeric: true,
+        disablePadding: false,
+        label: 'ห้อง',
+    },
+    {
+        id: 'bed',
+        numeric: true,
+        disablePadding: false,
+        label: 'เตียง',
+    },
+
+    {
+        id: 'name',
+        numeric: true,
+        disablePadding: false,
         label: 'ชื่อ',
     },
     {
@@ -116,30 +153,19 @@ const headCells: readonly HeadCell[] = [
         label: 'นามสกุล',
     },
 
-    {
-        id: 'age',
-        numeric: true,
-        disablePadding: false,
-        label: 'age',
-    },
-    {
-        id: 'gender',
-        numeric: true,
-        disablePadding: false,
-        label: 'gender',
-    },
+
     {
         id: 'hn',
         numeric: true,
         disablePadding: false,
         label: 'รหัสผู้ป่วย',
     },
-    {
-        id: 'phoneNumber',
-        numeric: true,
-        disablePadding: false,
-        label: 'เบอร์ติดต่อ',
-    },
+    /*  {
+         id: 'dischargeDate',
+         numeric: true,
+         disablePadding: false,
+         label: 'เบอร์ติดต่อ',
+     }, */
     {
         id: 'admitDateTime',
         numeric: true,
@@ -149,7 +175,7 @@ const headCells: readonly HeadCell[] = [
 ];
 
 interface EnhancedTableProps {
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof IPatientCard) => void;
+    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof IAdmitTable) => void;
     order: Order;
     orderBy: string;
     rowCount: number;
@@ -159,7 +185,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     const { order, orderBy, rowCount, onRequestSort } =
         props;
     const createSortHandler =
-        (property: keyof IPatientCard) => (event: React.MouseEvent<unknown>) => {
+        (property: keyof IAdmitTable) => (event: React.MouseEvent<unknown>) => {
             onRequestSort(event, property);
         };
 
@@ -204,9 +230,24 @@ export default function EnhancedTable() {
         //loadPatientFromApi()
         const fetchData = async () => {
             // get the data from the api
-            const patient = await loadPatientFromApi()
-            console.log(patient)
-            setRows(patient)
+            const admit = await loadAdmitFromApi()
+            const arr: { bed: any; room: any; name: any; surname: any; hn: any; admitDateTime: any; dischargeDate: any; an: any; }[] = [];
+            console.log(admit)
+            Object.keys(admit).forEach((id) => {
+                console.log(admit[id].patient.name)
+                arr.push({
+                    "bed": admit[id].bed.id,
+                    "room": admit[id].room.id,
+                    "name": admit[id].patient.name,
+                    "surname": admit[id].patient.surname,
+                    "hn": admit[id].patient.hn,
+                    "admitDateTime": admit[id].admitDateTime,
+                    "dischargeDate": admit[id].dischargeDate,
+                    "an": admit[id].an
+                })
+            })
+            console.log(arr);
+            setRows(arr)
 
         }
 
@@ -216,21 +257,41 @@ export default function EnhancedTable() {
 
     }, [])
 
-    const loadPatientFromApi = async () => {
-        const response = await getPatientList()
+    const loadAdmitFromApi = async () => {
+        const response = await getAdmitList()
         // setPatients(response.data)
         return response.data
         //console.log(patients)
     }
 
+    const handleSearch = async (searchText: string) => {
+        const res = (await getSearchedAdmit(searchText)).data
+        const arr: { bed: any; room: any; name: any; surname: any; hn: any; admitDateTime: any; dischargeDate: any; an: any; }[] = [];
+        Object.keys(res).forEach((id) => {
+            console.log(res[id].patient.name)
+            arr.push({
+                "bed": res[id].bed.id,
+                "room": res[id].room.id,
+                "name": res[id].patient.name,
+                "surname": res[id].patient.surname,
+                "hn": res[id].patient.hn,
+                "admitDateTime": res[id].admitDateTime,
+                "dischargeDate": res[id].dischargeDate,
+                "an": res[id].an
+            })
+        })
+        console.log(arr)
+        setRows(arr)
+
+    }
     const [order, setOrder] = React.useState<Order>('asc');
-    const [orderBy, setOrderBy] = React.useState<keyof IPatientCard>('name');
+    const [orderBy, setOrderBy] = React.useState<keyof IAdmitTable>('an');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
-        property: keyof IPatientCard,
+        property: keyof IAdmitTable,
     ) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -270,11 +331,12 @@ export default function EnhancedTable() {
                         <TextField
                             id="input-with-icon-textfield"
                             label="ค้นหา"
-                            placeholder="ชื่อ, รหัสผู้ป่วย"
+                            placeholder="ชื่อ, รหัสผู้ป่วย, รหัส admit"
                             onChange={async (search) => {
                                 if (search.target.value == "") return
-                                setRows((await getSearchedPatient(search.target.value)).data)
-                                console.log((await getSearchedPatient(search.target.value)).data)
+                                handleSearch(search.target.value)
+                                /* setRows((await getSearchedAdmit(search.target.value)).data)
+                                console.log((await getSearchedAdmit(search.target.value)).data) */
                             }}
                             InputProps={{
                                 startAdornment: (
@@ -316,10 +378,10 @@ export default function EnhancedTable() {
                                 return (
                                     <TableRow
                                         hover
-                                        onClick={() => { handleClick(row.hn) }}
+                                        onClick={() => { handleClick(row.an) }}
                                         role="checkbox"
                                         tabIndex={-1}
-                                        key={row.name}
+                                        key={row.an}
                                         sx={{ cursor: 'pointer' }}
                                     >
                                         <TableCell padding="checkbox">
@@ -331,13 +393,13 @@ export default function EnhancedTable() {
                                             scope="row"
                                             padding="none"
                                         >
-                                            {row.name}
+                                            {row.an}
                                         </TableCell>
+                                        <TableCell align="right">{row.room}</TableCell>
+                                        <TableCell align="right">{row.bed}</TableCell>
+                                        <TableCell align="right">{row.name}</TableCell>
                                         <TableCell align="right">{row.surname}</TableCell>
-                                        <TableCell align="right">{row.age}</TableCell>
-                                        <TableCell align="right">{row.gender}</TableCell>
                                         <TableCell align="right">{row.hn}</TableCell>
-                                        <TableCell align="right">{row.phoneNumber}</TableCell>
                                         <TableCell align="right">{row.admitDateTime}</TableCell>
 
                                     </TableRow>

@@ -24,7 +24,6 @@ export interface IPatientCard {
         bloodType: any;
         dateOfBirth: any;
         hn: string;
-        age: string;
         symptom: string;
         allergies: string;
         address: string;
@@ -42,6 +41,7 @@ export interface IPatientCard {
     admitDateTime: any;
     dischargeDate: any;
     an: string;
+    age: string;
 }
 
 interface ImageStorageRef {
@@ -108,7 +108,7 @@ export default function PatientCard(props: IPatientCard) {
                                 </Grid>
                                 <Grid item md={6}>
                                     <Typography variant="subtitle1"  >
-                                        อายุ {props.patient.age}
+                                        อายุ {props.age}
                                     </Typography>
                                 </Grid>
                                 <Grid item md={6}>

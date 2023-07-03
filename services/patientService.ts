@@ -17,7 +17,6 @@ export interface IPatientCard {
         bloodType: any;
         dateOfBirth: any;
         hn: string;
-        age: string;
         symptom: string;
         allergies: string;
         address: string;
@@ -35,6 +34,7 @@ export interface IPatientCard {
     admitDateTime: any;
     dischargeDate: any;
     an: string;
+    age: string;
 }
 
 export interface Patient {
@@ -48,7 +48,7 @@ export interface Patient {
     bloodType: any;
     dateOfBirth: any;
     hn: string;
-    age: string;
+    // age: string;
     symptom: string;
     allergies: string;
     address: string;

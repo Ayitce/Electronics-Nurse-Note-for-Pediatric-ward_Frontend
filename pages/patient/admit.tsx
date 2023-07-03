@@ -29,7 +29,6 @@ export interface IPatientCard {
         bloodType: any;
         dateOfBirth: any;
         hn: string;
-        age: string;
         symptom: string;
         allergies: string;
         address: string;
@@ -48,6 +47,7 @@ export interface IPatientCard {
     admitDateTime: any;
     dischargeDate: any;
     an: string;
+    age: string;
 }
 
 export default function AdmitPatient() {
@@ -104,7 +104,7 @@ export default function AdmitPatient() {
             const day = dayjs()
             const age = day.diff(dayjs(data.patient.dateOfBirth), 'month')
             console.log("age : ", Math.floor(age / 12), " ปี", age % 12, "เดือน")
-            data.patient.age = Math.floor(age / 12) + " ปี " + age % 12 + " เดือน";
+            data.age = Math.floor(age / 12) + " ปี " + age % 12 + " เดือน";
             admitPatient({
                 ...data,
                 admitDateTime: data.admitDateTime || dayjs().format("YYYY-MM-DD hh:mm A"),

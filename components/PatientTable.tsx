@@ -35,24 +35,24 @@ export interface IPatientCard {
         bloodType: any;
         dateOfBirth: any;
         hn: string;
-        age: string;
         symptom: string;
         allergies: string;
         address: string;
         parentName: string;
         phoneNumber: string;
         image: any;
-        doctor: { 
+        doctor: {
             id: number;
             name: string;
             surname: string;
             medicalID: string;
             phoneNumber: string;
-         };
+        };
     };
     admitDateTime: any;
     dischargeDate: any;
     an: string;
+    age: string;
 }
 
 export interface IAdmitTable {
@@ -266,8 +266,9 @@ export default function EnhancedTable() {
     const loadAdmitFromApi = async () => {
         const response = await getAdmitList()
         // setPatients(response.data)
+        console.log(response.data)
         return response.data
-        //console.log(patients)
+
     }
 
     const handleSearch = async (searchText: string) => {

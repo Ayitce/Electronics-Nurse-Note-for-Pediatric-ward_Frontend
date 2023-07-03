@@ -28,7 +28,6 @@ export interface IPatientCard {
         bloodType: any;
         dateOfBirth: any;
         hn: string;
-        age: string;
         symptom: string;
         allergies: string;
         address: string;
@@ -46,6 +45,7 @@ export interface IPatientCard {
     admitDateTime: any;
     dischargeDate: any;
     an: string;
+    age: string;
 }
 export default function PatientInfo() {
 
@@ -222,7 +222,6 @@ export default function PatientInfo() {
                         bloodType: patientInfo?.patient.bloodType,
                         dateOfBirth: patientInfo?.patient.dateOfBirth,
                         hn: patientInfo?.patient.hn,
-                        age: patientInfo?.patient.age,
                         symptom: patientInfo?.patient.symptom,
                         allergies: patientInfo?.patient.allergies,
                         doctor: {
@@ -239,7 +238,8 @@ export default function PatientInfo() {
                     }}
                     admitDateTime={patientInfo?.admitDateTime}
                     dischargeDate={patientInfo?.dischargeDate}
-                    an={patientInfo?.an} />
+                    an={patientInfo?.an}
+                    age={patientInfo?.age} />
             </Grid>
         </>
     );

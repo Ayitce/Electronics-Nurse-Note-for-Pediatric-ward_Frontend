@@ -3,9 +3,12 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { Control, Controller, FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import { IRegisterForm } from './RegisterComp';
-import { AppBar, CardContent, Container, Paper, Toolbar } from '@mui/material';
+import { AppBar, CardContent, CircularProgress, Container, Paper, Toolbar } from '@mui/material';
 import nursePNG from '../public/assets/nurse.png'
 import Image from 'next/image'
+import { StorageReference, getDownloadURL, ref } from 'firebase/storage';
+import { useEffect } from 'react';
+import firebase from '@/services/firebase';
 
 export interface IPatientCard {
     id: number;
@@ -24,18 +27,43 @@ export interface IPatientCard {
         age: string;
         symptom: string;
         allergies: string;
-        doctor: any;
         address: string;
         parentName: string;
         phoneNumber: string;
         image: any;
+        doctor: {
+            id: number;
+            name: string;
+            surname: string;
+            medicalID: string;
+            phoneNumber: string;
+        };
     };
     admitDateTime: any;
     dischargeDate: any;
     an: string;
 }
 
+interface ImageStorageRef {
+    ref: StorageReference
+    url: string
+}
+
 export default function PatientCard(props: IPatientCard) {
+
+    const [uploadedImages, setUploadImages] = React.useState<string>()
+
+    useEffect(() => {
+        if (!props.patient.image) return
+        const storageRef = ref(
+            firebase.storage,
+            `${props.patient.image}`
+        )
+        getDownloadURL(storageRef).then((url) => {
+            console.log(url)
+            setUploadImages(url)
+        })
+    }, [props.patient.image])
 
     return (
         <React.Fragment>
@@ -57,12 +85,16 @@ export default function PatientCard(props: IPatientCard) {
                             <Grid item container md={2}>
                                 <Grid item md={3}>
                                     <CardContent >
+                                        {uploadedImages ?
+                                            <Image src={uploadedImages}
+                                                width={100}
+                                                height={100}
+                                                sizes="100vw"
+                                                alt="NurseIcon" />
+                                            :
+                                            <CircularProgress />
+                                        }
 
-                                        <Image src={nursePNG}
-                                            width={100}
-                                            height={100}
-                                            sizes="100vw"
-                                            alt="NurseIcon" />
 
                                     </CardContent>
 
@@ -76,7 +108,7 @@ export default function PatientCard(props: IPatientCard) {
                                 </Grid>
                                 <Grid item md={6}>
                                     <Typography variant="subtitle1"  >
-                                        อายุ {props.patient.age} ปี
+                                        อายุ {props.patient.age}
                                     </Typography>
                                 </Grid>
                                 <Grid item md={6}>
@@ -128,7 +160,7 @@ export default function PatientCard(props: IPatientCard) {
                                         ประวัติการแพ้ยา {props.patient.allergies}
                                     </Typography>
                                     <Typography variant="subtitle1"  >
-                                        แพทย์ที่ดูแล {props.patient.doctor}
+                                        แพทย์ที่ดูแล {props.patient.doctor.name} {props.patient.doctor.surname}
                                     </Typography>
                                     <Typography variant="subtitle1"  >
                                         อาการที่มาพบแพทย์ {props.patient.symptom}

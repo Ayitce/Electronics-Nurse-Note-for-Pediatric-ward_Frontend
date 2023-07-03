@@ -20,18 +20,25 @@ export interface IPatientCard {
         age: string;
         symptom: string;
         allergies: string;
-        doctor: any;
         address: string;
         parentName: string;
         phoneNumber: string;
         image: any;
+        doctor: {
+            id: number;
+            name: string;
+            surname: string;
+            medicalID: string;
+            phoneNumber: string;
+        };
     };
     admitDateTime: any;
     dischargeDate: any;
     an: string;
 }
 
-export interface Card {
+export interface Patient {
+    id: number;
     name: string;
     surname: string;
     gender: any;
@@ -42,14 +49,19 @@ export interface Card {
     dateOfBirth: any;
     hn: string;
     age: string;
-    admitDateTime: any;
     symptom: string;
     allergies: string;
-    doctor: any;
     address: string;
     parentName: string;
     phoneNumber: string;
     image: any;
+    doctor: {
+        id: number;
+        name: string;
+        surname: string;
+        medicalID: string;
+        phoneNumber: string;
+    };
 }
 
 export const getAdmitCard = (an: string) => {
@@ -69,4 +81,15 @@ export const admitPatient = (patient: IPatientCard) => {
         `${window.origin}/api/admit/admit`,
         patient
     );
+}
+
+export const dischargePatient = (patient: IPatientCard) => {
+    return api.http.post<ResponseEntity<IPatientCard>>(
+        `${window.origin}/api/admit/discharge`,
+        patient
+    );
+}
+
+export const getAllPatient = () => {
+    return api.http.get<ResponseEntity<Patient>>(`${window.origin}/api/patientList`)
 }

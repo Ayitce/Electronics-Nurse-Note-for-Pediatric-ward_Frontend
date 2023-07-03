@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import { setup } from '@/lib/csrf';
 import { useParams } from "react-router-dom";
 import MenuIcon from '@mui/icons-material/Menu';
-import { getAdmitCard } from '@/services/patientService';
+import { dischargePatient, getAdmitCard } from '@/services/patientService';
 
 export interface IPatientCard {
     id: number;
@@ -31,11 +31,17 @@ export interface IPatientCard {
         age: string;
         symptom: string;
         allergies: string;
-        doctor: any;
         address: string;
         parentName: string;
         phoneNumber: string;
         image: any;
+        doctor: {
+            id: number;
+            name: string;
+            surname: string;
+            medicalID: string;
+            phoneNumber: string;
+        };
     };
     admitDateTime: any;
     dischargeDate: any;
@@ -63,6 +69,12 @@ export default function PatientInfo() {
         setOpenDischarge(false);
     };
 
+    const handleDischarge = (patient: IPatientCard) => {
+        dischargePatient(patient)
+        router.push("/patient/list")
+
+    }
+
     const [patientInfo, setPatientInfo] = useState<any>()
 
     const router = useRouter();
@@ -83,11 +95,6 @@ export default function PatientInfo() {
         fetchData()
             // make sure to catch any error
             .catch(console.error);
-
-        /* 
-                console.log("an:", an)
-                setPatientInfo(loadPatientFromApiWithAN())
-                console.log("pt:", patientInfo) */
     }, [an])
 
     const loadAdmitFromApiWithAN = async () => {
@@ -191,7 +198,7 @@ export default function PatientInfo() {
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={handleCloseDischarge}>ยกเลิก</Button>
-                            <Button variant='contained' onClick={handleCloseDischarge} autoFocus>
+                            <Button variant='contained' onClick={() => { handleDischarge(patientInfo) }} autoFocus>
                                 ยืนยัน
                             </Button>
                         </DialogActions>
@@ -218,7 +225,13 @@ export default function PatientInfo() {
                         age: patientInfo?.patient.age,
                         symptom: patientInfo?.patient.symptom,
                         allergies: patientInfo?.patient.allergies,
-                        doctor: patientInfo?.patient.doctor,
+                        doctor: {
+                            id: patientInfo?.patient.doctor.id,
+                            name: patientInfo?.patient.doctor.name,
+                            surname: patientInfo?.patient.doctor.surname,
+                            medicalID: patientInfo?.patient.doctor.medicalID,
+                            phoneNumber: patientInfo?.patient.doctor.phoneNumber,
+                        },
                         address: patientInfo?.patient.address,
                         parentName: patientInfo?.patient.parentName,
                         phoneNumber: patientInfo?.patient.phoneNumber,

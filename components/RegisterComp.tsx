@@ -17,7 +17,7 @@ import UserType from '../components/UserType'
 import { useControlContext } from '@/components/ControlContext';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import {registerPatient} from '@/services/userService'
+import { registerPatient } from '@/services/userService'
 import dayjs from 'dayjs';
 
 
@@ -107,21 +107,6 @@ export default function RegisterComp() {
     return (
         <>
             <CssBaseline />
-            <AppBar
-                position="absolute"
-                color="default"
-                elevation={0}
-                sx={{
-                    position: 'relative',
-                    borderBottom: (t) => `1px solid ${t.palette.divider}`,
-                }}
-            >
-                <Toolbar>
-                    <Typography variant="h6" color="inherit" noWrap>
-                        Company name
-                    </Typography>
-                </Toolbar>
-            </AppBar>
             <form onSubmit={handleSubmit(handleRegister)}>
                 <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
                     <Paper sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>

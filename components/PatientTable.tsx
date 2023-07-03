@@ -38,11 +38,17 @@ export interface IPatientCard {
         age: string;
         symptom: string;
         allergies: string;
-        doctor: any;
         address: string;
         parentName: string;
         phoneNumber: string;
         image: any;
+        doctor: { 
+            id: number;
+            name: string;
+            surname: string;
+            medicalID: string;
+            phoneNumber: string;
+         };
     };
     admitDateTime: any;
     dischargeDate: any;
@@ -376,6 +382,7 @@ export default function EnhancedTable() {
                                 const labelId = `enhanced-table-checkbox-${index}`;
 
                                 return (
+                                    (row.dischargeDate == null) &&
                                     <TableRow
                                         hover
                                         onClick={() => { handleClick(row.an) }}

@@ -3,10 +3,10 @@ import { api } from "./axios.site.config";
 
 export interface IRoom {
     id: number;
-    bedList: [{
+    bedList: {
         id: number;
         isAvailable: Boolean;
-    }];
+    };
 }
 
 export const getRoomList = () => {

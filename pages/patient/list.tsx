@@ -7,10 +7,10 @@ import AddIcon from '@mui/icons-material/Add';
 import router from 'next/router';
 
 export default function PatientList() {
-    const { isLoggedIn } = useAuth()
+    const { isLoggedIn, role } = useAuth()
 
     const handleOnClick = () => {
-        
+
     }
 
     return (
@@ -24,7 +24,7 @@ export default function PatientList() {
                         การจัดการคนไข้
                     </Typography>
                 </Grid>
-               {/*  <Grid item xs={12} sm={4} sx={{ mt: { xs: 3, md: 4 }, mb: { xs: 3, md: 1 } }}>
+                {/*  <Grid item xs={12} sm={4} sx={{ mt: { xs: 3, md: 4 }, mb: { xs: 3, md: 1 } }}>
                     <TextField
                         id="input-with-icon-textfield"
                         label="ค้นหา"

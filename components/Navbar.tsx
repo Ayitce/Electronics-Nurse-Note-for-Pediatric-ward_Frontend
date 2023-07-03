@@ -10,7 +10,7 @@ import Link from "next/link";
 export default function Navbar(props: {
   isLoggedIn?: boolean,
   item?: any,
-  fixed?: boolean
+  fixed?: boolean,
 }) {
   const router = useRouter();
   const { signOut } = useAuth();
@@ -22,7 +22,7 @@ export default function Navbar(props: {
 
   const [open, setOpen] = useState(false);
 
-  
+
 
   const handleClickOpen = () => {
     setOpen(true);

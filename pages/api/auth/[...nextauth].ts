@@ -15,6 +15,10 @@ export const authOptions: NextAuthOptions = {
                 accessToken: {
                     label: 'accessToken',
                     type: 'string',
+                },
+                role: {
+                    label: 'role',
+                    type: 'string',
                 }
             },
             async authorize(credentials, req) {
@@ -27,7 +31,9 @@ export const authOptions: NextAuthOptions = {
                     })
 
                     if (res.data.authorities.includes("ROLE_NURSE")) {
-                        return { id: accessToken, accessToken }
+                        return { id: accessToken, accessToken, role: "ROLE_NURSE" }
+                    } else if (res.data.authorities.includes("ROLE_DOCTOR")) {
+                        return { id: accessToken, accessToken, role: "ROLE_DOCTOR" }
                     } else {
                         throw new Error("Unauthorized role.")
                     }
@@ -50,11 +56,13 @@ export const authOptions: NextAuthOptions = {
         jwt: async ({ token, user, profile, account }) => {
             if (user) {
                 token.accessToken = user.accessToken
+                token.role = user.role
             }
             return token
         },
         session: async ({ session, token }) => {
             session.accessToken = token.accessToken
+            session.role = token.role
             return session
 
         }

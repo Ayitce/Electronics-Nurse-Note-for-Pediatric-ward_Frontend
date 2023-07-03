@@ -7,13 +7,15 @@ interface IAuthContext {
   signIn(username: string, password: string): Promise<any>
   signOut(): Promise<any>,
   isLoggedIn: boolean,
+  role: string;
 }
 
 
 const AuthContext = createContext<IAuthContext>({
   signIn: async () => { },
   signOut: async () => { },
-  isLoggedIn: false
+  isLoggedIn: false,
+  role: ""
 })
 
 export const useAuth = () => {
@@ -28,15 +30,22 @@ export interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [role, setRole] = useState("")
 
   const session = useSession();
 
   const underUseEffectFunction = () => {
     setIsLoggedIn(session.status == "authenticated")
-
   }
 
   useEffect(underUseEffectFunction, [session.status]);
+
+  const underUseEffectFunction2 = () => {
+    setRole(session.data?.role ? session.data.role : "")
+  }
+
+  useEffect(underUseEffectFunction2, [session.data?.role]);
+
 
   const signIn = async (username: string, password: string) => {
     try {
@@ -68,7 +77,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   return (
-    <AuthContext.Provider value={{ signIn, signOut, isLoggedIn }}>
+    <AuthContext.Provider value={{ signIn, signOut, isLoggedIn, role }}>
       {children}
     </AuthContext.Provider>
   )

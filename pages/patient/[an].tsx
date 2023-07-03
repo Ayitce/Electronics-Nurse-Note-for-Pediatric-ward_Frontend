@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import { setup } from '@/lib/csrf';
 import { useParams } from "react-router-dom";
 import MenuIcon from '@mui/icons-material/Menu';
-import { dischargePatient, getAdmitCard } from '@/services/patientService';
+import { dischargePatient, getAdmitCardForNurse, getAdmitCardForDoctor } from '@/services/patientService';
 
 export interface IPatientCard {
     id: number;
@@ -48,7 +48,7 @@ export interface IPatientCard {
     age: string;
 }
 export default function PatientInfo() {
-
+    const { role } = useAuth()
     const { isLoggedIn } = useAuth()
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const openMenu = Boolean(anchorEl);
@@ -95,13 +95,19 @@ export default function PatientInfo() {
         fetchData()
             // make sure to catch any error
             .catch(console.error);
-    }, [an])
+    }, [an, role])
 
     const loadAdmitFromApiWithAN = async () => {
+        if (role == "ROLE_NURSE") {
+            const response = await getAdmitCardForNurse(`${an}`)
+            // setPatientInfo(response.data)
+            return response.data
+        } else {
+            const response = await getAdmitCardForDoctor(`${an}`)
+            // setPatientInfo(response.data)
+            return response.data
+        }
 
-        const response = await getAdmitCard(`${an}`)
-        // setPatientInfo(response.data)
-        return response.data
     }
 
     return (
@@ -140,12 +146,18 @@ export default function PatientInfo() {
                             'aria-labelledby': 'basic-button',
                         }}
                     >
-                        <MenuItem onClick={handleClickOpenDischarge}>
-                            <ListItemIcon>
-                                <PersonOffIcon fontSize="small" />
-                            </ListItemIcon>
-                            <ListItemText>Discharge ผู้ป่วยออกจากโรงพยาบาล</ListItemText>
-                        </MenuItem>
+                        {role == "ROLE_NURSE" ?
+                            <MenuItem onClick={handleClickOpenDischarge}>
+                                <ListItemIcon>
+                                    <PersonOffIcon fontSize="small" />
+                                </ListItemIcon>
+                                <ListItemText>Discharge ผู้ป่วยออกจากโรงพยาบาล</ListItemText>
+                            </MenuItem>
+                            :
+                            <>
+                            </>
+                        }
+
                         <MenuItem>
                             <ListItemIcon>
                                 <HistoryEduIcon fontSize="small" />

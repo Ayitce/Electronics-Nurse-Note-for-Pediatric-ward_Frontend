@@ -16,10 +16,12 @@ import { visuallyHidden } from '@mui/utils';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import router from 'next/router';
-import { getAdmitList, getSearchedAdmit } from '@/services/patientService';
+import { getAdmitListForNurse, getSearchedAdmitForNurse } from '@/services/patientService';
+import { getAdmitListForDoctor, getSearchedAdmitForDoctor } from '@/services/patientService';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import { Button, Grid, InputAdornment, TextField } from '@mui/material';
+import { useAuth } from '@/_auth';
 
 export interface IPatientCard {
     id: number;
@@ -228,6 +230,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 
 
 export default function EnhancedTable() {
+    const { role } = useAuth()
 
     // const [patients, setPatients] = useState<IPatientForm>()
     const [rows, setRows] = useState<any>([])
@@ -261,34 +264,63 @@ export default function EnhancedTable() {
             // make sure to catch any error
             .catch(console.error);
 
-    }, [])
+    }, [role])
 
     const loadAdmitFromApi = async () => {
-        const response = await getAdmitList()
-        // setPatients(response.data)
-        console.log(response.data)
-        return response.data
+        if (role == "ROLE_NURSE") {
+            const response = await getAdmitListForNurse()
+            // setPatients(response.data)
+            console.log(response.data)
+            return response.data
+        } else {
+            const response = await getAdmitListForDoctor()
+            // setPatients(response.data)
+            console.log(response.data)
+            return response.data
+        }
+
 
     }
 
     const handleSearch = async (searchText: string) => {
-        const res = (await getSearchedAdmit(searchText)).data
-        const arr: { bed: any; room: any; name: any; surname: any; hn: any; admitDateTime: any; dischargeDate: any; an: any; }[] = [];
-        Object.keys(res).forEach((id) => {
-            console.log(res[id].patient.name)
-            arr.push({
-                "bed": res[id].bed.id,
-                "room": res[id].room.id,
-                "name": res[id].patient.name,
-                "surname": res[id].patient.surname,
-                "hn": res[id].patient.hn,
-                "admitDateTime": res[id].admitDateTime,
-                "dischargeDate": res[id].dischargeDate,
-                "an": res[id].an
+        if (role == "ROLE_NURSE") {
+            const res = (await getSearchedAdmitForNurse(searchText)).data
+            const arr: { bed: any; room: any; name: any; surname: any; hn: any; admitDateTime: any; dischargeDate: any; an: any; }[] = [];
+            Object.keys(res).forEach((id) => {
+                console.log(res[id].patient.name)
+                arr.push({
+                    "bed": res[id].bed.id,
+                    "room": res[id].room.id,
+                    "name": res[id].patient.name,
+                    "surname": res[id].patient.surname,
+                    "hn": res[id].patient.hn,
+                    "admitDateTime": res[id].admitDateTime,
+                    "dischargeDate": res[id].dischargeDate,
+                    "an": res[id].an
+                })
             })
-        })
-        console.log(arr)
-        setRows(arr)
+            console.log(arr)
+            setRows(arr)
+        } else {
+            const res = (await getSearchedAdmitForDoctor(searchText)).data
+            const arr: { bed: any; room: any; name: any; surname: any; hn: any; admitDateTime: any; dischargeDate: any; an: any; }[] = [];
+            Object.keys(res).forEach((id) => {
+                console.log(res[id].patient.name)
+                arr.push({
+                    "bed": res[id].bed.id,
+                    "room": res[id].room.id,
+                    "name": res[id].patient.name,
+                    "surname": res[id].patient.surname,
+                    "hn": res[id].patient.hn,
+                    "admitDateTime": res[id].admitDateTime,
+                    "dischargeDate": res[id].dischargeDate,
+                    "an": res[id].an
+                })
+            })
+            console.log(arr)
+            setRows(arr)
+        }
+
 
     }
     const [order, setOrder] = React.useState<Order>('asc');
@@ -356,14 +388,19 @@ export default function EnhancedTable() {
                     </Grid>
                     <Grid item xs={12} sm={6.5}></Grid>
                     <Grid item xs={12} sm={1.5} >
-                        <Button
-                            variant='contained'
-                            fullWidth
-                            onClick={() => router.push("/patient/admit")}
-                        >
-                            <AddIcon />
-                            เพิ่มคนไข้
-                        </Button>
+                        {role == "ROLE_NURSE" ?
+                            <Button
+                                variant='contained'
+                                fullWidth
+                                onClick={() => router.push("/patient/admit")}
+                            >
+                                <AddIcon />
+                                เพิ่มคนไข้
+                            </Button>
+                            :
+                            <></>
+                        }
+
                     </Grid>
                 </Grid>
                 <TableContainer>

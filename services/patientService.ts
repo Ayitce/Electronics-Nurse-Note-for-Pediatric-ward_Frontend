@@ -63,16 +63,16 @@ export interface Patient {
         phoneNumber: string;
     };
 }
-
-export const getAdmitCard = (an: string) => {
+//----------Nurse--------------
+export const getAdmitCardForNurse = (an: string) => {
     return api.http.get<ResponseEntity<IPatientCard>>(`${window.origin}/api/admit/${an}`)
 }
 
-export const getAdmitList = () => {
+export const getAdmitListForNurse = () => {
     return api.http.get<ResponseEntity<IPatientCard>>(`${window.origin}/api/admit`)
 }
 
-export const getSearchedAdmit = (search: string) => {
+export const getSearchedAdmitForNurse = (search: string) => {
     return api.http.get<ResponseEntity<IPatientCard>>(`${window.origin}/api/admit/search/${search}`)
 }
 
@@ -92,4 +92,17 @@ export const dischargePatient = (patient: IPatientCard) => {
 
 export const getAllPatient = () => {
     return api.http.get<ResponseEntity<Patient>>(`${window.origin}/api/patientList`)
+}
+
+//-------------Doctor------------
+export const getAdmitCardForDoctor = (an: string) => {
+    return api.http.get<ResponseEntity<IPatientCard>>(`${window.origin}/api/doctor/admit/${an}`)
+}
+
+export const getAdmitListForDoctor = () => {
+    return api.http.get<ResponseEntity<IPatientCard>>(`${window.origin}/api/doctor/admit`)
+}
+
+export const getSearchedAdmitForDoctor = (search: string) => {
+    return api.http.get<ResponseEntity<IPatientCard>>(`${window.origin}/api/doctor/admit/search/${search}`)
 }

@@ -51,6 +51,8 @@ export interface IPatientCard {
 }
 
 export default function AdmitPatient() {
+    const [existed, setExisted] = useState<boolean>(true);
+
     const { isLoggedIn } = useAuth()
     const {
         register,
@@ -136,7 +138,7 @@ export default function AdmitPatient() {
 
     const stepContent: any[] = [
         <RoomForm register={register} errors={errors} control={control} setValue={setValue} />
-        , <AdmitForm register={register} errors={errors} control={control} setValue={setValue} />
+        , <AdmitForm register={register} errors={errors} control={control} setValue={setValue} existed={existed} setExisted={setExisted} />
         , <IMedicalForm register={register} errors={errors} control={control} setValue={setValue} />
     ]
 

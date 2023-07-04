@@ -46,8 +46,8 @@ export default function SignIn() {
     signIn(username, password).then(() => {
       router.push("/")
     }).catch(() => {
-      setError("username", { message: "อีเมลล์ไม่ถูกต้อง" })
-      setError("password", { message: "รหัสผ่านไม่ถูกต้อง" })
+      setError("username", { message: "" })
+      setError("password", { message: "อีเมลล์หรือรหัสผ่านไม่ถูกต้อง" })
     })
   })
 

@@ -49,7 +49,7 @@ export default function SignUpForm(props: RegisterFormProps) {
                         fullWidth
                         autoComplete="given-name"
                         variant="standard"
-                        {...register("name", { required: "Please input name" })}
+                        {...register("name", { required: "โปรดระบุชื่อ" })}
                         error={!!errors.name}
                         helperText={errors.name?.message}
                     />
@@ -60,7 +60,7 @@ export default function SignUpForm(props: RegisterFormProps) {
                         fullWidth
                         autoComplete="family-name"
                         variant="standard"
-                        {...register("surname", { required: "Please input surname" })}
+                        {...register("surname", { required: "โปรดระบุนามสกุล" })}
                         error={!!errors.surname}
                         helperText={errors.surname?.message}
                     />
@@ -71,7 +71,7 @@ export default function SignUpForm(props: RegisterFormProps) {
                         fullWidth
                         autoComplete="email"
                         variant="standard"
-                        {...register("email", { required: "Please input email" })}
+                        {...register("email", { required: "โปรดระบุอีเมลล์" })}
                         error={!!errors.email}
                         helperText={errors.email?.message}
                     />
@@ -83,7 +83,7 @@ export default function SignUpForm(props: RegisterFormProps) {
                         type='password'
                         autoComplete="password"
                         variant="standard"
-                        {...register("password", { required: "Please input password" })}
+                        {...register("password", { required: "โปรดระบุ password" })}
                         error={!!errors.password}
                         helperText={errors.password?.message}
                     />
@@ -96,7 +96,7 @@ export default function SignUpForm(props: RegisterFormProps) {
                         type='password'
                         autoComplete="Confirm Password"
                         variant="standard"
-                        {...register("confirmPassword", { required: "Please input confirm password" })}
+                        {...register("confirmPassword", { required: "โปรดระบุ confirm password" })}
                         error={!!errors.confirmPassword}
                         helperText={errors.confirmPassword?.message}
                     />
@@ -108,7 +108,7 @@ export default function SignUpForm(props: RegisterFormProps) {
                         select
                         label="เพศ"
                         variant="standard"
-                        {...register("gender", { required: "Please select gender" })}
+                        {...register("gender", { required: "โปรดเลือกเพศ" })}
                         error={!!errors.gender}
                         helperText={errors.gender?.message}
                     >
@@ -155,7 +155,7 @@ export default function SignUpForm(props: RegisterFormProps) {
                         label="หมายเลขประจำตัวพยาบาล/หมอ"
                         fullWidth
                         variant="standard"
-                        {...register("medicalID", { required: "Please input medicalID" })}
+                        {...register("medicalID", { required: "โปรดระบุหมายเลขประจำตัวพยาบาล/หมอ" })}
                         error={!!errors.medicalID}
                         helperText={errors.medicalID?.message}
                     />
@@ -165,7 +165,7 @@ export default function SignUpForm(props: RegisterFormProps) {
                         label="เบอร์โทรศัพท์"
                         fullWidth
                         variant="standard"
-                        {...register("phoneNumber", { required: "Please input telephone number" })}
+                        {...register("phoneNumber", { required: "โปรดระบุเบอร์โทรศัพท์" })}
                         error={!!errors.medicalID}
                         helperText={errors.medicalID?.message}
                     />

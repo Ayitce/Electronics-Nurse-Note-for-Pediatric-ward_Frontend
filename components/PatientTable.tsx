@@ -370,7 +370,7 @@ export default function EnhancedTable() {
                         <TextField
                             id="input-with-icon-textfield"
                             label="ค้นหา"
-                            placeholder="ชื่อ, รหัสผู้ป่วย, รหัส admit"
+                            placeholder="ชื่อ นามสกุล, รหัสผู้ป่วย, รหัส admit"
                             onChange={async (search) => {
                                 if (search.target.value == "") return
                                 handleSearch(search.target.value)

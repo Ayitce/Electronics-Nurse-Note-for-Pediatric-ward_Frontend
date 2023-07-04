@@ -66,8 +66,8 @@ export default function RegisterComp() {
 
         // validate data before request API 
         if (data.password !== data.confirmPassword) {
-            setError("password", { message: "Password and Confirm Password not matched." })
-            setError("confirmPassword", { message: "Password and Confirm Password not matched." })
+            setError("password", { message: "รหัสผ่านไม่ตรงกัน" })
+            setError("confirmPassword", { message: "รหัสผ่านไม่ตรงกัน" })
             resolve(null)
             return;
         }

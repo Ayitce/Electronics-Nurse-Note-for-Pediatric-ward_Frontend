@@ -26,6 +26,8 @@ interface AdmitFormProps {
     errors: FieldErrors<IPatientCard>
     control: Control<IPatientCard>
     setValue: UseFormSetValue<IPatientCard>
+    existed: boolean;
+    setExisted: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 
@@ -85,7 +87,7 @@ export default function AdmitForm(props: AdmitFormProps) {
         return response.data
     }
 
-    const [existed, setExisted] = useState<boolean>(true);
+    //const [existed, setExisted] = useState<boolean>(true);
     const [createObjectURL, setCreateObjectURL] = useState<string>();
 
     const uploadToClient = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -116,11 +118,11 @@ export default function AdmitForm(props: AdmitFormProps) {
                     aria-labelledby="demo-row-radio-buttons-group-label"
                     name="row-radio-buttons-group"
                 >
-                    <FormControlLabel value="existed" control={<Radio onChange={() => { setExisted(true) }} />} label="Yes" />
-                    <FormControlLabel value="male" control={<Radio onChange={() => { setExisted(false) }} />} label="No" />
+                    <FormControlLabel value="existed" control={<Radio onChange={() => { props.setExisted(true) }} checked={!!props.existed == true} />} label="Yes" />
+                    <FormControlLabel value="male" control={<Radio onChange={() => { props.setExisted(false) }} checked={!!props.existed == false} />} label="No" />
                 </RadioGroup>
             </FormControl>
-            {existed ?
+            {props.existed ?
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
                         <TextField

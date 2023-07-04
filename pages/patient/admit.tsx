@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import RoomForm from "@/components/RoomForm";
 import { setup } from "@/lib/csrf";
 import firebase from "@/services/firebase";
-import { admitPatient, uploadImage } from "@/services/patientService";
+import { admitPatient } from "@/services/patientService";
 import { getRoomList } from "@/services/roomService";
 import { AppBar, Box, Button, Container, CssBaseline, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Step, StepLabel, Stepper, TextField, ThemeProvider, Toolbar, Typography, createTheme } from "@mui/material";
 import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";

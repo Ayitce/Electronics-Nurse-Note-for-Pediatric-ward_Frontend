@@ -149,18 +149,7 @@ export default function SignUpForm(props: RegisterFormProps) {
 
                     </FormControl> */}
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                    <DatePicker
-                        label="วัน/เดือน/ปี เกิด"
-                        defaultValue={dayjs()}
-                        sx={{ width: '100%' }}
-                        onChange={d => {
-                            setValue("dateOfBirth", d?.format("YYYY-MM-DD"))
-                            //alert(d?.format("YYYY-MM-DD"))
-                        }
-                        } />
-
-                </Grid>
+                
                 <Grid item xs={12} sm={6}>
                     <TextField
                         label="หมายเลขประจำตัวพยาบาล/หมอ"

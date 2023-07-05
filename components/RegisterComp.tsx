@@ -17,7 +17,7 @@ import UserType from '../components/UserType'
 import { useControlContext } from '@/components/ControlContext';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { registerPatient } from '@/services/userService'
+import { registerNurse, registerDoctor } from '@/services/userService'
 import dayjs from 'dayjs';
 
 
@@ -41,14 +41,17 @@ export interface IRegisterForm {
     email: string;
     password: string;
     confirmPassword: string;
-    dateOfBirth: any;
     medicalID: string;
     phoneNumber: string;
+    type: string;
 }
 
 
 export default function RegisterComp() {
 
+
+    const [selectedNurse, setSelectedNurse] = React.useState(false);
+    const [selectedDoctor, setSelectedDoctor] = React.useState(false);
 
     const {
         register,
@@ -60,7 +63,7 @@ export default function RegisterComp() {
     } = useForm<IRegisterForm>({
         mode: "onSubmit"
     })
-    const stepContent: any[] = [<UserType />, <SignUpForm register={register} errors={errors} control={control} setValue={setValue} />]
+    const stepContent: any[] = [<UserType selectedDoctor={selectedDoctor} selectedNurse={selectedNurse} setSelectedDoctor={setSelectedDoctor} setSelectedNurse={setSelectedNurse} />, <SignUpForm register={register} errors={errors} control={control} setValue={setValue} />]
 
     const handleRegister = (data: IRegisterForm) => new Promise((resolve) => {
 
@@ -80,11 +83,16 @@ export default function RegisterComp() {
         alert("Success, Ready to request to API")
         alert(JSON.stringify(data))
         //  axios.post(`${process.env.NEXT_PUBLIC_CORE_URL_API}/register`, data)
+        if (selectedNurse == true) {
+            registerNurse({
+                ...data,
+            })
+        } else if (selectedDoctor == true) {
+            registerDoctor({
+                ...data,
+            })
+        }
 
-        registerPatient({
-            ...data,
-            dateOfBirth: data.dateOfBirth || dayjs().format("YYYY-MM-DD"),
-        })
 
         resolve(null)
 
@@ -96,8 +104,14 @@ export default function RegisterComp() {
     const [activeStep, setActiveStep] = React.useState(0);
 
     const handleNext = () => {
+        console.log("nurse: ", selectedNurse)
+        console.log("doctor: ", selectedDoctor)
+        if (selectedNurse == false && selectedDoctor == false) {
+            return <Typography component="h1" variant="h4" align="center">
+                กรุณาระบุประเภทของผู้ใช้
+            </Typography>
+        }
         setActiveStep(activeStep + 1);
-        console.log(userType)
     };
 
     const handleBack = () => {
@@ -134,6 +148,11 @@ export default function RegisterComp() {
                                         <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
                                             ย้อนกลับ
                                         </Button>
+                                    )}
+                                    {selectedNurse == false && selectedDoctor == false && (
+                                        <Typography component="h1" variant="subtitle1" align="center" >
+                                            กรุณาระบุประเภทของผู้ใช้
+                                        </Typography>
                                     )}
                                     {activeStep !== steps.length - 1 && (
                                         <Button

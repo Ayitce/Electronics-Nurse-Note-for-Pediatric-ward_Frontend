@@ -22,64 +22,45 @@ import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import { Button, Grid, InputAdornment, TextField } from '@mui/material';
 import { useAuth } from '@/_auth';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { disableUser, getAllUser, getDoctorUser, getNurseUser, getSearchedUser } from '@/services/userService';
 
-export interface IPatientCard {
+export interface IUserForm {
     id: number;
-    bed: { id: number };
-    room: { id: number };
-    patient: {
+    username: string;
+    authorities: string[];
+    enabled: boolean;
+    nurse: {
         name: string;
         surname: string;
-        gender: any;
-        idCard: string;
-        height: string;
-        weight: string;
-        bloodType: any;
-        dateOfBirth: any;
-        hn: string;
-        symptom: string;
-        allergies: string;
-        address: string;
-        parentName: string;
         phoneNumber: string;
-        image: any;
-        doctor: {
-            id: number;
-            name: string;
-            surname: string;
-            medicalID: string;
-            phoneNumber: string;
-        };
-    };
-    admitDateTime: any;
-    dischargeDate: any;
-    an: string;
-    age: string;
+        medicalID: string;
+        gender: string;
+    }
+    doctor: {
+        name: string;
+        surname: string;
+        phoneNumber: string;
+        medicalID: string;
+        gender: string;
+    }
 }
 
-export interface IAdmitTable {
-    bed: string;
-    room: string;
+export interface INurseTable {
+    username: string;
     name: string;
     surname: string;
-    hn: string;
-    admitDateTime: string;
-    dischargeDate: string;
-    an: string;
+    phoneNumber: string;
+    medicalID: string;
+    gender: string;
+    type: string;
+    enabled: boolean;
+    id: number;
 }
 /* 
-const [patients, setPatients] = useState<IPatientForm>()
-
-useEffect(() => {
-    loadPatientFromApi()
-}, [])
-
-const loadPatientFromApi = async () => {
-    const response = await axios.get<IPatientForm>(`${window.origin}/api/patient/patient_list`)
-    setPatients(response.data)
-}
-
-const rows = patients; */
+export interface UserTypeProps {
+    type: string;
+} */
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
     if (b[orderBy] < a[orderBy]) {
@@ -123,31 +104,18 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
 
 interface HeadCell {
     disablePadding: boolean;
-    id: keyof IAdmitTable;
+    id: keyof INurseTable;
     label: string;
     numeric: boolean;
 }
 
 const headCells: readonly HeadCell[] = [
     {
-        id: 'an',
+        id: 'username',
         numeric: false,
         disablePadding: true,
-        label: 'รหัส Admit',
+        label: 'email',
     },
-    {
-        id: 'room',
-        numeric: true,
-        disablePadding: false,
-        label: 'ห้อง',
-    },
-    {
-        id: 'bed',
-        numeric: true,
-        disablePadding: false,
-        label: 'เตียง',
-    },
-
     {
         id: 'name',
         numeric: true,
@@ -161,29 +129,30 @@ const headCells: readonly HeadCell[] = [
         label: 'นามสกุล',
     },
 
+    {
+        id: 'gender',
+        numeric: true,
+        disablePadding: false,
+        label: 'เพศ',
+    },
+    {
+        id: 'phoneNumber',
+        numeric: true,
+        disablePadding: false,
+        label: 'เบอร์โทรศัพท์',
+    },
+
 
     {
-        id: 'hn',
+        id: 'type',
         numeric: true,
         disablePadding: false,
-        label: 'รหัสผู้ป่วย',
-    },
-    /*  {
-         id: 'dischargeDate',
-         numeric: true,
-         disablePadding: false,
-         label: 'เบอร์ติดต่อ',
-     }, */
-    {
-        id: 'admitDateTime',
-        numeric: true,
-        disablePadding: false,
-        label: 'วันที่เข้ารับการรักษา',
-    },
+        label: 'ตำแหน่ง',
+    }
 ];
 
 interface EnhancedTableProps {
-    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof IAdmitTable) => void;
+    onRequestSort: (event: React.MouseEvent<unknown>, property: keyof INurseTable) => void;
     order: Order;
     orderBy: string;
     rowCount: number;
@@ -193,7 +162,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     const { order, orderBy, rowCount, onRequestSort } =
         props;
     const createSortHandler =
-        (property: keyof IAdmitTable) => (event: React.MouseEvent<unknown>) => {
+        (property: keyof INurseTable) => (event: React.MouseEvent<unknown>) => {
             onRequestSort(event, property);
         };
 
@@ -239,22 +208,41 @@ export default function EnhancedTable() {
         //loadPatientFromApi()
         const fetchData = async () => {
             // get the data from the api
-            const admit = await loadAdmitFromApi()
-            const arr: { bed: any; room: any; name: any; surname: any; hn: any; admitDateTime: any; dischargeDate: any; an: any; }[] = [];
-            console.log(admit)
-            Object.keys(admit).forEach((id) => {
-                console.log(admit[id].patient.name)
-                arr.push({
-                    "bed": admit[id].bed.id,
-                    "room": admit[id].room.id,
-                    "name": admit[id].patient.name,
-                    "surname": admit[id].patient.surname,
-                    "hn": admit[id].patient.hn,
-                    "admitDateTime": admit[id].admitDateTime,
-                    "dischargeDate": admit[id].dischargeDate,
-                    "an": admit[id].an
-                })
+            const user = await loadUserFromApi()
+            const arr: { username: any; name: any; surname: any; gender: any; medicalID: any; phoneNumber: any; type: string; id: any; }[] = [];
+            console.log(user)
+            /*  if () { */
+
+            Object.keys(user).forEach((id) => {
+                if (!!user[id].nurse && user[id].enabled == true) {
+                    // console.log(user[id].nurse.name)
+                    arr.push({
+                        "username": user[id].username,
+                        "name": user[id].nurse.name,
+                        "surname": user[id].nurse.surname,
+                        "gender": user[id].nurse.gender,
+                        "medicalID": user[id].nurse.medicalID,
+                        "phoneNumber": user[id].nurse.phoneNumber,
+                        "type": "nurse",
+                        "id": user[id].id
+                        //"enabled": user[id].enabled
+                    })
+                } else if (!!user[id].doctor && user[id].enabled == true) {
+                    //console.log(user[id].doctor.name)
+                    arr.push({
+                        "username": user[id].username,
+                        "name": user[id].doctor.name,
+                        "surname": user[id].doctor.surname,
+                        "gender": user[id].doctor.gender,
+                        "medicalID": user[id].doctor.medicalID,
+                        "phoneNumber": user[id].doctor.phoneNumber,
+                        "type": "doctor",
+                        "id": user[id].id
+                        // "enabled": user[id].enabled
+                    })
+                }
             })
+
             console.log(arr);
             setRows(arr)
 
@@ -266,78 +254,62 @@ export default function EnhancedTable() {
 
     }, [role])
 
-    const loadAdmitFromApi = async () => {
-        if (role == "ROLE_NURSE") {
-            const response = await getAdmitListForNurse()
-            // setPatients(response.data)
-            console.log(response.data)
-            return response.data
-        } else {
-            const response = await getAdmitListForDoctor()
-            // setPatients(response.data)
-            console.log(response.data)
-            return response.data
-        }
-
-
+    const loadUserFromApi = async () => {
+        const response = await getAllUser()
+        console.log(response.data)
+        return response.data
     }
 
     const handleSearch = async (searchText: string) => {
-        if (role == "ROLE_NURSE") {
-            const res = (await getSearchedAdmitForNurse(searchText)).data
-            const arr: { bed: any; room: any; name: any; surname: any; hn: any; admitDateTime: any; dischargeDate: any; an: any; }[] = [];
-            Object.keys(res).forEach((id) => {
-                console.log(res[id].patient.name)
+        const user = (await getSearchedUser(searchText)).data
+        const arr: { username: any; name: any; surname: any; gender: any; medicalID: any; phoneNumber: any; type: string; id: any; }[] = [];
+        console.log(user)
+        /*  if () { */
+        Object.keys(user).forEach((id) => {
+            if (!!user[id].nurse && user[id].enabled == true) {
+                // console.log(user[id].nurse.name)
                 arr.push({
-                    "bed": res[id].bed.id,
-                    "room": res[id].room.id,
-                    "name": res[id].patient.name,
-                    "surname": res[id].patient.surname,
-                    "hn": res[id].patient.hn,
-                    "admitDateTime": res[id].admitDateTime,
-                    "dischargeDate": res[id].dischargeDate,
-                    "an": res[id].an
+                    "username": user[id].username,
+                    "name": user[id].nurse.name,
+                    "surname": user[id].nurse.surname,
+                    "gender": user[id].nurse.gender,
+                    "medicalID": user[id].nurse.medicalID,
+                    "phoneNumber": user[id].nurse.phoneNumber,
+                    "type": "nurse",
+                    "id": user[id].id
+                    //"enabled": user[id].enabled
                 })
-            })
-            console.log(arr)
-            setRows(arr)
-        } else {
-            const res = (await getSearchedAdmitForDoctor(searchText)).data
-            const arr: { bed: any; room: any; name: any; surname: any; hn: any; admitDateTime: any; dischargeDate: any; an: any; }[] = [];
-            Object.keys(res).forEach((id) => {
-                console.log(res[id].patient.name)
+            } else if (!!user[id].doctor && user[id].enabled == true) {
+                //console.log(user[id].doctor.name)
                 arr.push({
-                    "bed": res[id].bed.id,
-                    "room": res[id].room.id,
-                    "name": res[id].patient.name,
-                    "surname": res[id].patient.surname,
-                    "hn": res[id].patient.hn,
-                    "admitDateTime": res[id].admitDateTime,
-                    "dischargeDate": res[id].dischargeDate,
-                    "an": res[id].an
+                    "username": user[id].username,
+                    "name": user[id].doctor.name,
+                    "surname": user[id].doctor.surname,
+                    "gender": user[id].doctor.gender,
+                    "medicalID": user[id].doctor.medicalID,
+                    "phoneNumber": user[id].doctor.phoneNumber,
+                    "type": "doctor",
+                    "id": user[id].id
+                    // "enabled": user[id].enabled
                 })
-            })
-            console.log(arr)
-            setRows(arr)
-        }
+            }
+        })
 
-
+        console.log(arr);
+        setRows(arr)
     }
     const [order, setOrder] = React.useState<Order>('asc');
-    const [orderBy, setOrderBy] = React.useState<keyof IAdmitTable>('an');
+    const [orderBy, setOrderBy] = React.useState<keyof INurseTable>('username');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     const handleRequestSort = (
         event: React.MouseEvent<unknown>,
-        property: keyof IAdmitTable,
+        property: keyof INurseTable,
     ) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
-    };
-    const handleClick = (an: String | number) => {
-        router.push("/patient/" + an)
     };
 
     const handleChangePage = (event: unknown, newPage: number) => {
@@ -348,6 +320,13 @@ export default function EnhancedTable() {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
+
+
+    const handleDisableUser = async (id: string | number) => {
+        await disableUser(id)
+        router.reload()
+    };
+
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
@@ -370,7 +349,7 @@ export default function EnhancedTable() {
                         <TextField
                             id="input-with-icon-textfield"
                             label="ค้นหา"
-                            placeholder="ชื่อ นามสกุล, รหัสผู้ป่วย, รหัส admit"
+                            placeholder="email, ชื่อ, นามสกุล"
                             onChange={async (search) => {
                                 if (search.target.value == "") return
                                 handleSearch(search.target.value)
@@ -388,20 +367,20 @@ export default function EnhancedTable() {
                     </Grid>
                     <Grid item xs={12} sm={6.5}></Grid>
                     <Grid item xs={12} sm={1.5} >
-                        {role == "ROLE_NURSE" ?
-                            <Button
-                                variant='contained'
-                                fullWidth
-                                onClick={() => router.push("/patient/admit")}
-                            >
-                                <AddIcon />
-                                เพิ่มคนไข้
-                            </Button>
-                            :
-                            <></>
-                        }
+
+                        <Button
+                            variant='contained'
+                            fullWidth
+                            onClick={() => router.push("/user/register")}
+                        >
+                            <AddIcon />
+                            เพิ่ม User
+                        </Button>
+
 
                     </Grid>
+                    <Grid item xs={12} sm={6.5}></Grid>
+
                 </Grid>
                 <TableContainer>
                     <Table
@@ -420,14 +399,10 @@ export default function EnhancedTable() {
                                 const labelId = `enhanced-table-checkbox-${index}`;
 
                                 return (
-                                    (row.dischargeDate == null) &&
                                     <TableRow
                                         hover
-                                        onClick={() => { handleClick(row.an) }}
-                                        role="checkbox"
                                         tabIndex={-1}
-                                        key={row.an}
-                                        sx={{ cursor: 'pointer' }}
+                                        key={row.username}
                                     >
                                         <TableCell padding="checkbox">
 
@@ -438,15 +413,19 @@ export default function EnhancedTable() {
                                             scope="row"
                                             padding="none"
                                         >
-                                            {row.an}
+                                            {row.username}
                                         </TableCell>
-                                        <TableCell align="right">{row.room}</TableCell>
-                                        <TableCell align="right">{row.bed}</TableCell>
                                         <TableCell align="right">{row.name}</TableCell>
                                         <TableCell align="right">{row.surname}</TableCell>
-                                        <TableCell align="right">{row.hn}</TableCell>
-                                        <TableCell align="right">{row.admitDateTime}</TableCell>
-
+                                        <TableCell align="right">{row.gender}</TableCell>
+                                        <TableCell align="right">{row.phoneNumber}</TableCell>
+                                        <TableCell align="right">{row.type}</TableCell>
+                                        <TableCell align="right">{row.medicalID}</TableCell>
+                                        <TableCell align="left">
+                                            <Button variant='contained' onClick={() => { handleDisableUser(row.id) }}>
+                                                <DeleteForeverIcon />
+                                            </Button>
+                                        </TableCell>
                                     </TableRow>
                                 );
                             })}

@@ -8,14 +8,20 @@ export interface IRegisterForm {
     email: string;
     password: string;
     confirmPassword: string;
-    dateOfBirth: any;
     medicalID: string;
     phoneNumber: string;
 }
 
-export const registerPatient = (user: IRegisterForm) => {
+export const registerNurse = (user: IRegisterForm) => {
     return api.http.post<ResponseEntity<IRegisterForm>>(
-        `${window.origin}/api/registerNurse`,
+        `${window.origin}/api/register/nurse`,
+        user
+    );
+}
+
+export const registerDoctor = (user: IRegisterForm) => {
+    return api.http.post<ResponseEntity<IRegisterForm>>(
+        `${window.origin}/api/register/doctor`,
         user
     );
 }
@@ -30,8 +36,42 @@ export const getProfile = () => {
     return api.http.get<ResponseEntity<IProfile>>(`${window.origin}/api/profile`)
 }
 
-export const isNurse = async () => {
-    const res = await getProfile();
-    const isNurse = res.data.authorities.includes("ROLE_NURSE");
-    return isNurse;
+export interface IUserForm {
+    id: number;
+    username: string;
+    authorities: string[];
+    enabled: boolean;
+    nurse: {
+        name: string;
+        surname: string;
+        phoneNumber: string;
+        medicalID: string;
+        gender: string;
+    }
+    doctor: {
+        name: string;
+        surname: string;
+        phoneNumber: string;
+        medicalID: string;
+        gender: string;
+    }
+}
+export const getAllUser = () => {
+    return api.http.get<ResponseEntity<IUserForm>>(`${window.origin}/api/user/userList`)
+}
+
+export const getNurseUser = () => {
+    return api.http.get<ResponseEntity<IUserForm>>(`${window.origin}/api/user/nurse`)
+}
+
+export const getDoctorUser = () => {
+    return api.http.get<ResponseEntity<IUserForm>>(`${window.origin}/api/user/doctor`)
+}
+
+export const disableUser = (id: string | number) => {
+    return api.http.post<ResponseEntity<IUserForm>>(`${window.origin}/api/user/disable/${id}`)
+}
+
+export const getSearchedUser = (search: string) => {
+    return api.http.get<ResponseEntity<IUserForm>>(`${window.origin}/api/user/search/${search}`)
 }

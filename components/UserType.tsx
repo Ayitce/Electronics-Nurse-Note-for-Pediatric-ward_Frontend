@@ -12,9 +12,14 @@ import Image from 'next/image'
 import { useControlContext } from './ControlContext';
 
 
-export default function UserType() {
-    const [selectedNurse, setSelectedNurse] = useState(false);
-    const [selectedDoctor, setSelectedDoctor] = useState(false);
+interface RegisterFormProps {
+    selectedNurse: boolean;
+    setSelectedNurse: React.Dispatch<React.SetStateAction<boolean>>;
+    selectedDoctor: boolean;
+    setSelectedDoctor: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function UserType(props: RegisterFormProps) {
 
     const { userType, setUserType } = useControlContext()
 
@@ -29,17 +34,17 @@ export default function UserType() {
                         <ToggleButton
                             value="check"
                             fullWidth
-                            selected={selectedNurse}
+                            selected={props.selectedNurse}
                             onChange={() => {
-                                setSelectedNurse(!selectedNurse)
-                                if (selectedDoctor == true) {
-                                    setSelectedDoctor(false)
+                                props.setSelectedNurse(!props.selectedNurse)
+                                if (props.selectedDoctor == true) {
+                                    props.setSelectedDoctor(false)
                                 }
-                                if (!selectedNurse) {
+                                if (!props.selectedNurse) {
                                     setUserType("nurse")
-                                }else if (selectedNurse) {
+                                } else if (props.selectedNurse) {
                                     setUserType("")
-                                }                                 
+                                }
                             }}
                         ><CardContent>
 
@@ -61,18 +66,18 @@ export default function UserType() {
                         <ToggleButton
                             value="check"
                             fullWidth
-                            selected={selectedDoctor}
+                            selected={props.selectedDoctor}
                             onChange={() => {
                                 setUserType("")
-                                setSelectedDoctor(!selectedDoctor)
-                                if (selectedNurse == true) {
-                                    setSelectedNurse(false)
-                                } 
-                                if (!selectedDoctor) {
+                                props.setSelectedDoctor(!props.selectedDoctor)
+                                if (props.selectedNurse == true) {
+                                    props.setSelectedNurse(false)
+                                }
+                                if (!props.selectedDoctor) {
                                     setUserType("doctor")
-                                }else if (selectedDoctor) {
+                                } else if (props.selectedDoctor) {
                                     setUserType("")
-                                } 
+                                }
                             }}
                         ><CardContent>
 

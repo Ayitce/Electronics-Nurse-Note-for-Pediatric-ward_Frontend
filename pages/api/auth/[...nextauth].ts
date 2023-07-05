@@ -34,6 +34,8 @@ export const authOptions: NextAuthOptions = {
                         return { id: accessToken, accessToken, role: "ROLE_NURSE" }
                     } else if (res.data.authorities.includes("ROLE_DOCTOR")) {
                         return { id: accessToken, accessToken, role: "ROLE_DOCTOR" }
+                    } else if (res.data.authorities.includes("ROLE_ADMIN")) {
+                        return { id: accessToken, accessToken, role: "ROLE_ADMIN" }
                     } else {
                         throw new Error("Unauthorized role.")
                     }

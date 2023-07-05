@@ -60,7 +60,8 @@ export default function AdmitPatient() {
         formState: { errors, isSubmitting },
         setError,
         control,
-        setValue
+        setValue,
+        trigger
     } = useForm<IPatientCard>({
         mode: "onSubmit"
     })
@@ -144,8 +145,10 @@ export default function AdmitPatient() {
 
     const [activeStep, setActiveStep] = React.useState(0);
 
-    const handleNext = () => {
-        setActiveStep(activeStep + 1);
+    const handleNext = async () => {
+        const isStepValid = await trigger();
+        if (isStepValid)
+            setActiveStep(activeStep + 1);
     };
 
     const handleBack = () => {

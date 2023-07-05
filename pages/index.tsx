@@ -13,17 +13,21 @@ const inter = Inter({ subsets: ['latin'] })
 
 
 export default function Home() {
-  const { isLoggedIn } = useAuth()
+  const { isLoggedIn, role } = useAuth()
 
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && role == "ROLE_NURSE" || role == "ROLE_DOCTOR") {
       router.push("/patient/list")
+    } else if (isLoggedIn && role == "ROLE_ADMIN") {
+      console.log(role)
+      router.push("/user")
     } else {
+      console.log(role)
       router.push("/signin")
     }
 
-  }, [isLoggedIn]);
+  }, [isLoggedIn, role]);
 
   return (
     <>

@@ -419,22 +419,7 @@ export default function EnhancedTable() {
                         />
                     </Grid>
                     <Grid item xs={12} sm={7}></Grid>
-                    <Grid item xs={12} sm={1.5} >
-                        {role == "ROLE_NURSE" ?
-                            <Button
-                                variant='contained'
-                                fullWidth
-                                onClick={() => router.push("/patient/admit")}
-                                sx={{ color: "white" }}
-                            >
-                                <AddIcon />
-                                เพิ่มคนไข้
-                            </Button>
-                            :
-                            <></>
-                        }
-
-                    </Grid>
+                    
                 </Grid>
                 <TableContainer>
                     <Table

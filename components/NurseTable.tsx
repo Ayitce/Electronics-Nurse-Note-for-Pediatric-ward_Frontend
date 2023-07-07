@@ -376,8 +376,17 @@ export default function EnhancedTable() {
     };
 
     const [openDischarge, setOpenDischarge] = React.useState(false);
+    const [rowUsername, setRowUsername] = React.useState<string | number>('');
+    const [rowName, setRowName] = React.useState<string | number>('');
+    const [rowSurname, setRowSurname] = React.useState<string | number>('');
+    const [rowID, setRowID] = React.useState<string | number>(0);
 
-    const handleClickOpenDischarge = () => {
+
+    const handleClickOpenDischarge = (id: string | number, username: string | number, name: string | number, surname: string | number) => {
+        setRowID(id)
+        setRowUsername(username)
+        setRowName(name)
+        setRowSurname(surname)
         setOpenDischarge(true);
     };
 
@@ -483,53 +492,13 @@ export default function EnhancedTable() {
                                         <TableCell align="left">
                                             <Button variant='contained'
                                                 color='error'
-                                                onClick={handleClickOpenDischarge}
+                                                onClick={() => { handleClickOpenDischarge(row.id, row.username, row.name, row.surname) }}
                                                 sx={{ color: "white" }}
                                             >
                                                 <DeleteForeverIcon />
                                             </Button>
                                         </TableCell>
-                                        <Dialog
-                                            open={openDischarge}
-                                            onClose={handleCloseDischarge}
-                                            aria-labelledby="alert-dialog-title"
-                                            aria-describedby="alert-dialog-description"
-                                        >
-                                            <DialogTitle id="alert-dialog-title">
-                                                <Typography variant="h6" align='center' >
-                                                    {"ยืนยันจะลบ User นี้ใช่หรือไม่"}
-                                                </Typography>
-                                            </DialogTitle>
-                                            <DialogContent >
-                                                <Paper sx={{ p: { xs: 3, md: 3 }, backgroundColor: '#80A9E5' }}>
-                                                    <Grid container alignItems="center" justifyContent="center">
-                                                        <Grid item sm={12} alignItems="center">
-                                                            <Typography variant="h6" align='center' fontWeight='bold'>
-                                                                {row.username}
-                                                            </Typography>
-                                                        </Grid>
-                                                        <Grid item sm={12} alignItems="center">
-                                                            <Typography variant="h6" align='center' fontWeight='bold'>
-                                                                {row.name} {row.surname}
-                                                            </Typography>
-                                                        </Grid>
-                                                    </Grid>
-                                                </Paper>
-                                                <Grid container alignItems="center" justifyContent="center" sx={{ mt: { xs: 3, md: 3 } }}>
-                                                    <Grid item sm={12} alignItems="center">
-                                                        <Typography variant="subtitle1" align='center' color='error'>
-                                                            *เมื่อยืนยัน User นี่จะไม่สามารถใช้ได้อีกต่อไป!
-                                                        </Typography>
-                                                    </Grid>
-                                                </Grid>
-                                            </DialogContent>
-                                            <DialogActions>
-                                                <Button onClick={handleCloseDischarge}>ยกเลิก</Button>
-                                                <Button variant='contained' onClick={() => { handleDisableUser(row.id) }} autoFocus>
-                                                    ยืนยัน
-                                                </Button>
-                                            </DialogActions>
-                                        </Dialog>
+
                                     </TableRow>
                                 );
                             })}
@@ -544,6 +513,47 @@ export default function EnhancedTable() {
                             )}
                         </TableBody>
                     </Table>
+                    <Dialog
+                        open={openDischarge}
+                        onClose={handleCloseDischarge}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">
+                            <Typography variant="h6" align='center' >
+                                {"ยืนยันจะลบ User นี้ใช่หรือไม่"}
+                            </Typography>
+                        </DialogTitle>
+                        <DialogContent >
+                            <Paper sx={{ p: { xs: 3, md: 3 }, backgroundColor: '#80A9E5' }}>
+                                <Grid container alignItems="center" justifyContent="center">
+                                    <Grid item sm={12} alignItems="center">
+                                        <Typography variant="h6" align='center' fontWeight='bold'>
+                                            {rowUsername}
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item sm={12} alignItems="center">
+                                        <Typography variant="h6" align='center' fontWeight='bold'>
+                                            {rowName} {rowSurname}
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
+                            </Paper>
+                            <Grid container alignItems="center" justifyContent="center" sx={{ mt: { xs: 3, md: 3 } }}>
+                                <Grid item sm={12} alignItems="center">
+                                    <Typography variant="subtitle1" align='center' color='error'>
+                                        *เมื่อยืนยัน User นี่จะไม่สามารถใช้ได้อีกต่อไป!
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseDischarge}>ยกเลิก</Button>
+                            <Button variant='contained' onClick={() => { handleDisableUser(rowID) }} autoFocus>
+                                ยืนยัน
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
                 </TableContainer>
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}

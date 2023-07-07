@@ -88,7 +88,7 @@ export default function PatientCard(props: IPatientCard) {
                                                 width={150}
                                                 height={150}
                                                 sizes="100vw"
-                                                alt="NurseIcon" />
+                                                alt="" />
                                             :
                                             <CircularProgress />
                                         }

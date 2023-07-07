@@ -291,17 +291,19 @@ export default function EnhancedTable() {
                 const res = (await getSearchedAdmitForNurse(searchText)).data
                 const arr: { bed: any; room: any; name: any; surname: any; hn: any; admitDateTime: any; dischargeDate: any; an: any; }[] = [];
                 Object.keys(res).forEach((id) => {
-                    console.log(res[id].patient.name)
-                    arr.push({
-                        "bed": res[id].bed.id,
-                        "room": res[id].room.id,
-                        "name": res[id].patient.name,
-                        "surname": res[id].patient.surname,
-                        "hn": res[id].patient.hn,
-                        "admitDateTime": res[id].admitDateTime,
-                        "dischargeDate": res[id].dischargeDate,
-                        "an": res[id].an
-                    })
+                    if (res[id].dischargeDate == null) {
+                        console.log(res[id].patient.name)
+                        arr.push({
+                            "bed": res[id].bed.id,
+                            "room": res[id].room.id,
+                            "name": res[id].patient.name,
+                            "surname": res[id].patient.surname,
+                            "hn": res[id].patient.hn,
+                            "admitDateTime": res[id].admitDateTime,
+                            "dischargeDate": res[id].dischargeDate,
+                            "an": res[id].an
+                        })
+                    }
                 })
                 console.log(arr)
                 setRows(arr)
@@ -309,17 +311,20 @@ export default function EnhancedTable() {
                 const res = (await getSearchedAdmitForDoctor(searchText)).data
                 const arr: { bed: any; room: any; name: any; surname: any; hn: any; admitDateTime: any; dischargeDate: any; an: any; }[] = [];
                 Object.keys(res).forEach((id) => {
-                    console.log(res[id].patient.name)
-                    arr.push({
-                        "bed": res[id].bed.id,
-                        "room": res[id].room.id,
-                        "name": res[id].patient.name,
-                        "surname": res[id].patient.surname,
-                        "hn": res[id].patient.hn,
-                        "admitDateTime": res[id].admitDateTime,
-                        "dischargeDate": res[id].dischargeDate,
-                        "an": res[id].an
-                    })
+                    if (res[id].dischargeDate == null) {
+                        console.log(res[id].patient.name)
+                        arr.push({
+                            "bed": res[id].bed.id,
+                            "room": res[id].room.id,
+                            "name": res[id].patient.name,
+                            "surname": res[id].patient.surname,
+                            "hn": res[id].patient.hn,
+                            "admitDateTime": res[id].admitDateTime,
+                            "dischargeDate": res[id].dischargeDate,
+                            "an": res[id].an
+                        })
+                    }
+
                 })
                 console.log(arr)
                 setRows(arr)

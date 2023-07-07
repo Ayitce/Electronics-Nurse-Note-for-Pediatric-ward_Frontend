@@ -19,6 +19,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './api/auth/[...nextauth]';
 import { setup } from '@/lib/csrf';
+import Navbar from '@/components/Navbar';
 
 
 export interface LoginForm {
@@ -51,9 +52,13 @@ export default function SignIn() {
     })
   })
 
+  const { isLoggedIn, role } = useAuth()
 
   return (
     <>
+      <Navbar item={
+        <Button href="/" color="inherit"></Button>
+      } isLoggedIn={isLoggedIn} />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -109,9 +114,9 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/user/register" variant="body2">
+                {/*  <Link href="/user/register" variant="body2">
                   {"Don't have an account? Sign Up"}
-                </Link>
+                </Link> */}
               </Grid>
             </Grid>
           </Box>

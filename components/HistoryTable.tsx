@@ -180,6 +180,12 @@ const headCells: readonly HeadCell[] = [
         disablePadding: false,
         label: 'วันที่เข้ารับการรักษา',
     },
+    {
+        id: 'dischargeDate',
+        numeric: true,
+        disablePadding: false,
+        label: 'วันที่ออกจากโรงพยาบาล',
+    },
 ];
 
 interface EnhancedTableProps {
@@ -243,7 +249,7 @@ export default function EnhancedTable() {
             const arr: { bed: any; room: any; name: any; surname: any; hn: any; admitDateTime: any; dischargeDate: any; an: any; }[] = [];
             console.log(admit)
             Object.keys(admit).forEach((id) => {
-                if (admit[id].dischargeDate == null) {
+                if (admit[id].dischargeDate != null) {
                     console.log(admit[id].patient.name)
                     arr.push({
                         "bed": admit[id].bed.id,
@@ -449,7 +455,7 @@ export default function EnhancedTable() {
                                 const labelId = `enhanced-table-checkbox-${index}`;
 
                                 return (
-                                    (row.dischargeDate == null) &&
+                                    (row.dischargeDate != null) &&
                                     <TableRow
                                         hover
                                         onClick={() => { handleClick(row.an) }}
@@ -475,7 +481,7 @@ export default function EnhancedTable() {
                                         <TableCell align="right">{row.surname}</TableCell>
                                         <TableCell align="right">{row.hn}</TableCell>
                                         <TableCell align="right">{row.admitDateTime}</TableCell>
-
+                                        <TableCell align="right">{row.dischargeDate}</TableCell>
                                     </TableRow>
                                 );
                             })}

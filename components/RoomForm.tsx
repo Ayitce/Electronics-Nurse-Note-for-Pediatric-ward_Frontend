@@ -6,8 +6,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { Card, CardContent, MenuItem, ToggleButton } from '@mui/material';
 import { useEffect, useState } from 'react';
-import nursePNG from '../public/assets/nurse.png'
-import doctorPNG from '../public/assets/doctor.png'
+import bedPNG from '../public/assets/bed.png'
+import roomPNG from '../public/assets/room.png'
 import Image from 'next/image'
 import { IPatientCard } from '@/pages/patient/admit';
 import { Control, FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
@@ -84,17 +84,19 @@ export default function RoomForm(props: RoomFormProps) {
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
-                Type
+                Room Bed AN
             </Typography>
-            <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
+            <Grid container spacing={3} sx={{ px: 5 }} >
+                <Grid item xs={12} sm={6} >
                     <Card onClick={() => { }} >
-                        <CardContent>
-                            <Image src={nursePNG}
+                        <CardContent
+                            sx={{ px: 12.5 }}>
+                            <Image src={roomPNG}
                                 width={150}
                                 height={150}
                                 sizes="100vw"
-                                alt="NurseIcon" />
+                                alt="RoomIcon"
+                            />
                             <Typography variant="h6" gutterBottom align='center'>
                                 Room
                             </Typography>
@@ -118,20 +120,18 @@ export default function RoomForm(props: RoomFormProps) {
                                     </MenuItem>
                                 ))}
                             </TextField>
-
                         </CardContent>
                     </Card>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <Card onClick={() => { }} >
+                    <Card onClick={() => { }}>
 
-                        <CardContent>
-
-                            <Image src={doctorPNG}
+                        <CardContent sx={{ px: 12.5 }}>
+                            <Image src={bedPNG}
                                 width={150}
                                 height={150}
                                 sizes="100vw"
-                                alt="DoctorIcon" />
+                                alt="BedIcon" />
                             <Typography variant="h6" gutterBottom align='center'>
                                 Bed
                             </Typography>

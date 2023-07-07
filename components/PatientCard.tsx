@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { Control, Controller, FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import { IRegisterForm } from './RegisterComp';
-import { AppBar, CardContent, CircularProgress, Container, Paper, Toolbar } from '@mui/material';
+import { AppBar, Box, CardContent, CircularProgress, Container, Paper, Toolbar } from '@mui/material';
 import nursePNG from '../public/assets/nurse.png'
 import Image from 'next/image'
 import { StorageReference, getDownloadURL, ref } from 'firebase/storage';
@@ -71,24 +71,22 @@ export default function PatientCard(props: IPatientCard) {
                 <Container component="main" maxWidth="md" sx={{ mb: 4 }}>
 
                     <Paper sx={{ my: { xs: 3, md: 6 } }}>
-                        <div>
-                            <Toolbar variant='dense'>
-                                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                                    ประวัติส่วนตัวผู้ป่วย หมายเลขแอดมิท  {props.an}
-                                </Typography>
-                                <Typography align="right" variant="subtitle1" component="div" sx={{ flexGrow: 1 }}>
-                                    รหัสประจำตัวผู้ป่วย  {props.patient.hn}
-                                </Typography>
-                            </Toolbar>
-                        </div>
+                        <Toolbar variant='dense' sx={{ backgroundColor: '#FDD7F0' }}>
+                            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                                ประวัติส่วนตัวผู้ป่วย หมายเลขแอดมิท  {props.an}
+                            </Typography>
+                            <Typography align="right" variant="subtitle1" component="div" sx={{ flexGrow: 1 }}>
+                                รหัสประจำตัวผู้ป่วย  {props.patient.hn}
+                            </Typography>
+                        </Toolbar>
                         <Grid container spacing={3} sx={{ p: { xs: 3, md: 2 }, pt: { xs: 3, md: 3 } }}>
-                            <Grid item container md={2}>
+                            <Grid item container md={3}>
                                 <Grid item md={3}>
                                     <CardContent >
                                         {uploadedImages ?
                                             <Image src={uploadedImages}
-                                                width={100}
-                                                height={100}
+                                                width={150}
+                                                height={150}
                                                 sizes="100vw"
                                                 alt="NurseIcon" />
                                             :
@@ -100,70 +98,103 @@ export default function PatientCard(props: IPatientCard) {
 
                                 </Grid>
                             </Grid>
-                            <Grid item container md={5}>
+                            <Grid item container md={4.5}>
                                 <Grid item md={12}>
-                                    <Typography variant="h5"  >
+                                    <Typography variant="h5" fontWeight='bold' >
                                         {props.patient.name} {props.patient.surname}
                                     </Typography>
                                 </Grid>
                                 <Grid item md={6}>
-                                    <Typography variant="subtitle1"  >
-                                        อายุ {props.age}
+                                    <Typography variant="subtitle1" component='div' >
+                                        <Box fontWeight='bold' display='inline'>  อายุ :  </Box>
+                                        {props.age}
                                     </Typography>
                                 </Grid>
                                 <Grid item md={6}>
                                     <Typography variant="subtitle1"  >
-                                        กรุ๊ปเลือด  {props.patient.bloodType}
+                                        <Box fontWeight='bold' display='inline'>
+                                            กรุ๊ปเลือด :
+                                        </Box>
+                                        {props.patient.bloodType}
                                     </Typography>
                                 </Grid>
                                 <Grid item md={12}>
                                     <Typography variant="subtitle1"  >
-                                        วัน เดือน ปีเกิด {props.patient.dateOfBirth}
+                                        <Box fontWeight='bold' display='inline'>
+                                            วัน เดือน ปีเกิด :
+                                        </Box>
+                                        {props.patient.dateOfBirth}
                                     </Typography>
                                 </Grid>
                                 <Grid item md={12}>
                                     <Typography variant="subtitle1"  >
-                                        เลขประจำตัวประชาชน {props.patient.idCard}
+                                        <Box fontWeight='bold' display='inline'>
+                                            เลขประจำตัวประชาชน :
+                                        </Box>
+                                        {props.patient.idCard}
                                     </Typography>
                                 </Grid>
                                 <Grid item md={6}>
                                     <Typography variant="subtitle1"  >
-                                        ส่วนสูง {props.patient.height}  เซนติเมตร
+                                        <Box fontWeight='bold' display='inline'>
+                                            ส่วนสูง :
+                                        </Box>
+                                        {props.patient.height}  ซม.
                                     </Typography>
                                 </Grid>
                                 <Grid item md={6}>
                                     <Typography variant="subtitle1"  >
-                                        น้ำหนัก {props.patient.weight}  กิโลกรัม
+                                        <Box fontWeight='bold' display='inline'>
+                                            น้ำหนัก :
+                                        </Box>
+                                        {props.patient.weight}  กก.
                                     </Typography>
                                 </Grid>
                                 <Grid item md={6}>
                                     <Typography variant="subtitle1"  >
-                                        ผู้ปกครอง {props.patient.parentName}
+                                        <Box fontWeight='bold' display='inline'>
+                                            ผู้ปกครอง :
+                                        </Box>
+                                        {props.patient.parentName}
                                     </Typography>
                                 </Grid>
                                 <Grid item md={6}>
                                     <Typography variant="subtitle1"  >
-                                        เบอร์ {props.patient.phoneNumber}
+                                        <Box fontWeight='bold' display='inline'>
+                                            เบอร์ :
+                                        </Box>
+                                        {props.patient.phoneNumber}
                                     </Typography>
                                 </Grid>
                                 <Grid item md={12}>
                                     <Typography variant="subtitle1"  >
-                                        ที่อยู่ปัจจุบัน {props.patient.address}
+                                        <Box fontWeight='bold' display='inline'>
+                                            ที่อยู่ปัจจุบัน :
+                                        </Box>
+                                        {props.patient.address}
                                     </Typography>
                                 </Grid>
                             </Grid>
-                            <Grid item container md={5}>
+                            <Grid item container md={4.5}>
                                 <Grid item md={12}></Grid>
 
                                 <Grid item md={12}>
                                     <Typography variant="subtitle1"  >
-                                        ประวัติการแพ้ยา {props.patient.allergies}
+                                        <Box fontWeight='bold' display='inline'>
+                                            ประวัติการแพ้ยา :
+                                        </Box>
+                                        {props.patient.allergies}
                                     </Typography>
                                     <Typography variant="subtitle1"  >
-                                        แพทย์ที่ดูแล {props.patient.doctor.name} {props.patient.doctor.surname}
+                                        <Box fontWeight='bold' display='inline'>
+                                            แพทย์ที่ดูแล :
+                                        </Box>
+                                        {props.patient.doctor.name} {props.patient.doctor.surname}
                                     </Typography>
                                     <Typography variant="subtitle1"  >
-                                        อาการที่มาพบแพทย์ {props.patient.symptom}
+                                        <Box fontWeight='bold' display='inline'>
+                                            อาการที่มาพบแพทย์ :
+                                        </Box> {props.patient.symptom}
                                     </Typography>
                                 </Grid>
                                 <Grid item md={12}></Grid>
@@ -175,7 +206,17 @@ export default function PatientCard(props: IPatientCard) {
 
                                 <Grid item md={6}>
                                     <Typography variant="subtitle1"  >
-                                        วันที่เข้ารับการรักษา {props.admitDateTime}
+                                        <Box fontWeight='bold' display='inline'>
+                                            วันที่เข้ารับการรักษา :
+                                        </Box>
+                                        {props.admitDateTime}
+                                    </Typography>
+
+                                </Grid>
+                                <Grid item md={4}></Grid>
+                                <Grid item md={2}>
+                                    <Typography variant="subtitle1" sx={{ backgroundColor: '#80A9E5' }} align='center'>
+                                        ห้อง {props.room.id}  เตียง {props.bed.id}
                                     </Typography>
 
                                 </Grid>

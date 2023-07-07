@@ -14,12 +14,14 @@ import { ref, uploadBytes } from "firebase/storage";
 import router from "next/router";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export interface IPatientCard {
     id: number;
     bed: { id: number };
     room: { id: number };
     patient: {
+        id: any;
         name: string;
         surname: string;
         gender: any;
@@ -91,7 +93,7 @@ export default function AdmitPatient() {
         // .......
 
         //alert("Success, Ready to request to API")
-        alert(JSON.stringify(data))
+        //alert(JSON.stringify(data))
 
         const stamp = dayjs().format("YYYYMMDDHHmmss")
         const filename = `${stamp}-${data.patient.imageFile?.name}`
@@ -101,8 +103,8 @@ export default function AdmitPatient() {
         )
 
         uploadBytes(storageRef, data.patient.imageFile).then((e) => {
-            alert("upload success")
-            alert(JSON.stringify(e.ref.fullPath))
+            //  alert("upload success")
+            //  alert(JSON.stringify(e.ref.fullPath))
             data.patient.image = e.ref.fullPath
             const day = dayjs()
             const age = day.diff(dayjs(data.patient.dateOfBirth), 'month')
@@ -110,7 +112,7 @@ export default function AdmitPatient() {
             data.age = Math.floor(age / 12) + " ปี " + age % 12 + " เดือน";
             admitPatient({
                 ...data,
-                admitDateTime: data.admitDateTime || dayjs().format("YYYY-MM-DD hh:mm A"),
+                admitDateTime: data.admitDateTime || dayjs().format("YYYY-MM-DD HH:mm"),
             })
             //router.push('/patient/list')
         }).catch(err => alert("ERROR + " + JSON.stringify(err)))
@@ -129,6 +131,11 @@ export default function AdmitPatient() {
         }) */
         resolve(null)
         //router.push('/patient/list')
+        handleNext().then(async () => {
+            const delay = (ms: number | undefined) => new Promise(res => setTimeout(res, ms));
+            await delay(2000)
+            router.push('/patient/' + data.an)
+        })
 
     })
     const handleCancel = () => {
@@ -164,7 +171,17 @@ export default function AdmitPatient() {
             } isLoggedIn={isLoggedIn} />
             <form onSubmit={handleSubmit(handleAdmit)}>
                 <Container component="main" maxWidth="md" sx={{ mb: 4 }}>
-                    <Paper sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
+                    <Grid container sx={{ mt: 3 }}>
+                        <Grid item md={1}>
+                            <Button
+                                variant='contained'
+                                onClick={() => router.push("/patient/list")}
+                            >
+                                <ArrowBackIcon />
+                            </Button>
+                        </Grid>
+                    </Grid>
+                    <Paper sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
                         <Typography component="h1" variant="h4" align="center">
                             เพิ่มผู้ป่วยใหม่
                         </Typography>

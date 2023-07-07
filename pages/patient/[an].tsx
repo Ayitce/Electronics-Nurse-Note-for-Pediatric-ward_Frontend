@@ -69,8 +69,10 @@ export default function PatientInfo() {
         setOpenDischarge(false);
     };
 
-    const handleDischarge = (patient: IPatientCard) => {
-        dischargePatient(patient)
+    const handleDischarge = async (patient: IPatientCard) => {
+        await dischargePatient(patient)
+        const delay = (ms: number | undefined) => new Promise(res => setTimeout(res, ms));
+        await delay(1000)
         router.push("/patient/list")
 
     }
@@ -146,7 +148,7 @@ export default function PatientInfo() {
                             'aria-labelledby': 'basic-button',
                         }}
                     >
-                        {role == "ROLE_NURSE" ?
+                        {role == "ROLE_NURSE" && patientInfo?.dischargeDate == null ?
                             <MenuItem onClick={handleClickOpenDischarge}>
                                 <ListItemIcon>
                                     <PersonOffIcon fontSize="small" />
@@ -178,10 +180,10 @@ export default function PatientInfo() {
 
                         </DialogTitle>
                         <DialogContent >
-                            <Paper sx={{ p: { xs: 3, md: 3 } }}>
+                            <Paper sx={{ p: { xs: 3, md: 3 }, backgroundColor: '#80A9E5' }}>
                                 <Grid container alignItems="center" justifyContent="center">
                                     <Grid item sm={12} alignItems="center">
-                                        <Typography variant="h6" align='center' >
+                                        <Typography variant="h6" align='center' fontWeight='bold'>
                                             {patientInfo?.patient.name} {patientInfo?.patient.surname}
                                         </Typography>
                                     </Grid>
@@ -202,7 +204,7 @@ export default function PatientInfo() {
                                     </Typography>
                                 </Grid>
                                 <Grid item sm={12} alignItems="center">
-                                    <Typography variant="subtitle1" align='center' >
+                                    <Typography variant="subtitle1" align='center' color='error'>
                                         *เมื่อยืนยันจะไม่สามารถย้ายคนไข้ที่ออกจากโรงพยาบาลกลับสู่คนไข้ปัจจุบันได้!
                                     </Typography>
                                 </Grid>

@@ -20,7 +20,7 @@ import { getAdmitListForNurse, getSearchedAdmitForNurse } from '@/services/patie
 import { getAdmitListForDoctor, getSearchedAdmitForDoctor } from '@/services/patientService';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
-import { Button, Grid, InputAdornment, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, InputAdornment, TextField } from '@mui/material';
 import { useAuth } from '@/_auth';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { disableUser, getAllUser, getDoctorUser, getNurseUser, getSearchedUser } from '@/services/userService';
@@ -148,6 +148,13 @@ const headCells: readonly HeadCell[] = [
         numeric: true,
         disablePadding: false,
         label: 'ตำแหน่ง',
+    },
+
+    {
+        id: 'medicalID',
+        numeric: true,
+        disablePadding: false,
+        label: 'เลขประจำตัว',
     }
 ];
 
@@ -261,42 +268,83 @@ export default function EnhancedTable() {
     }
 
     const handleSearch = async (searchText: string) => {
-        const user = (await getSearchedUser(searchText)).data
-        const arr: { username: any; name: any; surname: any; gender: any; medicalID: any; phoneNumber: any; type: string; id: any; }[] = [];
-        console.log(user)
-        /*  if () { */
-        Object.keys(user).forEach((id) => {
-            if (!!user[id].nurse && user[id].enabled == true) {
-                // console.log(user[id].nurse.name)
-                arr.push({
-                    "username": user[id].username,
-                    "name": user[id].nurse.name,
-                    "surname": user[id].nurse.surname,
-                    "gender": user[id].nurse.gender,
-                    "medicalID": user[id].nurse.medicalID,
-                    "phoneNumber": user[id].nurse.phoneNumber,
-                    "type": "nurse",
-                    "id": user[id].id
-                    //"enabled": user[id].enabled
-                })
-            } else if (!!user[id].doctor && user[id].enabled == true) {
-                //console.log(user[id].doctor.name)
-                arr.push({
-                    "username": user[id].username,
-                    "name": user[id].doctor.name,
-                    "surname": user[id].doctor.surname,
-                    "gender": user[id].doctor.gender,
-                    "medicalID": user[id].doctor.medicalID,
-                    "phoneNumber": user[id].doctor.phoneNumber,
-                    "type": "doctor",
-                    "id": user[id].id
-                    // "enabled": user[id].enabled
-                })
-            }
-        })
+        if (searchText != "") {
+            const user = (await getSearchedUser(searchText)).data
+            const arr: { username: any; name: any; surname: any; gender: any; medicalID: any; phoneNumber: any; type: string; id: any; }[] = [];
+            console.log(user)
+            /*  if () { */
+            Object.keys(user).forEach((id) => {
+                if (!!user[id].nurse && user[id].enabled == true) {
+                    // console.log(user[id].nurse.name)
+                    arr.push({
+                        "username": user[id].username,
+                        "name": user[id].nurse.name,
+                        "surname": user[id].nurse.surname,
+                        "gender": user[id].nurse.gender,
+                        "medicalID": user[id].nurse.medicalID,
+                        "phoneNumber": user[id].nurse.phoneNumber,
+                        "type": "nurse",
+                        "id": user[id].id
+                        //"enabled": user[id].enabled
+                    })
+                } else if (!!user[id].doctor && user[id].enabled == true) {
+                    //console.log(user[id].doctor.name)
+                    arr.push({
+                        "username": user[id].username,
+                        "name": user[id].doctor.name,
+                        "surname": user[id].doctor.surname,
+                        "gender": user[id].doctor.gender,
+                        "medicalID": user[id].doctor.medicalID,
+                        "phoneNumber": user[id].doctor.phoneNumber,
+                        "type": "doctor",
+                        "id": user[id].id
+                        // "enabled": user[id].enabled
+                    })
+                }
+            })
 
-        console.log(arr);
-        setRows(arr)
+            console.log(arr);
+            setRows(arr)
+        } else {
+            const user = await loadUserFromApi()
+            const arr: { username: any; name: any; surname: any; gender: any; medicalID: any; phoneNumber: any; type: string; id: any; }[] = [];
+            console.log(user)
+            /*  if () { */
+
+            Object.keys(user).forEach((id) => {
+                if (!!user[id].nurse && user[id].enabled == true) {
+                    // console.log(user[id].nurse.name)
+                    arr.push({
+                        "username": user[id].username,
+                        "name": user[id].nurse.name,
+                        "surname": user[id].nurse.surname,
+                        "gender": user[id].nurse.gender,
+                        "medicalID": user[id].nurse.medicalID,
+                        "phoneNumber": user[id].nurse.phoneNumber,
+                        "type": "nurse",
+                        "id": user[id].id
+                        //"enabled": user[id].enabled
+                    })
+                } else if (!!user[id].doctor && user[id].enabled == true) {
+                    //console.log(user[id].doctor.name)
+                    arr.push({
+                        "username": user[id].username,
+                        "name": user[id].doctor.name,
+                        "surname": user[id].doctor.surname,
+                        "gender": user[id].doctor.gender,
+                        "medicalID": user[id].doctor.medicalID,
+                        "phoneNumber": user[id].doctor.phoneNumber,
+                        "type": "doctor",
+                        "id": user[id].id
+                        // "enabled": user[id].enabled
+                    })
+                }
+            })
+
+            console.log(arr);
+            setRows(arr)
+        }
+
     }
     const [order, setOrder] = React.useState<Order>('asc');
     const [orderBy, setOrderBy] = React.useState<keyof INurseTable>('username');
@@ -327,6 +375,15 @@ export default function EnhancedTable() {
         router.reload()
     };
 
+    const [openDischarge, setOpenDischarge] = React.useState(false);
+
+    const handleClickOpenDischarge = () => {
+        setOpenDischarge(true);
+    };
+
+    const handleCloseDischarge = () => {
+        setOpenDischarge(false);
+    };
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
@@ -351,8 +408,8 @@ export default function EnhancedTable() {
                             label="ค้นหา"
                             placeholder="email, ชื่อ, นามสกุล"
                             onChange={async (search) => {
-                                if (search.target.value == "") return
-                                handleSearch(search.target.value)
+                                // if (search.target.value == "") return
+                                await handleSearch(search.target.value)
                                 /* setRows((await getSearchedAdmit(search.target.value)).data)
                                 console.log((await getSearchedAdmit(search.target.value)).data) */
                             }}
@@ -372,6 +429,8 @@ export default function EnhancedTable() {
                             variant='contained'
                             fullWidth
                             onClick={() => router.push("/user/register")}
+                            sx={{ color: "white" }}
+
                         >
                             <AddIcon />
                             เพิ่ม User
@@ -422,10 +481,55 @@ export default function EnhancedTable() {
                                         <TableCell align="right">{row.type}</TableCell>
                                         <TableCell align="right">{row.medicalID}</TableCell>
                                         <TableCell align="left">
-                                            <Button variant='contained' onClick={() => { handleDisableUser(row.id) }}>
+                                            <Button variant='contained'
+                                                color='error'
+                                                onClick={handleClickOpenDischarge}
+                                                sx={{ color: "white" }}
+                                            >
                                                 <DeleteForeverIcon />
                                             </Button>
                                         </TableCell>
+                                        <Dialog
+                                            open={openDischarge}
+                                            onClose={handleCloseDischarge}
+                                            aria-labelledby="alert-dialog-title"
+                                            aria-describedby="alert-dialog-description"
+                                        >
+                                            <DialogTitle id="alert-dialog-title">
+                                                <Typography variant="h6" align='center' >
+                                                    {"ยืนยันจะลบ User นี้ใช่หรือไม่"}
+                                                </Typography>
+                                            </DialogTitle>
+                                            <DialogContent >
+                                                <Paper sx={{ p: { xs: 3, md: 3 }, backgroundColor: '#80A9E5' }}>
+                                                    <Grid container alignItems="center" justifyContent="center">
+                                                        <Grid item sm={12} alignItems="center">
+                                                            <Typography variant="h6" align='center' fontWeight='bold'>
+                                                                {row.username}
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid item sm={12} alignItems="center">
+                                                            <Typography variant="h6" align='center' fontWeight='bold'>
+                                                                {row.name} {row.surname}
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>
+                                                </Paper>
+                                                <Grid container alignItems="center" justifyContent="center" sx={{ mt: { xs: 3, md: 3 } }}>
+                                                    <Grid item sm={12} alignItems="center">
+                                                        <Typography variant="subtitle1" align='center' color='error'>
+                                                            *เมื่อยืนยัน User นี่จะไม่สามารถใช้ได้อีกต่อไป!
+                                                        </Typography>
+                                                    </Grid>
+                                                </Grid>
+                                            </DialogContent>
+                                            <DialogActions>
+                                                <Button onClick={handleCloseDischarge}>ยกเลิก</Button>
+                                                <Button variant='contained' onClick={() => { handleDisableUser(row.id) }} autoFocus>
+                                                    ยืนยัน
+                                                </Button>
+                                            </DialogActions>
+                                        </Dialog>
                                     </TableRow>
                                 );
                             })}
@@ -450,6 +554,7 @@ export default function EnhancedTable() {
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
+
             </Paper>
         </Box>
     );

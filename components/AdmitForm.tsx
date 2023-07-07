@@ -10,7 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 //import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Control, Controller, FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import { IRegisterForm } from './RegisterComp';
-import { FormLabel, Radio, RadioGroup, Select } from '@mui/material';
+import { Autocomplete, FormLabel, Radio, RadioGroup, Select } from '@mui/material';
 import { DateField, DatePicker, DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs';
@@ -119,13 +119,36 @@ export default function AdmitForm(props: AdmitFormProps) {
                     name="row-radio-buttons-group"
                 >
                     <FormControlLabel value="existed" control={<Radio onChange={() => { props.setExisted(true) }} checked={!!props.existed == true} />} label="Yes" />
-                    <FormControlLabel value="male" control={<Radio onChange={() => { props.setExisted(false) }} checked={!!props.existed == false} />} label="No" />
+                    <FormControlLabel value="male" control={<Radio onChange={() => {
+                        props.setExisted(false)
+                        setValue("patient.id", undefined);
+                    }} checked={!!props.existed == false} />} label="No" />
                 </RadioGroup>
             </FormControl>
             {props.existed ?
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
-                        <TextField
+                        <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={patient}
+                            onChange={(e, value) => {
+                                console.log(value);
+                                setValue("patient", value, { shouldValidate: true });
+                            }}
+                            getOptionLabel={(option) => option.name}
+                            isOptionEqualToValue={(option, value) => option === value}
+                            sx={{ width: 300 }}
+                            renderInput={(params) =>
+                                <TextField {...params} label="คนไข้"
+                                // {...register("patient", { required: "Please select patient" })}
+                                // error={!!errors.patient}
+                                // helperText={errors.patient?.message}
+                                />
+                            }
+
+                        />
+                        {/*  <TextField
                             id="outlined-select-currency"
                             fullWidth
                             select
@@ -140,7 +163,7 @@ export default function AdmitForm(props: AdmitFormProps) {
                                     {option.hn} | {option.name} {option.surname}
                                 </MenuItem>
                             ))}
-                        </TextField>
+                        </TextField> */}
                     </Grid>
                 </Grid>
                 :

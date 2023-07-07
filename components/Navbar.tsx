@@ -4,8 +4,10 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useRouter } from "next/router";
 import { useAuth } from "@/_auth";
 import Divider from "@mui/material/Divider";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { IProfile, getProfile } from "@/services/userService";
+import { ResponseEntity } from "@/services/axios.enp.core.config";
 
 export default function Navbar(props: {
   isLoggedIn?: boolean,
@@ -21,9 +23,31 @@ export default function Navbar(props: {
   };
 
   const [open, setOpen] = useState(false);
+  const [profile, setProfile] = useState<any>();
 
 
+  useEffect(() => {
+    //loadPatientFromApi()
+    const fetchData = async () => {
+      // get the data from the api
+      const data = await loadProfileFromAPI()
+      console.log("profile", data)
+      setProfile(data)
+    }
 
+    fetchData()
+      // make sure to catch any error
+      .catch(console.error);
+
+  }, [])
+
+  const loadProfileFromAPI = async () => {
+    const response = await getProfile()
+    // setPatientInfo(response.data)
+    return response.data
+
+
+  }
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -43,11 +67,13 @@ export default function Navbar(props: {
           component="div"
           sx={{
             flexGrow: 1,
-            cursor: 'pointer'
+            cursor: 'pointer',
+            color: "white"
           }}>
           Electronics Nurse Note for Pediatric Ward
         </Typography>
-        {
+        {props.item}
+        {/* {
           !props.isLoggedIn &&
           <Button
             sx={{ color: "white" }}
@@ -57,20 +83,47 @@ export default function Navbar(props: {
           >
             สมัครสมาชิก
           </Button>
-        }
-        {props.item}
+        } */}
+        <div>
+          <Typography
+            variant="subtitle1"
+            component="div"
+            align="right"
+            sx={{
+              flexGrow: 1,
+              color: "white"
+            }}>
+            {profile?.username}
+
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            component="div"
+            align="right"
+            sx={{
+              flexGrow: 1,
+              color: "white"
+
+            }}>
+            {profile?.nurse?.name} {profile?.nurse?.surname}
+            {profile?.doctor?.name} {profile?.doctor?.surname}
+          </Typography>
+
+        </div>
+
         <Divider
           orientation="vertical"
           sx={{ height: 30, backgroundColor: "#FFFFFF", mx: 1 }}
         />
         {!props.isLoggedIn ? (
-          <Button href="/signin" color="inherit" endIcon={<LoginIcon />}>
-            เข้าสู่ระบบ
-          </Button>
+          <div></div>
         ) : (
           <Button
             onClick={handleLogout}
             color="inherit"
+            sx={{
+              color: "white"
+            }}
             endIcon={<LogoutIcon />}
           >
             ออกจากระบบ

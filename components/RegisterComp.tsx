@@ -19,6 +19,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { registerNurse, registerDoctor } from '@/services/userService'
 import dayjs from 'dayjs';
+import router from 'next/router';
 
 
 const steps = ['เลือกประเภทผู้ใช้', 'ใส่ข้อมูลทั่วไป'];
@@ -80,8 +81,8 @@ export default function RegisterComp() {
 
         // .......
 
-        alert("Success, Ready to request to API")
-        alert(JSON.stringify(data))
+        // alert("Success, Ready to request to API")
+        // alert(JSON.stringify(data))
         //  axios.post(`${process.env.NEXT_PUBLIC_CORE_URL_API}/register`, data)
         if (selectedNurse == true) {
             registerNurse({
@@ -96,20 +97,22 @@ export default function RegisterComp() {
 
         resolve(null)
 
-        handleNext()
+        handleNext().then(async () => {
+            const delay = (ms: number | undefined) => new Promise(res => setTimeout(res, ms));
+            await delay(2000)
+            router.push('/user')
+        })
     })
 
     const { userType } = useControlContext()
 
     const [activeStep, setActiveStep] = React.useState(0);
 
-    const handleNext = () => {
+    const handleNext = async () => {
         console.log("nurse: ", selectedNurse)
         console.log("doctor: ", selectedDoctor)
         if (selectedNurse == false && selectedDoctor == false) {
-            return <Typography component="h1" variant="h4" align="center">
-                กรุณาระบุประเภทของผู้ใช้
-            </Typography>
+            return
         }
         setActiveStep(activeStep + 1);
     };
@@ -124,7 +127,7 @@ export default function RegisterComp() {
             <form onSubmit={handleSubmit(handleRegister)}>
                 <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
                     <Paper sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-                        <Typography component="h1" variant="h4" align="center">
+                        <Typography component="h1" variant="h4" align="center" >
                             ลงทะเบียนผู้ใช้ใหม่
                         </Typography>
                         <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
@@ -150,7 +153,7 @@ export default function RegisterComp() {
                                         </Button>
                                     )}
                                     {selectedNurse == false && selectedDoctor == false && (
-                                        <Typography component="h1" variant="subtitle1" align="center" >
+                                        <Typography component="h1" variant="subtitle1" align="center" color='error' >
                                             กรุณาระบุประเภทของผู้ใช้
                                         </Typography>
                                     )}

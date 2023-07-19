@@ -106,7 +106,7 @@ export default function RoomForm(props: RoomFormProps) {
                                 select
                                 label="ห้อง"
                                 variant="outlined"
-                                {...register("room.id", { required: "Please select gender" })}
+                                {...register("room.id", { required: "Please select room number" })}
                                 error={!!errors.room?.id}
                                 helperText={errors.room?.id?.message}
                                 onChange={(room) => {

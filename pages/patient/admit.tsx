@@ -105,7 +105,9 @@ export default function AdmitPatient() {
         uploadBytes(storageRef, data.patient.imageFile).then((e) => {
             //  alert("upload success")
             //  alert(JSON.stringify(e.ref.fullPath))
-            data.patient.image = e.ref.fullPath
+            if (data.patient.imageFile != null) {
+                data.patient.image = e.ref.fullPath
+            }
             const day = dayjs()
             const age = day.diff(dayjs(data.patient.dateOfBirth), 'month')
             console.log("age : ", Math.floor(age / 12), " ปี", age % 12, "เดือน")
@@ -196,7 +198,7 @@ export default function AdmitPatient() {
                             {activeStep === steps.length ? (
                                 <React.Fragment>
                                     <Typography variant="h5" gutterBottom align="center">
-                                        ลงทะเบียนผู้ใช้ใหม่สำเร็จ
+                                        ลงทะเบียนผู้ป่วยใหม่สำเร็จ
                                     </Typography>
                                 </React.Fragment>
                             ) : (

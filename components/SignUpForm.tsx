@@ -71,7 +71,16 @@ export default function SignUpForm(props: RegisterFormProps) {
                         fullWidth
                         autoComplete="email"
                         variant="standard"
-                        {...register("email", { required: "โปรดระบุอีเมลล์" })}
+                        {...register("email", {
+                            required: "โปรดระบุอีเมลล์",
+                            validate: {
+                                maxLength: (v) =>
+                                    v.length <= 50 || "The email should have at most 50 characters",
+                                matchPattern: (v) =>
+                                    /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
+                                    "อีเมลล์ต้องถูกตามรูปแบบของอีเมลล์",
+                            }
+                        })}
                         error={!!errors.email}
                         helperText={errors.email?.message}
                     />
@@ -83,7 +92,18 @@ export default function SignUpForm(props: RegisterFormProps) {
                         type='password'
                         autoComplete="password"
                         variant="standard"
-                        {...register("password", { required: "โปรดระบุ password" })}
+                        {...register("password", {
+                            required: "โปรดระบุ password",
+                            validate: {
+                                maxLength: (v) =>
+                                    v.length <= 18 || "password ต้องไม่มากกว่า 18 ตัวอักษร",
+                                minLength: (v) =>
+                                    v.length >= 5 || "password ต้องไม่ต่ำกว่า 5 ตัวอักษร",
+                                matchPattern: (v) =>
+                                    /^[a-zA-Z0-9_]+$/.test(v) ||
+                                    "password ต้องเป็นภาษาอังกฤษพิมพ์เล็ก/พิมพ์ใหญ่ หรือ ตัวเลข เท่านั้น",
+                            },
+                        })}
                         error={!!errors.password}
                         helperText={errors.password?.message}
                     />
@@ -149,7 +169,7 @@ export default function SignUpForm(props: RegisterFormProps) {
 
                     </FormControl> */}
                 </Grid>
-                
+
                 <Grid item xs={12} sm={6}>
                     <TextField
                         label="หมายเลขประจำตัวพยาบาล/หมอ"

@@ -191,11 +191,19 @@ export default function AdmitForm(props: AdmitFormProps) {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
-                            label="เลขสูติบัตร/บัตรประจำตัวประชาชน"
+                            label="เลขบัตรประจำตัวประชาชน"
                             fullWidth
                             autoComplete="given-name"
                             variant="standard"
-                            {...register("patient.idCard", { required: "Please input IDcard" })}
+                            {...register("patient.idCard", {
+                                required: "Please input IDcard",
+                                validate: {
+                                    maxLength: (v) =>
+                                        v.length <= 13 || "เลขประจำตัวประชาชนต้องมี 13 หลัก",
+                                    minLength: (v) =>
+                                        v.length >= 13 || "เลขประจำตัวประชาชนต้องมี 13 หลัก",
+                                    },
+                            })}
                             error={!!errors.patient?.idCard}
                             helperText={errors.patient?.idCard?.message} />
                     </Grid>
@@ -260,6 +268,7 @@ export default function AdmitForm(props: AdmitFormProps) {
                     <Grid item xs={12} sm={3}>
                         <DatePicker
                             label="วัน/เดือน/ปี เกิด"
+                            disableFuture
                             defaultValue={dayjs()}
                             sx={{ width: '100%' }}
                             onChange={d => {
@@ -321,7 +330,7 @@ export default function AdmitForm(props: AdmitFormProps) {
                             fullWidth
                             autoComplete="given-name"
                             variant="standard"
-                            {...register("patient.hn", { required: "Please input AN" })}
+                            {...register("patient.hn", { required: "Please input HN" })}
                             error={!!errors.patient?.hn}
                             helperText={errors.patient?.hn?.message} />
                     </Grid>

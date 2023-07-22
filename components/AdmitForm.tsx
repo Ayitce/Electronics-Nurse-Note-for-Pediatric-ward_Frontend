@@ -122,11 +122,11 @@ export default function AdmitForm(props: AdmitFormProps) {
                                 console.log(value);
                                 setValue("patient", value, { shouldValidate: true });
                             }}
-                            getOptionLabel={(option) => option.name}
+                            getOptionLabel={(option) => option.name + " " +option.surname + " " + option.hn}
                             isOptionEqualToValue={(option, value) => option === value}
                             sx={{ width: 300 }}
                             renderInput={(params) =>
-                                <TextField {...params} label="คนไข้"
+                                <TextField {...params} label="ค้นหาด้วยชื่อ นามสกุล หรือ HN"
                                 // {...register("patient", { required: "Please select patient" })}
                                 // error={!!errors.patient}
                                 // helperText={errors.patient?.message}

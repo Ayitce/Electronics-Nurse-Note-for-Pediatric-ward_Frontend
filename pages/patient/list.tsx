@@ -25,16 +25,7 @@ export default function PatientList() {
                     </Typography>
                 </Grid>
                 <EnhancedTable />
-                <Grid item xs={12} sm={1.5}>
-                    <Button
-                        variant='contained'
-                        fullWidth
-                        onClick={() => router.push("/patient/history")}
-                        color='secondary'
-                    >
-                        รายชื่อผู้ป่วยเก่า
-                    </Button>
-                </Grid>
+
             </Grid>
         </>
     );

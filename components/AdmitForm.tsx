@@ -109,22 +109,8 @@ export default function AdmitForm(props: AdmitFormProps) {
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
-                Basic information
+                ข้อมูลส่วนตัวผู้ป่วย
             </Typography>
-            <FormControl>
-                <FormLabel id="demo-row-radio-buttons-group-label">Is the patient information existed</FormLabel>
-                <RadioGroup
-                    row
-                    aria-labelledby="demo-row-radio-buttons-group-label"
-                    name="row-radio-buttons-group"
-                >
-                    <FormControlLabel value="existed" control={<Radio onChange={() => { props.setExisted(true) }} checked={!!props.existed == true} />} label="Yes" />
-                    <FormControlLabel value="male" control={<Radio onChange={() => {
-                        props.setExisted(false)
-                        setValue("patient.id", undefined);
-                    }} checked={!!props.existed == false} />} label="No" />
-                </RadioGroup>
-            </FormControl>
             {props.existed ?
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>

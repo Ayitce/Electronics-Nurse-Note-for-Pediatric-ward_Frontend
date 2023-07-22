@@ -15,6 +15,7 @@ import router from "next/router";
 import React, { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import PatientExisted from "@/components/PatientExisted";
 
 export interface IPatientCard {
     id: number;
@@ -50,6 +51,7 @@ export interface IPatientCard {
     dischargeDate: any;
     an: string;
     age: string;
+    isExisted: boolean;
 }
 
 export default function AdmitPatient() {
@@ -144,10 +146,11 @@ export default function AdmitPatient() {
         router.push('/patient/list')
 
     }
-    const steps = ['เลือกห้องและเตียงที่ว่าง', 'ใส่ข้อมูลผู้ป่วย', 'ใส่ข้อมูลทางการแพทย์'];
+    const steps = ['เลือกห้องและเตียงที่ว่าง','ผู้ป่วยเก่า','ใส่ข้อมูลผู้ป่วย', 'ใส่ข้อมูลทางการแพทย์'];
 
     const stepContent: any[] = [
         <RoomForm register={register} errors={errors} control={control} setValue={setValue} />
+        , <PatientExisted register={register} errors={errors} control={control} setValue={setValue} existed={existed} setExisted={setExisted} />
         , <AdmitForm register={register} errors={errors} control={control} setValue={setValue} existed={existed} setExisted={setExisted} />
         , <IMedicalForm register={register} errors={errors} control={control} setValue={setValue} />
     ]
@@ -185,7 +188,7 @@ export default function AdmitPatient() {
                     </Grid>
                     <Paper sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
                         <Typography component="h1" variant="h4" align="center">
-                            เพิ่มผู้ป่วยใหม่
+                            เพิ่มการ Admit ใหม่
                         </Typography>
                         <React.Fragment>
                             <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
@@ -198,7 +201,7 @@ export default function AdmitPatient() {
                             {activeStep === steps.length ? (
                                 <React.Fragment>
                                     <Typography variant="h5" gutterBottom align="center">
-                                        ลงทะเบียนผู้ป่วยใหม่สำเร็จ
+                                        ลงทะเบียน Admit ใหม่สำเร็จ
                                     </Typography>
                                 </React.Fragment>
                             ) : (

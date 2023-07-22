@@ -417,23 +417,41 @@ export default function EnhancedTable() {
                             }}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={7}></Grid>
-                    <Grid item xs={12} sm={1.5} >
-                        {role == "ROLE_NURSE" ?
-                            <Button
-                                variant='contained'
-                                fullWidth
-                                onClick={() => router.push("/patient/admit")}
-                                sx={{ color: "white" }}
-                            >
-                                <AddIcon />
-                                เพิ่มคนไข้
-                            </Button>
-                            :
-                            <></>
-                        }
+                    {role == "ROLE_NURSE" ?
+                        <>
+                            <Grid item xs={12} sm={7}></Grid>
 
-                    </Grid>
+                            <Grid item xs={12} sm={1.5} >
+
+                                <Button
+                                    variant='contained'
+                                    fullWidth
+                                    onClick={() => router.push("/patient/admit")}
+                                    sx={{ color: "white" }}
+                                >
+                                    <AddIcon />
+                                    เพิ่มคนไข้
+                                </Button>
+                            </Grid>
+                        </>
+                        :
+                        <>
+                            <Grid item xs={12} sm={6.5}></Grid>
+                            <Grid item xs={12} sm={2} >
+
+                                <Button
+                                    variant='contained'
+                                    fullWidth
+                                    onClick={() => router.push("/patient/history")}
+                                    color='secondary'
+                                >
+                                    รายชื่อผู้ป่วยเก่า
+                                </Button>
+                            </Grid>
+                        </>
+                    }
+
+
                 </Grid>
                 <TableContainer>
                     <Table

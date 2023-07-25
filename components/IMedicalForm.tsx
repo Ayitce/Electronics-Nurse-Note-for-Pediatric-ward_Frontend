@@ -65,7 +65,7 @@ export default function AdmitForm(props: AdmitFormProps) {
     return (
         <React.Fragment>
             <Typography variant="h6" gutterBottom>
-                Medical information
+                ข้อมูลทางการวินิจฉัย
             </Typography>
             <Grid container spacing={3}>
 

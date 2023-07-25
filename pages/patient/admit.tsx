@@ -146,7 +146,7 @@ export default function AdmitPatient() {
         router.push('/patient/list')
 
     }
-    const steps = ['เลือกห้องและเตียงที่ว่าง','ผู้ป่วยเก่า','ใส่ข้อมูลผู้ป่วย', 'ใส่ข้อมูลทางการแพทย์'];
+    const steps = ['เลือกห้องและเตียงที่ว่าง','ผู้ป่วยเก่า','ใส่ข้อมูลผู้ป่วย', 'ใส่ข้อมูลทางการวินิจฉัย'];
 
     const stepContent: any[] = [
         <RoomForm register={register} errors={errors} control={control} setValue={setValue} />

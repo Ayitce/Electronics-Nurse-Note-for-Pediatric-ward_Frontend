@@ -334,17 +334,20 @@ export default function EnhancedTable() {
             const arr: { bed: any; room: any; name: any; surname: any; hn: any; admitDateTime: any; dischargeDate: any; an: any; }[] = [];
             console.log(admit)
             Object.keys(admit).forEach((id) => {
-                console.log(admit[id].patient.name)
-                arr.push({
-                    "bed": admit[id].bed.id,
-                    "room": admit[id].room.id,
-                    "name": admit[id].patient.name,
-                    "surname": admit[id].patient.surname,
-                    "hn": admit[id].patient.hn,
-                    "admitDateTime": admit[id].admitDateTime,
-                    "dischargeDate": admit[id].dischargeDate,
-                    "an": admit[id].an
-                })
+                if (admit[id].dischargeDate == null) {
+                    console.log(admit[id].patient.name)
+                    arr.push({
+                        "bed": admit[id].bed.id,
+                        "room": admit[id].room.id,
+                        "name": admit[id].patient.name,
+                        "surname": admit[id].patient.surname,
+                        "hn": admit[id].patient.hn,
+                        "admitDateTime": admit[id].admitDateTime,
+                        "dischargeDate": admit[id].dischargeDate,
+                        "an": admit[id].an
+                    })
+                }
+
             })
             console.log(arr);
             setRows(arr)

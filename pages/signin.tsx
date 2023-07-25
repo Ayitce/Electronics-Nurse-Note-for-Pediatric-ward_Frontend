@@ -81,8 +81,8 @@ export default function SignIn() {
               required
               fullWidth
               id="username"
-              label="Username"
-              autoComplete="username"
+              label="email"
+              autoComplete="email"
               {...register("username", { required: "โปรดระบุอีเมลล์" })}
               helperText={errors.username?.message}
               error={!!errors.username}

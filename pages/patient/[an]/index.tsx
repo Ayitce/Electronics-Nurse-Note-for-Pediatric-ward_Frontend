@@ -80,7 +80,8 @@ export default function PatientInfo() {
     const [patientInfo, setPatientInfo] = useState<any>()
 
     const router = useRouter();
-    const an = router.query.an
+    const { an } = router.query;
+    //const an = router.query.an
 
     // const x = useParams();
 
@@ -160,7 +161,7 @@ export default function PatientInfo() {
                             </>
                         }
 
-                        <MenuItem>
+                        <MenuItem >
                             <ListItemIcon>
                                 <HistoryEduIcon fontSize="small" />
                             </ListItemIcon>

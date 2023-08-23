@@ -26,6 +26,10 @@ import RiskFactor from "@/components/triage/RiskFactor";
 
 export interface ITriage {
     id: number,
+    e: number,
+    v: number,
+    m: number,
+    tube: boolean,
     date: string,
     indicator: {
         respiratory: boolean,
@@ -106,6 +110,10 @@ export default function AdmitPatient() {
     } = useForm<ITriage>({
         mode: "onSubmit",
         defaultValues: {
+            tube: false,
+            e: 1,
+            v: 1,
+            m: 1,
             indicator: {
                 respiratory: false,
                 sepsis: false,
@@ -116,6 +124,10 @@ export default function AdmitPatient() {
                 oxygenTherapy: 0
             },
             physicalExam: {
+                weak_pulse: false,
+                bounding_pulse: false,
+                cap_refill: false,
+                flash_cap: false,
                 consciousness: "A",
                 airEntry: 0,
                 wheezing: 0
@@ -158,9 +170,21 @@ export default function AdmitPatient() {
 
     const handleAdmit = (data: ITriage) => new Promise(async (resolve) => {
         console.log(data)
+        if (data.tube)
+            data.add.gcs = data.e + data.m
+        else
+            data.add.gcs = data.e + data.v + data.m
         addNewTriage(`${an}`, {
             ...data,
-        })
+        }).then(response =>
+            router.push({
+                pathname: '/patient/' + an + '/result',
+                query: {
+                    myData: JSON.stringify(response.data)
+                }
+            })
+        )
+        //console.log(response.data))
         resolve(null)
     })
 

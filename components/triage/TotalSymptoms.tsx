@@ -13,8 +13,7 @@ import { Box, Button, FormGroup, Select, ToggleButton, ToggleButtonGroup, styled
 import { DateField, DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs';
-import { ITriage } from '@/services/patientService';
-
+import { ITriage } from '@/pages/patient/[an]/triage';
 
 interface RegisterFormProps {
     register: UseFormRegister<ITriage>;
@@ -97,53 +96,81 @@ export default function TotalSymptoms(props: RegisterFormProps) {
         setValue("physicalExam.consciousness", newLOC)
     };
 
-    const [gcs, setGCS] = React.useState(0);
 
 
-    const [e, setE] = React.useState(0);
+    const [e, setE] = React.useState(1);
 
     const handleDecreaseE = () => {
-        setE(e - 1)
-        setValue("add.gcs", gcs - 1)
-        setGCS(gcs - 1)
+        if (e - 1 > 0) {
+            setE(e - 1)
+            setValue("e", e - 1)
+        }
+
+        //  setValue("add.gcs", gcs - 1)
+        //  setGCS(gcs - 1)
     }
 
     const handleIncreaseE = () => {
-        setE(e + 1)
-        setValue("add.gcs", gcs + 1)
-        setGCS(gcs + 1)
+        if (e + 1 <= 4) {
+            setE(e + 1)
+            setValue("e", e + 1)
+        }
+
+
+        //   setValue("add.gcs", gcs + 1)
+        //   setGCS(gcs + 1)
 
     }
 
-    const [v, setV] = React.useState(0);
+    const [v, setV] = React.useState(1);
 
     const handleDecreaseV = () => {
-        setV(v - 1)
-        setValue("add.gcs", gcs - 1)
-        setGCS(gcs - 1)
+        if (v - 1 > 0) {
+            setV(v - 1)
+            setValue("v", v - 1)
+        }
+
+
+        //   setValue("add.gcs", gcs - 1)
+        //   setGCS(gcs - 1)
 
     }
 
     const handleIncreaseV = () => {
-        setV(v + 1)
-        setValue("add.gcs", gcs + 1)
-        setGCS(gcs + 1)
+        if (v + 1 <= 5) {
+            setV(v + 1)
+            setValue("v", v + 1)
+        }
+
+
+        //  setValue("add.gcs", gcs + 1)
+        //  setGCS(gcs + 1)
     }
 
-    const [m, setM] = React.useState(0);
+    const [m, setM] = React.useState(1);
 
     const handleDecreaseM = () => {
-        setM(m - 1)
-        setValue("add.gcs", gcs - 1)
-        setGCS(gcs - 1)
+        if (m - 1 > 0) {
+            setM(m - 1)
+            setValue("m", m - 1)
+        }
+
+
+        //  setValue("add.gcs", gcs - 1)
+        // setGCS(gcs - 1)
 
 
     }
 
     const handleIncreaseM = () => {
-        setM(m + 1)
-        setValue("add.gcs", gcs + 1)
-        setGCS(gcs + 1)
+        if (m + 1 <= 6) {
+            setM(m + 1)
+            setValue("m", m + 1)
+        }
+
+
+        //  setValue("add.gcs", gcs + 1)
+        //  setGCS(gcs + 1)
 
     }
 
@@ -157,6 +184,8 @@ export default function TotalSymptoms(props: RegisterFormProps) {
             ...state,
             [event.target.name]: event.target.checked,
         });
+        if ([event.target.name].includes("tube"))
+            setValue("tube", event.target.checked)
 
     };
 
@@ -193,7 +222,7 @@ export default function TotalSymptoms(props: RegisterFormProps) {
                             <ToggleButton value="3" aria-label="2-5" sx={{ width: 50 }}>
                                 2-5
                             </ToggleButton>
-                            <ToggleButton value=">5" aria-label=">5" sx={{ width: 50 }}>
+                            <ToggleButton value="6" aria-label=">5" sx={{ width: 50 }}>
                                 {'>'}5
                             </ToggleButton>
                         </StyledToggleButtonGroup>

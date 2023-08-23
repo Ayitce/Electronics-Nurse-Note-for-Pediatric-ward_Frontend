@@ -13,8 +13,7 @@ import { Box, FormGroup, FormHelperText, FormLabel, Select } from '@mui/material
 import { DateField, DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs';
-import { ITriage } from '../TriageBox';
-
+import { ITriage } from '@/pages/patient/[an]/triage';
 
 interface RegisterFormProps {
     register: UseFormRegister<ITriage>;

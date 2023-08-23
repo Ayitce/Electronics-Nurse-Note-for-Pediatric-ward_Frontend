@@ -66,10 +66,10 @@ export default function PatientList() {
                         ประวัติการ Triage
                     </Typography>
                 </Grid>
-                {history.map((history) => {
+                {history.slice(0).reverse().map((history, index) => {
                     //console.log(history)
                     return (
-                        <TriageBox id={history.id} date={history.date} indicator={{
+                        <TriageBox index={index} id={history.id} date={history.date} indicator={{
                             respiratory: history.indicator.respiratory,
                             sepsis: history.indicator.sepsis,
                             shock: history.indicator.shock,

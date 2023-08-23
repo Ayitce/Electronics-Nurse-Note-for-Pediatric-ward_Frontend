@@ -2,6 +2,7 @@ import { Box, Container, Grid, Paper, Typography } from "@mui/material";
 import React from "react";
 
 export interface ITriage {
+    index: number,
     id: number,
     date: string,
     indicator: {
@@ -177,6 +178,18 @@ export default function TriageBox(props: ITriage) {
                             </Typography>
                         </Grid>
                     </Grid>
+                    {props.index == 0 ? (
+                        <Grid item md={1} sx={{ border: 1, borderColor: "red", borderRadius: 10 }} container spacing={0}
+                            direction="column"
+                            alignItems="center"
+                            justifyContent="center">
+                            <Typography sx={{ color: "red", fontSize: 15 }}>ล่าสุด</Typography>
+                        </Grid>
+                    )
+                        : (<></>)
+                    }
+
+
                 </Paper>
             </Container>
         </React.Fragment>

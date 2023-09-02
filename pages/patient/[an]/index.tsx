@@ -61,6 +61,9 @@ export default function PatientInfo() {
 
     const [openDischarge, setOpenDischarge] = React.useState(false);
 
+    const router = useRouter();
+    const { an } = router.query;
+
     const handleClickOpenDischarge = () => {
         setOpenDischarge(true);
     };
@@ -77,10 +80,13 @@ export default function PatientInfo() {
 
     }
 
+    const handleClickTriageHistory = () => {
+        router.push("/patient/" + an + "/triage_history")
+
+    }
+
     const [patientInfo, setPatientInfo] = useState<any>()
 
-    const router = useRouter();
-    const { an } = router.query;
     //const an = router.query.an
 
     // const x = useParams();
@@ -161,7 +167,7 @@ export default function PatientInfo() {
                             </>
                         }
 
-                        <MenuItem >
+                        <MenuItem onClick={handleClickTriageHistory} >
                             <ListItemIcon>
                                 <HistoryEduIcon fontSize="small" />
                             </ListItemIcon>

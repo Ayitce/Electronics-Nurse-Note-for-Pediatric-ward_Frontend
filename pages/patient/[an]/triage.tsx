@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import RoomForm from "@/components/RoomForm";
 import { setup } from "@/lib/csrf";
 import firebase from "@/services/firebase";
-import { addNewTriage, admitPatient } from "@/services/patientService";
+import { addNewTriage, admitPatient, getPatientByAN } from "@/services/patientService";
 import { getRoomList } from "@/services/roomService";
 import { AppBar, Box, Button, Container, CssBaseline, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Step, StepLabel, Stepper, TextField, ThemeProvider, Toolbar, Typography, createTheme } from "@mui/material";
 import { DatePicker, DateTimePicker } from "@mui/x-date-pickers";
@@ -23,12 +23,11 @@ import TotalSymptoms from "@/components/triage/TotalSymptoms";
 import InitialIndicator from "@/components/triage/InitialImpression";
 import PhysicalExam from "@/components/triage/PhysicalExam";
 import RiskFactor from "@/components/triage/RiskFactor";
+import { getProfile } from "@/services/userService";
 
 export interface ITriage {
     id: number,
-    e: number,
-    v: number,
-    m: number,
+    nurseName: string,
     tube: boolean,
     date: string,
     indicator: {
@@ -51,7 +50,10 @@ export interface ITriage {
         history_of_seizure: boolean,
         generalize_seizure: boolean,
         comoatose_stage_seizure: boolean,
-        gcs: number
+        gcs: number,
+        e: number,
+        v: number,
+        m: number,
     },
     initialImpression: {
         scalene_muscle: boolean,
@@ -87,6 +89,7 @@ export interface ITriage {
     },
     triageResult: {
         mpew: number,
+        severity: number;
         result_respiratory: string,
         result_sepsis: string,
         result_shock: string,
@@ -96,8 +99,45 @@ export interface ITriage {
 
 }
 
+
+const stepStyle = {
+    "& .Mui-active": {
+        text:{
+            fill: "white"
+        },
+        "&.MuiStepIcon-root": {
+            color: "#008EFF",
+        }
+    }
+}
+
 export default function AdmitPatient() {
 
+    const [profile, setProfile] = useState<any>();
+
+
+    useEffect(() => {
+        //loadPatientFromApi()
+        const fetchData = async () => {
+            // get the data from the api
+            const data = await loadProfileFromAPI()
+            console.log("profile", data)
+            setProfile(data)
+        }
+
+        fetchData()
+            // make sure to catch any error
+            .catch(console.error);
+
+    }, [])
+
+    const loadProfileFromAPI = async () => {
+        const response = await getProfile()
+        // setPatientInfo(response.data)
+        return response.data
+
+
+    }
     const { isLoggedIn } = useAuth()
     const {
         register,
@@ -111,14 +151,11 @@ export default function AdmitPatient() {
         mode: "onSubmit",
         defaultValues: {
             tube: false,
-            e: 1,
-            v: 1,
-            m: 1,
             indicator: {
-                respiratory: false,
-                sepsis: false,
-                shock: false,
-                seizure: false
+                respiratory: true,
+                sepsis: true,
+                shock: true,
+                seizure: true
             },
             vitalSign: {
                 oxygenTherapy: 0
@@ -160,7 +197,10 @@ export default function AdmitPatient() {
                 history_of_seizure: false,
                 generalize_seizure: false,
                 comoatose_stage_seizure: false,
-                gcs: 0
+                gcs: 0,
+                e: 1,
+                v: 1,
+                m: 1,
             },
         }
     })
@@ -170,10 +210,11 @@ export default function AdmitPatient() {
 
     const handleAdmit = (data: ITriage) => new Promise(async (resolve) => {
         console.log(data)
+        data.nurseName = profile.nurse.name + ' ' + profile.nurse.surname
         if (data.tube)
-            data.add.gcs = data.e + data.m
+            data.add.gcs = data.add.e + data.add.m
         else
-            data.add.gcs = data.e + data.v + data.m
+            data.add.gcs = data.add.e + data.add.v + data.add.m
         addNewTriage(`${an}`, {
             ...data,
         }).then(response =>
@@ -192,10 +233,9 @@ export default function AdmitPatient() {
         router.push('/patient/list')
 
     }
-    const steps = ['อาการของผู้ป่วยที่น่าเป็นห่วง', 'Vital Sign monitor', 'Total symptoms', 'Initial impression', 'Risk factor', 'การตรวจร่างกาย'];
+    const steps = ['Vital Sign', 'Total symptoms', 'Initial impression', 'Risk factor', 'การตรวจร่างกาย'];
 
     const stepContent: any[] = [
-        <IndicatorGroup register={register} errors={errors} control={control} setValue={setValue} />,
         <VitalSignForm register={register} errors={errors} control={control} setValue={setValue} />,
         <TotalSymptoms register={register} errors={errors} control={control} setValue={setValue} />,
         <InitialIndicator register={register} errors={errors} control={control} setValue={setValue} />,
@@ -219,6 +259,29 @@ export default function AdmitPatient() {
         setActiveStep(activeStep - 1);
     };
 
+    const day = dayjs().format('DD/MM/YYYY')
+    console.log(day)
+    const [patient, setPatient] = React.useState<any>()
+    useEffect(() => {
+        //loadPatientFromApi()
+        const fetchData = async () => {
+            if (!an) return
+            // get the data from the api
+            const patient = await loadPatientWithAN()
+            setPatient(patient)
+        }
+
+        fetchData()
+            // make sure to catch any error
+            .catch(console.error);
+    }, [an])
+
+    const loadPatientWithAN = async () => {
+        const response = await getPatientByAN(`${an}`)
+        console.log(response)
+        return response.data
+    }
+
 
     return (
         <>
@@ -228,22 +291,39 @@ export default function AdmitPatient() {
             } isLoggedIn={isLoggedIn} />
             <form onSubmit={handleSubmit(handleAdmit)}>
                 <Container component="main" maxWidth="md" sx={{ mb: 4 }}>
+
                     <Grid container sx={{ mt: 3 }}>
-                        <Grid item md={1}>
+                        <Grid item sm={1}>
                             <Button
                                 variant='contained'
-                                onClick={() => router.push("/patient/list")}
+                                onClick={() => router.push("/patient/" + an)}
                             >
                                 <ArrowBackIcon />
                             </Button>
                         </Grid>
+                        <Grid item sm={8.5}> </Grid>
+
+                        <Grid item sm={2.5}>
+                            <Paper variant="outlined" sx={{ backgroundColor: "#DADADA" }}>
+                                <Typography align="center" variant="subtitle2">
+                                    {patient?.name} {patient?.surname}
+                                </Typography>
+                                <Typography align="center" variant="subtitle2">
+                                    {an} {patient?.hn}
+                                </Typography>
+                                <Typography align="center" variant="subtitle2">
+                                    today : {day}
+                                </Typography>
+                            </Paper>
+                        </Grid>
                     </Grid>
+
                     <Paper sx={{ my: { xs: 3, md: 3 }, p: { xs: 2, md: 3 } }}>
                         <Typography component="h1" variant="h4" align="center">
                             Triage
                         </Typography>
                         <React.Fragment>
-                            <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+                            <Stepper activeStep={activeStep} sx={{ ...stepStyle, pt: 3, pb: 5 }}>
                                 {steps.map((label) => (
                                     <Step key={label}>
                                         <StepLabel>{label}</StepLabel>

@@ -38,7 +38,6 @@ export interface IPatientCard {
 }
 
 export interface Patient {
-    id: number;
     name: string;
     surname: string;
     gender: any;
@@ -48,7 +47,6 @@ export interface Patient {
     bloodType: any;
     dateOfBirth: any;
     hn: string;
-    // age: string;
     symptom: string;
     allergies: string;
     address: string;
@@ -67,6 +65,7 @@ export interface Patient {
 export interface ITriage {
     id: number,
     date: string,
+    nurseName: string,
     indicator: {
         respiratory: boolean,
         sepsis: boolean,
@@ -87,7 +86,10 @@ export interface ITriage {
         history_of_seizure: boolean,
         generalize_seizure: boolean,
         comoatose_stage_seizure: boolean,
-        gcs: number
+        gcs: number,
+        e: number,
+        v: number,
+        m: number
     },
     initialImpression: {
         scalene_muscle: boolean,
@@ -123,6 +125,7 @@ export interface ITriage {
     },
     triageResult: {
         mpew: number,
+        severity: number;
         result_respiratory: string,
         result_sepsis: string,
         result_shock: string,
@@ -136,6 +139,9 @@ export const getAdmitCardForNurse = (an: string) => {
     return api.http.get<ResponseEntity<IPatientCard>>(`${window.origin}/api/admit/${an}`)
 }
 
+export const getPatientByAN = (an: string) => {
+    return api.http.get<ResponseEntity<Patient>>(`${window.origin}/api/${an}`)
+}
 export const getAdmitListForNurse = () => {
     return api.http.get<ResponseEntity<IPatientCard>>(`${window.origin}/api/admit`)
 }
@@ -173,6 +179,13 @@ export const getAdmitListForDoctor = () => {
 
 export const getSearchedAdmitForDoctor = (search: string) => {
     return api.http.get<ResponseEntity<IPatientCard>>(`${window.origin}/api/doctor/admit/search/${search}`)
+}
+
+export const getPatientByANForDoctor = (an: string) => {
+    return api.http.get<ResponseEntity<Patient>>(`${window.origin}/api/doctor/${an}/patient`)
+}
+export const getTriageHistoryForDoctor = (an: string) => {
+    return api.http.get<ResponseEntity<ITriage>>(`${window.origin}/api/doctor/${an}/triage_history`)
 }
 
 //------------Triage------------

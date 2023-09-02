@@ -27,7 +27,8 @@ const theme = createTheme({
       // dark: will be calculated from palette.secondary.main,
       //  contrastText: '#ffcc00',
     },
-  }
+  },
+  
 });
 export default function App({ Component, pageProps }: AppProps) {
   return <SessionProvider>

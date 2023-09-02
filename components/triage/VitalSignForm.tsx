@@ -52,7 +52,11 @@ export default function VitalSignForm(props: RegisterFormProps) {
                             fullWidth
                             autoComplete="given-name"
                             variant="outlined"
-                            {...register("vitalSign.temperature", { required: "โปรดระบุอุณหภูมิร่างกาย" })}
+                            {...register("vitalSign.temperature", {
+                                required: "โปรดระบุอุณหภูมิร่างกาย",
+                                max: { value: 45, message: "กรุณาระบุอุณหภูมิให้ถูกต้อง" },
+                                min: { value: 25, message: "กรุณาระบุอุณหภูมิให้ถูกต้อง" }
+                            })}
                             error={!!errors.vitalSign?.temperature}
                             helperText={errors.vitalSign?.temperature?.message}
                         />
@@ -63,7 +67,11 @@ export default function VitalSignForm(props: RegisterFormProps) {
                             fullWidth
                             autoComplete="family-name"
                             variant="outlined"
-                            {...register("vitalSign.heartRate", { required: "โปรดระบุ Heart rate" })}
+                            {...register("vitalSign.heartRate", {
+                                required: "โปรดระบุ Heart rate",
+                                max: { value: 300, message: "กรุณาระบุ Heart rate ให้ถูกต้อง" },
+                                min: { value: 0, message: "กรุณาระบุ Heart rate ให้ถูกต้อง" }
+                            })}
                             error={!!errors.vitalSign?.heartRate}
                             helperText={errors.vitalSign?.heartRate?.message}
                         />
@@ -74,12 +82,16 @@ export default function VitalSignForm(props: RegisterFormProps) {
                             fullWidth
                             autoComplete="family-name"
                             variant="outlined"
-                            {...register("vitalSign.respiratoryRate", { required: "โปรดระบุ Respiratory rate" })}
+                            {...register("vitalSign.respiratoryRate", {
+                                required: "โปรดระบุ Respiratory rate",
+                                max: { value: 100, message: "กรุณาระบุ Respiration rate ให้ถูกต้อง" },
+                                min: { value: 0, message: "กรุณาระบุ Respiration rate ให้ถูกต้อง" }
+                            })}
                             error={!!errors.vitalSign?.respiratoryRate}
                             helperText={errors.vitalSign?.respiratoryRate?.message}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={3}>
+                    <Grid item xs={12} sm={2.9}>
                         <TextField
                             label="Systolic BP (mmHg)"
                             fullWidth
@@ -90,7 +102,11 @@ export default function VitalSignForm(props: RegisterFormProps) {
                             helperText={errors.vitalSign?.systolic_blood_pressure?.message}
                         />
                     </Grid>
-                    <Grid item xs={12} sm={3}>
+                    <Grid container sm={0.2} direction="column"
+                        alignItems="center"
+                        justifyContent="center" > <Typography sx={{ fontSize: 30, p: 1.25, mt:1.8 }}>/</Typography></Grid>
+
+                    <Grid item xs={12} sm={2.9}>
                         <TextField
                             label="Diastolic BP (mmHg)"
                             fullWidth
@@ -107,7 +123,11 @@ export default function VitalSignForm(props: RegisterFormProps) {
                             fullWidth
                             autoComplete="family-name"
                             variant="outlined"
-                            {...register("vitalSign.oxygenSaturation", { required: "โปรดระบุ Oxygen saturation" })}
+                            {...register("vitalSign.oxygenSaturation", {
+                                required: "โปรดระบุ Oxygen saturation",
+                                max: { value: 100, message: "กรุณาระบุ Oxygen saturation ให้ถูกต้อง" },
+                                min: { value: 0, message: "กรุณาระบุ Oxygen saturation ให้ถูกต้อง" }
+                            })}
                             error={!!errors.vitalSign?.oxygenSaturation}
                             helperText={errors.vitalSign?.oxygenSaturation?.message}
                         />

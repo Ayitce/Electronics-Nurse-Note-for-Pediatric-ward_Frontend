@@ -3,12 +3,14 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { Control, Controller, FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import { IRegisterForm } from './RegisterComp';
-import { AppBar, Box, CardContent, CircularProgress, Container, Paper, Toolbar } from '@mui/material';
+import { AppBar, Box, Button, CardContent, CircularProgress, Container, Paper, Toolbar } from '@mui/material';
 import nursePNG from '../public/assets/nurse.png'
 import Image from 'next/image'
 import { StorageReference, getDownloadURL, ref } from 'firebase/storage';
 import { useEffect } from 'react';
 import firebase from '@/services/firebase';
+import router from 'next/router';
+import { useAuth } from '@/_auth';
 
 export interface IPatientCard {
     id: number;
@@ -44,12 +46,9 @@ export interface IPatientCard {
     age: string;
 }
 
-interface ImageStorageRef {
-    ref: StorageReference
-    url: string
-}
 
 export default function PatientCard(props: IPatientCard) {
+    const { isLoggedIn, role } = useAuth()
 
     const [uploadedImages, setUploadImages] = React.useState<string>()
 
@@ -187,7 +186,7 @@ export default function PatientCard(props: IPatientCard) {
                                     </Typography>
                                     <Typography variant="subtitle1"  >
                                         <Box fontWeight='bold' display='inline'>
-                                            แพทย์ที่ดูแล :
+                                            แพทย์เจ้าของไข้ :
                                         </Box>
                                         {props.patient.doctor.name} {props.patient.doctor.surname}
                                     </Typography>
@@ -220,6 +219,21 @@ export default function PatientCard(props: IPatientCard) {
                                     </Typography>
 
                                 </Grid>
+
+                                <Grid item md={8.5}></Grid>
+                                <Grid item md={1.5}>
+                                    {role === "ROLE_NURSE" &&
+                                        <Button
+                                            variant='contained'
+                                            sx={{ backgroundColor: "#2196F3", color: "white" }}
+                                            onClick={() => router.push("/patient/" + props.an + "/triage")}
+                                        >
+                                            + Triage
+                                        </Button>
+                                    }
+
+                                </Grid>
+
                             </Grid>
                         </Grid>
 

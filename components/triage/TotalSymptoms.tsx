@@ -9,11 +9,12 @@ import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 //import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Control, Controller, FieldErrors, UseFormRegister, UseFormSetValue } from 'react-hook-form';
-import { Box, Button, FormGroup, Select, ToggleButton, ToggleButtonGroup, styled } from '@mui/material';
+import { Box, Button, FormGroup, Select, ToggleButton, ToggleButtonGroup, Tooltip, styled } from '@mui/material';
 import { DateField, DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs';
 import { ITriage } from '@/pages/patient/[an]/triage';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 interface RegisterFormProps {
     register: UseFormRegister<ITriage>;
@@ -103,7 +104,7 @@ export default function TotalSymptoms(props: RegisterFormProps) {
     const handleDecreaseE = () => {
         if (e - 1 > 0) {
             setE(e - 1)
-            setValue("e", e - 1)
+            setValue("add.e", e - 1)
         }
 
         //  setValue("add.gcs", gcs - 1)
@@ -113,7 +114,7 @@ export default function TotalSymptoms(props: RegisterFormProps) {
     const handleIncreaseE = () => {
         if (e + 1 <= 4) {
             setE(e + 1)
-            setValue("e", e + 1)
+            setValue("add.e", e + 1)
         }
 
 
@@ -127,7 +128,7 @@ export default function TotalSymptoms(props: RegisterFormProps) {
     const handleDecreaseV = () => {
         if (v - 1 > 0) {
             setV(v - 1)
-            setValue("v", v - 1)
+            setValue("add.v", v - 1)
         }
 
 
@@ -139,7 +140,7 @@ export default function TotalSymptoms(props: RegisterFormProps) {
     const handleIncreaseV = () => {
         if (v + 1 <= 5) {
             setV(v + 1)
-            setValue("v", v + 1)
+            setValue("add.v", v + 1)
         }
 
 
@@ -152,7 +153,7 @@ export default function TotalSymptoms(props: RegisterFormProps) {
     const handleDecreaseM = () => {
         if (m - 1 > 0) {
             setM(m - 1)
-            setValue("m", m - 1)
+            setValue("add.m", m - 1)
         }
 
 
@@ -165,7 +166,7 @@ export default function TotalSymptoms(props: RegisterFormProps) {
     const handleIncreaseM = () => {
         if (m + 1 <= 6) {
             setM(m + 1)
-            setValue("m", m + 1)
+            setValue("add.m", m + 1)
         }
 
 
@@ -189,6 +190,10 @@ export default function TotalSymptoms(props: RegisterFormProps) {
 
     };
 
+    const LOCtext = 'Awake: รู้สึกตัวดี\nVerbal: ตอบสนองต่อการกระตุ้นด้วยเสียงเรียก\nPain: ตอบสนองต่อการกระตุ้นด้วยความเจ็บปวด\nUnresponsive: ไม่ตอบสนอง'
+    const Etext = 'E= Eyes opening\nE1 ไม่ลืมตาเลย\nE2 ลืมตาเมื่อเจ็บ\nE3 ลืมตาเมื่อเรียก\nE4 ลืมตาได้ปกติ'
+    const Mtext = 'M= Motor response\nM1 ไม่ขยับเลย\nM2 แขนเหยียดผิดปกติ\nM3 แขนงอผิดปกติ\nM4 ขยับเมื่อเจ็บ\nM5 เอามือปัดตำแหน่งเจ็บได้\nM6 ทำตามสั่งได้'
+    const Vtext = 'V= Verbal response\nV1 ไม่ออกเสียง\nV2 ออกเสียงไม่เป็นภาษา ไม่มีความหมาย\nV3 ออกเสียงเป็นคำ ๆ มีความหมาย\nV4 ออกเสียงเป็นประโยคแต่สับสน\nV5 พูดคุยได้ตามปกติ'
     const { tube } = state;
     return (
         <React.Fragment>
@@ -206,6 +211,7 @@ export default function TotalSymptoms(props: RegisterFormProps) {
                         <Typography variant="h6" gutterBottom>
                             O2 Therapy (LPM)
                         </Typography>
+
                         {/* <Button type="submit" variant="contained" color="primary" sx={{ borderRadius: 28 }}>2</Button> */}
                         <StyledToggleButtonGroup
                             size="medium"
@@ -230,6 +236,9 @@ export default function TotalSymptoms(props: RegisterFormProps) {
                     <Grid item sm={6}>
                         <Typography variant="h6" gutterBottom>
                             Level of Consciousness (LOC)
+                            <Tooltip title={<span style={{ whiteSpace: 'pre-line' }}>{LOCtext}</span>} placement="top-start" sx={{}}>
+                                <HelpOutlineIcon sx={{ color: "grey" }} fontSize='small' />
+                            </Tooltip>
                         </Typography>
                         {/* <Button type="submit" variant="contained" color="primary" sx={{ borderRadius: 28 }}>2</Button> */}
                         <StyledToggleButtonGroup
@@ -252,14 +261,16 @@ export default function TotalSymptoms(props: RegisterFormProps) {
                             </ToggleButton>
                         </StyledToggleButtonGroup>
                     </Grid>
-                    <Grid item container spacing={3} sm={12}>
+                    <Grid item container spacing={3} sm={12} sx={{ mt: 2 }}>
                         <Typography variant="h6" gutterBottom>
                             Glasgow Coma Scale การประเมินระดับความรู้สึกตัว
                         </Typography>
                         {/* <Button type="submit" variant="contained" color="primary" sx={{ borderRadius: 28 }}>2</Button> */}
                         <Grid item sm={4}>
                             <Typography variant="h6" gutterBottom>
-                                E
+                                E <Tooltip title={<span style={{ whiteSpace: 'pre-line' }}>{Etext}</span>} placement="top-start" sx={{}}>
+                                    <HelpOutlineIcon sx={{ color: "grey" }} fontSize='small' />
+                                </Tooltip>
                             </Typography>
                             <Grid container alignItems='center'>
                                 <Button onClick={handleDecreaseE} variant="contained" color="secondary" size="small" sx={{ borderRadius: '50%', maxWidth: '40px', maxHeight: '40px', minWidth: '40px', minHeight: '40px' }}>-</Button>
@@ -270,7 +281,9 @@ export default function TotalSymptoms(props: RegisterFormProps) {
                         </Grid>
                         <Grid item sm={4}>
                             <Typography variant="h6" gutterBottom>
-                                V
+                                V <Tooltip title={<span style={{ whiteSpace: 'pre-line' }}>{Vtext}</span>} placement="top-start" sx={{}}>
+                                    <HelpOutlineIcon sx={{ color: "grey" }} fontSize='small' />
+                                </Tooltip>
                             </Typography>
                             <Grid container alignItems='center'>
                                 <Button onClick={handleDecreaseV} variant="contained" color="secondary" size="small" sx={{ borderRadius: '50%', maxWidth: '40px', maxHeight: '40px', minWidth: '40px', minHeight: '40px' }}>-</Button>
@@ -281,7 +294,9 @@ export default function TotalSymptoms(props: RegisterFormProps) {
                         </Grid>
                         <Grid item sm={4}>
                             <Typography variant="h6" gutterBottom>
-                                M
+                                M <Tooltip title={<span style={{ whiteSpace: 'pre-line' }}>{Mtext}</span>} placement="top-start" sx={{}}>
+                                <HelpOutlineIcon sx={{ color: "grey" }} fontSize='small' />
+                            </Tooltip>
                             </Typography>
                             <Grid container alignItems='center'>
                                 <Button onClick={handleDecreaseM} variant="contained" color="secondary" size="small" sx={{ borderRadius: '50%', maxWidth: '40px', maxHeight: '40px', minWidth: '40px', minHeight: '40px' }}>-</Button>
@@ -304,6 +319,6 @@ export default function TotalSymptoms(props: RegisterFormProps) {
                     </Grid>
                 </Grid>
             </Grid>
-        </React.Fragment>
+        </React.Fragment >
     );
 }

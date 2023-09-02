@@ -22,7 +22,6 @@ interface RegisterFormProps {
     setValue: UseFormSetValue<ITriage>
 }
 
-
 export default function RiskFactor(props: RegisterFormProps) {
 
     const {
@@ -42,6 +41,7 @@ export default function RiskFactor(props: RegisterFormProps) {
         central_venous_catheter: false,
         poor_feeding: false,
         generalize_seizure: false,
+        history_of_seizure: false,
         comatose: false,
     });
 
@@ -72,6 +72,8 @@ export default function RiskFactor(props: RegisterFormProps) {
             setValue("add.poor_feeding", event.target.checked)
         if ([event.target.name].includes("generalize_seizure"))
             setValue("add.generalize_seizure", event.target.checked)
+        if ([event.target.name].includes("history_of_seizure"))
+            setValue("add.history_of_seizure", event.target.checked)
         if ([event.target.name].includes("comatose"))
             setValue("add.comoatose_stage_seizure", event.target.checked)
     };
@@ -86,6 +88,7 @@ export default function RiskFactor(props: RegisterFormProps) {
         central_venous_catheter,
         poor_feeding,
         generalize_seizure,
+        history_of_seizure,
         comatose } = state;
     return (
         <React.Fragment>
@@ -135,18 +138,18 @@ export default function RiskFactor(props: RegisterFormProps) {
                                     }
                                     label="Post Splenectomy"
                                 />
-
-                            </FormGroup>
-
-                        </FormControl>
-                        <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-                            <FormGroup>
                                 <FormControlLabel
                                     control={
                                         <Checkbox checked={malignancy} onChange={handleChange} name="malignancy" />
                                     }
                                     label="Malignancy"
                                 />
+                            </FormGroup>
+
+                        </FormControl>
+                        <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
+                            <FormGroup>
+
                                 <FormControlLabel
                                     control={
                                         <Checkbox checked={bedRidden_cerebralPalsy} onChange={handleChange} name="bedRidden_cerebralPalsy" />
@@ -170,6 +173,12 @@ export default function RiskFactor(props: RegisterFormProps) {
                                         <Checkbox checked={generalize_seizure} onChange={handleChange} name="generalize_seizure" />
                                     }
                                     label="Generalize seizure"
+                                />
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox checked={history_of_seizure} onChange={handleChange} name="history_of_seizure" />
+                                    }
+                                    label="History of previous seizure"
                                 />
                                 <FormControlLabel
                                     control={

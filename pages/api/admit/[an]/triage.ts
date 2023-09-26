@@ -4,10 +4,10 @@ import { api } from "@/services/axios.enp.core.config";
 import { allowMethods } from "@/utils/nextApi";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]";
+import { authOptions } from "../../auth/[...nextauth]";
 
 export async function handler(req: NextApiRequest, res: NextApiResponse) {
-    getAdmitFromAN(req, res).then(response => {
+    addTriagesFromAN(req, res).then(response => {
         res.status(response.status).json(response.data || [])
     }).catch((err) => {
         res.status(err.response?.status || 500).json(err.response?.data)
@@ -15,7 +15,7 @@ export async function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 
-export const getAdmitFromAN = async (
+export const addTriagesFromAN = async (
     req: NextApiRequest,
     res: NextApiResponse
 ) => {
@@ -23,13 +23,11 @@ export const getAdmitFromAN = async (
     api.setHandler(req, res)
     api.setBearerToken(session?.accessToken)
 
-    console.log(req.query.an)
-
-
-    return api.http.get(`/nurse/admits/AN/${req.query.an}`)
+    const { an } = req.query;
+    return api.http.post(`/nurse/admits/AN/${an}/triages`, req.body)
 }
 
-export default csrf(allowMethods(["GET"], handler))
+export default csrf(allowMethods(["POST"], handler))
 
 export const config = {
     api: {

@@ -45,6 +45,7 @@ export interface IRegisterForm {
     medicalID: string;
     phoneNumber: string;
     type: string;
+    speciality: string;
 }
 
 
@@ -64,7 +65,7 @@ export default function RegisterComp() {
     } = useForm<IRegisterForm>({
         mode: "onSubmit"
     })
-    const stepContent: any[] = [<UserType selectedDoctor={selectedDoctor} selectedNurse={selectedNurse} setSelectedDoctor={setSelectedDoctor} setSelectedNurse={setSelectedNurse} />, <SignUpForm register={register} errors={errors} control={control} setValue={setValue} />]
+    const stepContent: any[] = [<UserType selectedDoctor={selectedDoctor} selectedNurse={selectedNurse} setSelectedDoctor={setSelectedDoctor} setSelectedNurse={setSelectedNurse} />, <SignUpForm register={register} errors={errors} control={control} setValue={setValue} selectedDoctor={selectedDoctor} />]
 
     const handleRegister = (data: IRegisterForm) => new Promise((resolve) => {
 

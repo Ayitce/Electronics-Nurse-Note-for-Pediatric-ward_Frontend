@@ -7,6 +7,8 @@ export interface IDoctor {
     surname: string;
     medicalID: string;
     phoneNumber: string;
+    speciality: string;
+
 }
 
 export const getDoctorList = () => {

@@ -21,6 +21,7 @@ interface RegisterFormProps {
     errors: FieldErrors<IRegisterForm>
     control: Control<IRegisterForm>
     setValue: UseFormSetValue<IRegisterForm>
+    selectedDoctor: boolean;
 }
 
 export default function SignUpForm(props: RegisterFormProps) {
@@ -35,6 +36,24 @@ export default function SignUpForm(props: RegisterFormProps) {
     const genders = [
         { value: "ชาย", label: "ชาย" },
         { value: "หญิง", label: "หญิง" }
+    ]
+    const specialities = [
+        { value: "สาขาวิชาพัฒนาการและพฤติกรรม", label: "สาขาวิชาพัฒนาการและพฤติกรรม" },
+        { value: "สาขาวิชาโรคหัวใจ", label: "สาขาวิชาโรคหัวใจ"},
+        { value: "สาขาวิชาต่อมไร้ท่อและเมตาบอลิสม", label: "สาขาวิชาต่อมไร้ท่อและเมตาบอลิสม"},
+        { value: "สาขาวิชาระบบหายใจ", label: "สาขาวิชาระบบหายใจ"},
+        { value: "สาขาวิชาทางเดินอาหาร", label: "สาขาวิชาทางเดินอาหาร"},
+        { value: "สาขาวิชาทารกแรกเกิด", label: "สาขาวิชาทารกแรกเกิด"},
+        { value: "สาขาวิชาประสาทวิทยา", label: "สาขาวิชาประสาทวิทยา"},
+        { value: "สาขาวิชาโรคติดเชื้อ", label: "สาขาวิชาโรคติดเชื้อ"},
+        { value: "สาขาวิชาโรคผิวหนัง", label: "สาขาวิชาโรคผิวหนัง"},
+        { value: "สาขาวิชาโลหิตวิทยา", label: "สาขาวิชาโลหิตวิทยา"},
+        { value: "สาขาวิชาโรคไต", label: "สาขาวิชาโรคไต"},
+        { value: "สาขาวิชาโภชนศาสตร์", label: "สาขาวิชาโภชนศาสตร์"},
+        { value: "สาขาวิชาเวชพันธุศาสตร์", label: "สาขาวิชาเวชพันธุศาสตร์"},
+        { value: "สาขาวิชาโรคข้อและรูมาดิสซั่ม", label: "สาขาวิชาโรคข้อและรูมาดิสซั่ม"},
+        { value: "สาขาวิชาเวชบำบัดวิกฤต", label: "สาขาวิชาเวชบำบัดวิกฤต"},
+
     ]
 
     return (
@@ -169,7 +188,24 @@ export default function SignUpForm(props: RegisterFormProps) {
 
                     </FormControl> */}
                 </Grid>
-
+                {props.selectedDoctor && <Grid item xs={6} sm={6} >
+                    <TextField
+                        id="outlined-select-currency"
+                        fullWidth
+                        select
+                        label="ความชำนาญ"
+                        variant="standard"
+                        {...register("speciality", { required: "กรุณาระบุความชำนาญ" })}
+                        error={!!errors.speciality}
+                        helperText={errors.speciality?.message}
+                    >
+                        {specialities.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                </Grid>}
                 <Grid item xs={12} sm={6}>
                     <TextField
                         label="หมายเลขประจำตัวพยาบาล/หมอ"

@@ -43,6 +43,8 @@ export interface IUserForm {
         phoneNumber: string;
         medicalID: string;
         gender: string;
+        speciality: string;
+
     }
 }
 
@@ -56,6 +58,8 @@ export interface INurseTable {
     type: string;
     enabled: boolean;
     id: number;
+    speciality: string;
+
 }
 /* 
 export interface UserTypeProps {
@@ -142,7 +146,6 @@ const headCells: readonly HeadCell[] = [
         label: 'เบอร์โทรศัพท์',
     },
 
-
     {
         id: 'type',
         numeric: true,
@@ -150,12 +153,19 @@ const headCells: readonly HeadCell[] = [
         label: 'ตำแหน่ง',
     },
 
+
+    {
+        id: 'speciality',
+        numeric: true,
+        disablePadding: false,
+        label: 'ความชำนาญ',
+    },
     {
         id: 'medicalID',
         numeric: true,
         disablePadding: false,
         label: 'เลขประจำตัว',
-    }
+    },
 ];
 
 interface EnhancedTableProps {
@@ -243,6 +253,7 @@ export default function EnhancedTable() {
                         "gender": user[id].doctor.gender,
                         "medicalID": user[id].doctor.medicalID,
                         "phoneNumber": user[id].doctor.phoneNumber,
+                        "speciality": user[id].doctor.speciality,
                         "type": "doctor",
                         "id": user[id].id
                         // "enabled": user[id].enabled
@@ -296,6 +307,7 @@ export default function EnhancedTable() {
                         "gender": user[id].doctor.gender,
                         "medicalID": user[id].doctor.medicalID,
                         "phoneNumber": user[id].doctor.phoneNumber,
+                        "speciality": user[id].doctor.speciality,
                         "type": "doctor",
                         "id": user[id].id
                         // "enabled": user[id].enabled
@@ -335,6 +347,7 @@ export default function EnhancedTable() {
                         "medicalID": user[id].doctor.medicalID,
                         "phoneNumber": user[id].doctor.phoneNumber,
                         "type": "doctor",
+                        "speciality": user[id].doctor.speciality,
                         "id": user[id].id
                         // "enabled": user[id].enabled
                     })
@@ -488,6 +501,7 @@ export default function EnhancedTable() {
                                         <TableCell align="right">{row.gender}</TableCell>
                                         <TableCell align="right">{row.phoneNumber}</TableCell>
                                         <TableCell align="right">{row.type}</TableCell>
+                                        <TableCell align="right">{row.speciality!}</TableCell>
                                         <TableCell align="right">{row.medicalID}</TableCell>
                                         <TableCell align="left">
                                             <Button variant='contained'

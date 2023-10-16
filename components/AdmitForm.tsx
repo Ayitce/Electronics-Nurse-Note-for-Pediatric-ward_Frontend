@@ -76,18 +76,15 @@ export default function AdmitForm(props: AdmitFormProps) {
     const loadDoctorFromAPI = async () => {
 
         const response = await getDoctorList()
-        // setPatientInfo(response.data)
         return response.data
     }
 
     const loadPatientFromAPI = async () => {
 
         const response = await getAllPatient()
-        // setPatientInfo(response.data)
         return response.data
     }
 
-    //const [existed, setExisted] = useState<boolean>(true);
     const [createObjectURL, setCreateObjectURL] = useState<string>();
 
     const uploadToClient = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,11 +93,7 @@ export default function AdmitForm(props: AdmitFormProps) {
             const i = event.target.files[0];
 
 
-            /* 
-                        const body = new FormData();
-                        body.append("file", i); */
             setValue("patient.imageFile", i)
-            // setImage(i);
             console.log("file : ", i);
             setCreateObjectURL(URL.createObjectURL(i));
         }
@@ -111,7 +104,6 @@ export default function AdmitForm(props: AdmitFormProps) {
             <Typography variant="h6" gutterBottom>
                 ข้อมูลส่วนตัวผู้ป่วย
             </Typography>
-            {props.existed ?
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
                         <Autocomplete
@@ -127,32 +119,14 @@ export default function AdmitForm(props: AdmitFormProps) {
                             sx={{ width: 300 }}
                             renderInput={(params) =>
                                 <TextField {...params} label="ค้นหาด้วยชื่อ นามสกุล หรือ HN"
-                                // {...register("patient", { required: "Please select patient" })}
-                                // error={!!errors.patient}
-                                // helperText={errors.patient?.message}
                                 />
                             }
 
                         />
-                        {/*  <TextField
-                            id="outlined-select-currency"
-                            fullWidth
-                            select
-                            label="ชื่อ นามสกุล HN"
-                            variant="standard"
-                            {...register("patient", { required: "Please select patient" })}
-                            error={!!errors.patient}
-                            helperText={errors.patient?.message}
-                        >
-                            {patient?.map((option) => (
-                                <MenuItem key={option.id} value={option}>
-                                    {option.hn} | {option.name} {option.surname}
-                                </MenuItem>
-                            ))}
-                        </TextField> */}
+                       
                     </Grid>
                 </Grid>
-                :
+                
 
                 <><Grid container spacing={3}>
                     <Grid item xs={12} sm={6}>
@@ -321,9 +295,6 @@ export default function AdmitForm(props: AdmitFormProps) {
                             helperText={errors.patient?.hn?.message} />
                     </Grid>
                 </Grid></>
-
-            }
-
         </React.Fragment>
     );
 }

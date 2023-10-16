@@ -48,10 +48,6 @@ export default function RoomForm(props: RoomFormProps) {
             // make sure to catch any error
             .catch(console.error);
 
-        /* 
-                console.log("an:", an)
-                setPatientInfo(loadPatientFromApiWithAN())
-                console.log("pt:", patientInfo) */
     }, [])
 
     const loadRoomListFromAPI = async () => {
@@ -66,7 +62,6 @@ export default function RoomForm(props: RoomFormProps) {
         const fetchData = async () => {
             // get the data from the api
             const room = await loadRoomFromAPI()
-            // setRoom(roomList)
             setBed(room.bedList)
             console.log(room.bedList)
         }
@@ -78,7 +73,6 @@ export default function RoomForm(props: RoomFormProps) {
 
     const loadRoomFromAPI = async () => {
         const response = await getRoom(selectedRoom)
-        // setPatientInfo(response.data)
         return response.data
     }
     return (
@@ -116,7 +110,7 @@ export default function RoomForm(props: RoomFormProps) {
                             >
                                 {room?.map((option) => (
                                     <MenuItem key={option.id} value={option.id}>
-                                        {option.id}
+                                        กุมารเวช {option.id}
                                     </MenuItem>
                                 ))}
                             </TextField>

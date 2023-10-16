@@ -56,7 +56,6 @@ export default function PhysicalExam(props: RegisterFormProps) {
         setValue
     } = props;
     const [pulse, setPulse] = React.useState('N');
-    const [formats, setFormats] = React.useState(() => ['italic']);
 
     const handlePulse = (event, newPulse) => {
         if (newPulse !== null) {

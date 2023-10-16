@@ -218,7 +218,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 export default function EnhancedTable() {
     const { role } = useAuth()
 
-    // const [patients, setPatients] = useState<IPatientForm>()
     const [rows, setRows] = useState<any>([])
 
     useEffect(() => {
@@ -228,11 +227,9 @@ export default function EnhancedTable() {
             const user = await loadUserFromApi()
             const arr: { username: any; name: any; surname: any; gender: any; medicalID: any; phoneNumber: any; type: string; id: any; }[] = [];
             console.log(user)
-            /*  if () { */
 
             Object.keys(user).forEach((id) => {
                 if (!!user[id].nurse && user[id].enabled == true) {
-                    // console.log(user[id].nurse.name)
                     arr.push({
                         "username": user[id].username,
                         "name": user[id].nurse.name,
@@ -242,10 +239,8 @@ export default function EnhancedTable() {
                         "phoneNumber": user[id].nurse.phoneNumber,
                         "type": "nurse",
                         "id": user[id].id
-                        //"enabled": user[id].enabled
                     })
                 } else if (!!user[id].doctor && user[id].enabled == true) {
-                    //console.log(user[id].doctor.name)
                     arr.push({
                         "username": user[id].username,
                         "name": user[id].doctor.name,
@@ -256,7 +251,6 @@ export default function EnhancedTable() {
                         "speciality": user[id].doctor.speciality,
                         "type": "doctor",
                         "id": user[id].id
-                        // "enabled": user[id].enabled
                     })
                 }
             })
@@ -283,10 +277,8 @@ export default function EnhancedTable() {
             const user = (await getSearchedUser(searchText)).data
             const arr: { username: any; name: any; surname: any; gender: any; medicalID: any; phoneNumber: any; type: string; id: any; }[] = [];
             console.log(user)
-            /*  if () { */
             Object.keys(user).forEach((id) => {
                 if (!!user[id].nurse && user[id].enabled == true) {
-                    // console.log(user[id].nurse.name)
                     arr.push({
                         "username": user[id].username,
                         "name": user[id].nurse.name,
@@ -296,10 +288,8 @@ export default function EnhancedTable() {
                         "phoneNumber": user[id].nurse.phoneNumber,
                         "type": "nurse",
                         "id": user[id].id
-                        //"enabled": user[id].enabled
                     })
                 } else if (!!user[id].doctor && user[id].enabled == true) {
-                    //console.log(user[id].doctor.name)
                     arr.push({
                         "username": user[id].username,
                         "name": user[id].doctor.name,
@@ -310,7 +300,6 @@ export default function EnhancedTable() {
                         "speciality": user[id].doctor.speciality,
                         "type": "doctor",
                         "id": user[id].id
-                        // "enabled": user[id].enabled
                     })
                 }
             })
@@ -321,11 +310,9 @@ export default function EnhancedTable() {
             const user = await loadUserFromApi()
             const arr: { username: any; name: any; surname: any; gender: any; medicalID: any; phoneNumber: any; type: string; id: any; }[] = [];
             console.log(user)
-            /*  if () { */
 
             Object.keys(user).forEach((id) => {
                 if (!!user[id].nurse && user[id].enabled == true) {
-                    // console.log(user[id].nurse.name)
                     arr.push({
                         "username": user[id].username,
                         "name": user[id].nurse.name,
@@ -335,10 +322,8 @@ export default function EnhancedTable() {
                         "phoneNumber": user[id].nurse.phoneNumber,
                         "type": "nurse",
                         "id": user[id].id
-                        //"enabled": user[id].enabled
                     })
                 } else if (!!user[id].doctor && user[id].enabled == true) {
-                    //console.log(user[id].doctor.name)
                     arr.push({
                         "username": user[id].username,
                         "name": user[id].doctor.name,
@@ -349,7 +334,6 @@ export default function EnhancedTable() {
                         "type": "doctor",
                         "speciality": user[id].doctor.speciality,
                         "id": user[id].id
-                        // "enabled": user[id].enabled
                     })
                 }
             })
@@ -430,10 +414,7 @@ export default function EnhancedTable() {
                             label="ค้นหา"
                             placeholder="email, ชื่อ, นามสกุล"
                             onChange={async (search) => {
-                                // if (search.target.value == "") return
                                 await handleSearch(search.target.value)
-                                /* setRows((await getSearchedAdmit(search.target.value)).data)
-                                console.log((await getSearchedAdmit(search.target.value)).data) */
                             }}
                             InputProps={{
                                 startAdornment: (

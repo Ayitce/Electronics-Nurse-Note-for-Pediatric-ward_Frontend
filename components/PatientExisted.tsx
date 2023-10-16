@@ -47,7 +47,6 @@ export default function PatientExisted(props: AdmitFormProps) {
                 คนไข้เคยแอดมิทที่โรงพยาบาลมาก่อนหรือไม่
             </Typography>
             <FormControl>
-                {/* <FormLabel id="demo-row-radio-buttons-group-label">Is the patient information existed</FormLabel> */}
                 <RadioGroup
                     row
                     aria-labelledby="demo-row-radio-buttons-group-label"

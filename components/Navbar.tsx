@@ -73,17 +73,7 @@ export default function Navbar(props: {
           Electronics Nurse Note for Pediatric Ward
         </Typography>
         {props.item}
-        {/* {
-          !props.isLoggedIn &&
-          <Button
-            sx={{ color: "white" }}
-            color="inherit"
-            onClick={handleClickOpen}
-            size="large"
-          >
-            สมัครสมาชิก
-          </Button>
-        } */}
+       
         <div>
           <Typography
             variant="subtitle1"

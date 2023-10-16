@@ -133,7 +133,6 @@ export default function AdmitPatient() {
 
     const loadProfileFromAPI = async () => {
         const response = await getProfile()
-        // setPatientInfo(response.data)
         return response.data
 
 
@@ -225,7 +224,6 @@ export default function AdmitPatient() {
                 }
             })
         )
-        //console.log(response.data))
         resolve(null)
     })
 
@@ -241,10 +239,7 @@ export default function AdmitPatient() {
         <InitialIndicator register={register} errors={errors} control={control} setValue={setValue} />,
         <RiskFactor register={register} errors={errors} control={control} setValue={setValue} />,
         <PhysicalExam register={register} errors={errors} control={control} setValue={setValue} />
-        // <RoomForm register={register} errors={errors} control={control} setValue={setValue} />
-        // , <PatientExisted register={register} errors={errors} control={control} setValue={setValue} existed={existed} setExisted={setExisted} />
-        // , <AdmitForm register={register} errors={errors} control={control} setValue={setValue} existed={existed} setExisted={setExisted} />
-        // , <IMedicalForm register={register} errors={errors} control={control} setValue={setValue} />
+       
     ]
 
     const [activeStep, setActiveStep] = React.useState(0);
@@ -358,7 +353,6 @@ export default function AdmitPatient() {
                                             <Button
                                                 variant="contained"
                                                 type="submit"
-                                                //onClick={handleNext}
                                                 sx={{ mt: 3, ml: 1 }}
                                             >
                                                 บันทึก

@@ -23,9 +23,7 @@ const handler = async (
             message: req.body.message,
         })
     })
-    // console.log("responseLineNotify : ", responseLineNotify)
     res.status(200).end
-    // return api.http.post(`/admin/register/doctor`, req.body)
 }
 
 export default csrf(allowMethods(["POST"], handler))

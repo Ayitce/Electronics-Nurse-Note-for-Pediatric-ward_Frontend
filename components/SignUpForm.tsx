@@ -157,36 +157,7 @@ export default function SignUpForm(props: RegisterFormProps) {
                             </MenuItem>
                         ))}
                     </TextField>
-                    {/* <FormControl variant="standard" fullWidth >
-                        <InputLabel id="demo-simple-select-standard-label">เพศ</InputLabel>
-                        <Controller
-                            control={control}
-                            name="gender"
-                            render={({ field: { onChange, onBlur, value, ref }, formState, fieldState }) => (
-                                <>
-                                    <Select
-                                        labelId="demo-simple-select-standard-label"
-                                        id="demo-simple-select-standard"
-                                        value={value}
-                                        onChange={onChange}
-                                        label="เพศ"
-                                        name='gender'
-                                        inputProps={{
-                                            inputRef: (ref: { value: any; }) => {
-                                                if (!ref) return;
-                                                register("gender", { required: "Please select gender" })
-                                            },
-                                        }}
-                                        error={!!errors.gender}
-                                    >
-                                        <MenuItem value="male">ชาย</MenuItem>
-                                        <MenuItem value="female">หญิง</MenuItem>
-                                    </Select>
-                                </>
-                            )}
-                        />
-
-                    </FormControl> */}
+                   
                 </Grid>
                 {props.selectedDoctor && <Grid item xs={6} sm={6} >
                     <TextField

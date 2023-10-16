@@ -77,14 +77,6 @@ export default function RegisterComp() {
             return;
         }
 
-
-        // call api
-
-        // .......
-
-        // alert("Success, Ready to request to API")
-        // alert(JSON.stringify(data))
-        //  axios.post(`${process.env.NEXT_PUBLIC_CORE_URL_API}/register`, data)
         if (selectedNurse == true) {
             registerNurse({
                 ...data,
@@ -171,7 +163,6 @@ export default function RegisterComp() {
                                         <Button
                                             variant="contained"
                                             type="submit"
-                                            //onClick={handleNext}
                                             sx={{ mt: 3, ml: 1 }}
                                         >
                                             สมัคร

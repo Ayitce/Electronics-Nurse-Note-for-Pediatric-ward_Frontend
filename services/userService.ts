@@ -59,14 +59,6 @@ export interface IUserForm {
 export const getAllUser = () => {
     return api.http.get<ResponseEntity<IUserForm>>(`${window.origin}/api/user/userList`)
 }
-/* 
-export const getNurseUser = () => {
-    return api.http.get<ResponseEntity<IUserForm>>(`${window.origin}/api/user/nurse`)
-}
-
-export const getDoctorUser = () => {
-    return api.http.get<ResponseEntity<IUserForm>>(`${window.origin}/api/user/doctor`)
-} */
 
 export const disableUser = (id: string | number) => {
     return api.http.post<ResponseEntity<IUserForm>>(`${window.origin}/api/user/disable/${id}`)

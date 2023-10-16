@@ -215,7 +215,7 @@ export default function PatientCard(props: IPatientCard) {
                                 <Grid item md={4}></Grid>
                                 <Grid item md={2}>
                                     <Typography variant="subtitle1" sx={{ backgroundColor: '#80A9E5' }} align='center'>
-                                        ห้อง {props.room.id}  เตียง {props.bed.id}
+                                        ห้อง กุมารเวช {props.room.id}  เตียง {props.bed.id}
                                     </Typography>
 
                                 </Grid>

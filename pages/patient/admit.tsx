@@ -85,7 +85,6 @@ export default function AdmitPatient() {
 
     const loadRoomFromAPI = async () => {
         const response = await getRoomList()
-        // setPatientInfo(response.data)
         return response.data
     }
 
@@ -93,9 +92,6 @@ export default function AdmitPatient() {
         // call api
 
         // .......
-
-        //alert("Success, Ready to request to API")
-        //alert(JSON.stringify(data))
 
         const stamp = dayjs().format("YYYYMMDDHHmmss")
         const filename = `${stamp}-${data.patient.imageFile?.name}`
@@ -105,8 +101,7 @@ export default function AdmitPatient() {
         )
 
         uploadBytes(storageRef, data.patient.imageFile).then((e) => {
-            //  alert("upload success")
-            //  alert(JSON.stringify(e.ref.fullPath))
+          
             if (data.patient.imageFile != null) {
                 data.patient.image = e.ref.fullPath
             }
@@ -118,23 +113,9 @@ export default function AdmitPatient() {
                 ...data,
                 admitDateTime: data.admitDateTime || dayjs().format("YYYY-MM-DD HH:mm"),
             })
-            //router.push('/patient/list')
         }).catch(err => alert("ERROR + " + JSON.stringify(err)))
 
-        /* const formData = new FormData();
-        formData.append("file", data.patient.image)
-
-        
-        console.log("pt : ", formData)
-        const response = await uploadImage(formData);
-        console.log(response.data) */
-
-        /* admitPatient({
-            ...data,
-            admitDateTime: data.admitDateTime || dayjs().format("YYYY-MM-DD hh:mm A"),
-        }) */
         resolve(null)
-        //router.push('/patient/list')
         handleNext().then(async () => {
             const delay = (ms: number | undefined) => new Promise(res => setTimeout(res, ms));
             await delay(2000)
@@ -150,7 +131,6 @@ export default function AdmitPatient() {
 
     const stepContent: any[] = [
         <RoomForm register={register} errors={errors} control={control} setValue={setValue} />
-        , <PatientExisted register={register} errors={errors} control={control} setValue={setValue} existed={existed} setExisted={setExisted} />
         , <AdmitForm register={register} errors={errors} control={control} setValue={setValue} existed={existed} setExisted={setExisted} />
         , <IMedicalForm register={register} errors={errors} control={control} setValue={setValue} />
     ]
@@ -226,7 +206,6 @@ export default function AdmitPatient() {
                                             <Button
                                                 variant="contained"
                                                 type="submit"
-                                                //onClick={handleNext}
                                                 sx={{ mt: 3, ml: 1 }}
                                             >
                                                 บันทึก

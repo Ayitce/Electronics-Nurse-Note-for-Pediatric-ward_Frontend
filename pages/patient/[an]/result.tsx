@@ -62,7 +62,6 @@ export default function TriageResult() {
 
                 <Grid container
                     spacing={0}
-                    //  direction="column"
                     alignItems="center"
                     justifyContent="center">
                     <Grid item sm={2.5}></Grid>

@@ -67,19 +67,6 @@ export interface IAdmitTable {
     dischargeDate: string;
     an: string;
 }
-/* 
-const [patients, setPatients] = useState<IPatientForm>()
-
-useEffect(() => {
-    loadPatientFromApi()
-}, [])
-
-const loadPatientFromApi = async () => {
-    const response = await axios.get<IPatientForm>(`${window.origin}/api/patient/patient_list`)
-    setPatients(response.data)
-}
-
-const rows = patients; */
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
     if (b[orderBy] < a[orderBy]) {
@@ -105,10 +92,6 @@ function getComparator<Key extends keyof any>(
         : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
-// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
-// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
-// with exampleArray.slice().sort(exampleComparator)
 function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
     const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
     stabilizedThis.sort((a, b) => {
@@ -168,12 +151,6 @@ const headCells: readonly HeadCell[] = [
         disablePadding: false,
         label: 'รหัสผู้ป่วย',
     },
-    /*  {
-         id: 'dischargeDate',
-         numeric: true,
-         disablePadding: false,
-         label: 'เบอร์ติดต่อ',
-     }, */
     {
         id: 'admitDateTime',
         numeric: true,
@@ -232,7 +209,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 export default function EnhancedTable() {
     const { role } = useAuth()
 
-    // const [patients, setPatients] = useState<IPatientForm>()
     const [rows, setRows] = useState<any>([])
 
     useEffect(() => {
@@ -272,12 +248,10 @@ export default function EnhancedTable() {
     const loadAdmitFromApi = async () => {
         if (role == "ROLE_NURSE") {
             const response = await getAdmitListForNurse()
-            // setPatients(response.data)
             console.log(response.data)
             return response.data
         } else {
             const response = await getAdmitListForDoctor()
-            // setPatients(response.data)
             console.log(response.data)
             return response.data
         }
@@ -406,10 +380,8 @@ export default function EnhancedTable() {
                             fullWidth
                             placeholder="ชื่อ นามสกุล, รหัสผู้ป่วย, รหัส admit"
                             onChange={(search) => {
-                                // if (search.target.value == "") return
                                 handleSearch(search.target.value)
-                                /* setRows((await getSearchedAdmit(search.target.value)).data)
-                                console.log((await getSearchedAdmit(search.target.value)).data) */
+                               
                             }}
                             InputProps={{
                                 startAdornment: (

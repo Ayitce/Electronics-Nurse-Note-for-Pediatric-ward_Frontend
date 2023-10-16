@@ -87,10 +87,6 @@ export default function PatientInfo() {
 
     const [patientInfo, setPatientInfo] = useState<any>()
 
-    //const an = router.query.an
-
-    // const x = useParams();
-
     useEffect(() => {
         //loadPatientFromApi()
         const fetchData = async () => {
@@ -109,11 +105,9 @@ export default function PatientInfo() {
     const loadAdmitFromApiWithAN = async () => {
         if (role == "ROLE_NURSE") {
             const response = await getAdmitCardForNurse(`${an}`)
-            // setPatientInfo(response.data)
             return response.data
         } else {
             const response = await getAdmitCardForDoctor(`${an}`)
-            // setPatientInfo(response.data)
             return response.data
         }
 
@@ -265,14 +259,3 @@ export default function PatientInfo() {
         </>
     );
 }
-/* 
-export const getServerSideProps = setup(async (req, res) => {
-    const an = //เอามายังไง TT_TT
-
-    const response = await axios.get<IPatientCard>(`${window.origin}/api/patient/${an}`)
-
-    return {
-        props: { response }
-    }
-})
- */

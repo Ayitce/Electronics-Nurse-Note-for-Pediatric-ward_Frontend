@@ -46,7 +46,7 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 }));
 
 
-function Item(props) {
+function Item(props: { [x: string]: any; sx: any; display: any; alignItems: any; }) {
     const { sx, display, alignItems, ...other } = props;
     return (
         <Box
@@ -274,7 +274,7 @@ export default function TotalSymptoms(props: RegisterFormProps) {
                             </Typography>
                             <Grid container alignItems='center'>
                                 <Button onClick={handleDecreaseE} variant="contained" color="secondary" size="small" sx={{ borderRadius: '50%', maxWidth: '40px', maxHeight: '40px', minWidth: '40px', minHeight: '40px' }}>-</Button>
-                                <Item> {e}</Item>
+                                <Item sx={undefined} display={undefined} alignItems={undefined}> {e}</Item>
                                 <Button onClick={handleIncreaseE} variant="contained" color="secondary" size="small" sx={{ borderRadius: '50%', maxWidth: '40px', maxHeight: '40px', minWidth: '40px', minHeight: '40px' }}>+</Button>
 
                             </Grid>
@@ -287,7 +287,7 @@ export default function TotalSymptoms(props: RegisterFormProps) {
                             </Typography>
                             <Grid container alignItems='center'>
                                 <Button onClick={handleDecreaseV} variant="contained" color="secondary" size="small" sx={{ borderRadius: '50%', maxWidth: '40px', maxHeight: '40px', minWidth: '40px', minHeight: '40px' }}>-</Button>
-                                <Item> {v}</Item>
+                                <Item sx={undefined} display={undefined} alignItems={undefined}> {v}</Item>
                                 <Button onClick={handleIncreaseV} variant="contained" color="secondary" size="small" sx={{ borderRadius: '50%', maxWidth: '40px', maxHeight: '40px', minWidth: '40px', minHeight: '40px' }}>+</Button>
 
                             </Grid>
@@ -295,12 +295,12 @@ export default function TotalSymptoms(props: RegisterFormProps) {
                         <Grid item sm={4}>
                             <Typography variant="h6" gutterBottom>
                                 M <Tooltip title={<span style={{ whiteSpace: 'pre-line' }}>{Mtext}</span>} placement="top-start" sx={{}}>
-                                <HelpOutlineIcon sx={{ color: "grey" }} fontSize='small' />
-                            </Tooltip>
+                                    <HelpOutlineIcon sx={{ color: "grey" }} fontSize='small' />
+                                </Tooltip>
                             </Typography>
                             <Grid container alignItems='center'>
                                 <Button onClick={handleDecreaseM} variant="contained" color="secondary" size="small" sx={{ borderRadius: '50%', maxWidth: '40px', maxHeight: '40px', minWidth: '40px', minHeight: '40px' }}>-</Button>
-                                <Item> {m}</Item>
+                                <Item sx={undefined} display={undefined} alignItems={undefined}> {m}</Item>
                                 <Button onClick={handleIncreaseM} variant="contained" color="secondary" size="small" sx={{ borderRadius: '50%', maxWidth: '40px', maxHeight: '40px', minWidth: '40px', minHeight: '40px' }}>+</Button>
 
                             </Grid>
@@ -311,7 +311,7 @@ export default function TotalSymptoms(props: RegisterFormProps) {
                                     control={
                                         <Checkbox checked={tube} onChange={handleChange} name="tube" />
                                     }
-                                    label="Tube"
+                                    label="Endotrachel Tube / Tracheostomy Tube"
                                 />
                             </FormGroup>
 

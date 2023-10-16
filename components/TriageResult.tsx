@@ -6,8 +6,6 @@ import { getAdmitCardForNurse, getPatientByAN } from "@/services/patientService"
 import { useAuth } from "@/_auth";
 import { useRouter } from "next/router";
 import { lineNotify } from "@/services/patientService";
-import axios from "axios"
-import querystring from "querystring"
 
 export interface ITriage {
     id: number,
@@ -147,7 +145,6 @@ export default function TriageResultBox(props: ITriage) {
 
     const loadAdmitFromApiWithAN = async () => {
         const response = await getAdmitCardForNurse(`${an}`)
-        // setPatientInfo(response.data)
         return response.data
     }
 
@@ -188,7 +185,6 @@ export default function TriageResultBox(props: ITriage) {
         setOpenSnackbar(false);
     };
 
-
     return (
         <React.Fragment>
             <Container component="main" sx={{ mb: 1 }} >
@@ -196,9 +192,6 @@ export default function TriageResultBox(props: ITriage) {
                 <Paper sx={{ my: { xs: 1, md: 1 }, p: 2 }}>
                     <Grid container
                         spacing={1}
-                    //  direction="column"
-                    //alignItems="center"
-                    //justifyContent="center"
                     >
                         <Grid item container md={3}
                             alignItems="center"
@@ -377,6 +370,10 @@ export default function TriageResultBox(props: ITriage) {
                                         <Typography>
                                             <div dangerouslySetInnerHTML={{ __html: props.triageResult.result_respiratory ? props.triageResult.result_respiratory : "-" }}></div>
                                         </Typography>
+                                        <br />
+                                        <Typography sx={{ fontWeight: "bold" }}>แพทย์ Vanida Gowan</Typography>
+                                        <Typography>Tel. 0964875136</Typography>
+
                                     </Grid>
                                     <Grid item sm={6} md={6}>
                                         <Typography sx={{ fontSize: 25, fontWeight: "bold" }}>
@@ -385,6 +382,10 @@ export default function TriageResultBox(props: ITriage) {
                                         <Typography>
                                             <div dangerouslySetInnerHTML={{ __html: props.triageResult.result_sepsis ? props.triageResult.result_sepsis : "-" }}></div>
                                         </Typography>
+                                        <br />
+                                        <Typography sx={{ fontWeight: "bold" }}>แพทย์ Mary Ann</Typography>
+                                        <Typography>Tel. 0964735136</Typography>
+
                                     </Grid>
                                     <Grid item sm={6} md={6}>
                                         <Divider sx={{ my: 2 }} />
@@ -394,6 +395,10 @@ export default function TriageResultBox(props: ITriage) {
                                         <Typography>
                                             <div dangerouslySetInnerHTML={{ __html: props.triageResult.result_shock ? props.triageResult.result_shock : "-" }}></div>
                                         </Typography>
+                                        <br />
+                                        <Typography sx={{ fontWeight: "bold" }}>แพทย์ James Wood</Typography>
+                                        <Typography>Tel. 0989615136</Typography>
+
                                     </Grid>
                                     <Grid item sm={6} md={6}>
                                         <Divider sx={{ my: 2 }} />
@@ -403,6 +408,10 @@ export default function TriageResultBox(props: ITriage) {
                                         <Typography>
                                             <div dangerouslySetInnerHTML={{ __html: props.triageResult.result_seizure ? props.triageResult.result_seizure : "-" }}></div>
                                         </Typography>
+                                        <br />
+                                        <Typography sx={{ fontWeight: "bold" }}>แพทย์ John Son</Typography>
+                                        <Typography>Tel. 0964157963</Typography>
+
                                     </Grid>
                                 </Grid>
 
